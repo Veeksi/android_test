@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TestApplication</string>
+    <string name="characters_page">Characters</string>
+    <string name="episodes_page">Episodes</string>
 </resources>

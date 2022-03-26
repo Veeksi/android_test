@@ -1,6 +1,7 @@
 package com.example.testapplication.di
 
 import com.example.testapplication.api.ApiService
+import com.example.testapplication.data.repository.CharacterRepositoryImpl
 import com.example.testapplication.domain.repository.CharacterRepository
 import dagger.Module
 import dagger.Provides
@@ -43,5 +44,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesCharacterRepository(apiService: ApiService) = CharacterRepository(apiService)
+    fun providesCharacterRepository(apiService: ApiService) = CharacterRepositoryImpl(apiService)
 }

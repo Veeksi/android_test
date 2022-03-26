@@ -1,7 +1,10 @@
 package com.example.testapplication.domain.repository
 
+import androidx.paging.PagingData
 import com.example.testapplication.api.ApiService
+import com.example.testapplication.domain.model.Character
+import kotlinx.coroutines.flow.Flow
 
-class CharacterRepository(private val apiService: ApiService) {
-    suspend fun getCharacters() = apiService.getCharacters()
+interface CharacterRepository {
+    suspend fun getCharacters(): Flow<PagingData<Character>>
 }

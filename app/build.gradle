@@ -40,6 +40,8 @@ android {
 dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
     // Core
     def activity_version = "1.4.0"
@@ -55,6 +57,7 @@ dependencies {
     def lifecycle_version = "2.4.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
     // Logging
     def timber_version = "5.0.1"
@@ -71,10 +74,14 @@ dependencies {
     // Retrofit
     def retrofit_version = "2.9.0"
     def http_logging_version = "4.9.3"
-    def json_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$http_logging_version"
+
+    // Pagination
+    def paging_version = "3.0.0"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
 
     // Hilt DI
     def dagger_version = "2.41"
