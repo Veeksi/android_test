@@ -83,6 +83,9 @@ dependencies {
     def paging_version = "3.0.0"
     implementation "androidx.paging:paging-runtime:$paging_version"
 
+    // Swipe refresh layout
+    def swipe_refresh_version = "1.1.0"
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_version")
 
     // Hilt DI
     def dagger_version = "2.41"

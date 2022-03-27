@@ -19,7 +19,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterViewModel @Inject constructor(private val repository: CharacterRepositoryImpl) : ViewModel() {
+class CharacterViewModel @Inject constructor(private val repository: CharacterRepository) : ViewModel() {
     private lateinit var _charactersFlow: Flow<PagingData<Character>>
     val charactersFlow: Flow<PagingData<Character>>
         get() = _charactersFlow
@@ -30,7 +30,7 @@ class CharacterViewModel @Inject constructor(private val repository: CharacterRe
 
     private fun loadCharacters() {
         val handler = CoroutineExceptionHandler { _, exception ->
-            Log.d("ASD", "Exception: $exception")
+            Log.d("CharacterViewModel", "Exception: $exception")
         }
 
         viewModelScope.launch(handler) {

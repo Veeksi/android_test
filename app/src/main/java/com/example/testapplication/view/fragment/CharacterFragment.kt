@@ -8,15 +8,15 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapplication.databinding.FragmentCharactersBinding
+import com.example.testapplication.util.PagingLoadStateAdapter
 import com.example.testapplication.view.adapter.CharacterAdapter
 import com.example.testapplication.viewModel.CharacterViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,23 +24,23 @@ class CharacterFragment : Fragment() {
     private val characterViewModel: CharacterViewModel by viewModels()
     private var _binding: FragmentCharactersBinding? = null
     // This property is only valid between onCreateView and onDestroyView
-    private val binding get() = _binding
+    private val binding get() = _binding!!
 
     @Inject
     lateinit var characterAdapter: CharacterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = "Character fragment"
+        activity?.title = "Characters"
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCharactersBinding.inflate(inflater, container, false)
-        return binding?.root
+        return binding.root
     }
 
     override fun onDestroyView() {
@@ -55,18 +55,37 @@ class CharacterFragment : Fragment() {
     }
 
     private fun setupUi() {
-        binding?.characterRecyclerview?.apply {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = characterAdapter
-            addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))
+        with(binding) {
+            characterRecyclerview.apply {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = characterAdapter.withLoadStateHeaderAndFooter(
+                    header = PagingLoadStateAdapter(characterAdapter),
+                    footer = PagingLoadStateAdapter(characterAdapter)
+                )
+                addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))
+            }
+
+            swipeRefreshLayout.setOnRefreshListener {
+                characterAdapter.refresh()
+            }
         }
     }
 
     private fun setupObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            characterViewModel.charactersFlow.collectLatest { pagingData ->
-                characterAdapter.submitData(pagingData)
+        with(viewLifecycleOwner.lifecycleScope) {
+            // Submits data to recyclerView
+            launchWhenCreated {
+                characterViewModel.charactersFlow.collectLatest { pagingData ->
+                    characterAdapter.submitData(pagingData)
+                }
+            }
+
+            launchWhenCreated {
+                // Controls refresh indicator
+                characterAdapter.loadStateFlow.collectLatest {
+                    binding.swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
+                }
             }
         }
     }

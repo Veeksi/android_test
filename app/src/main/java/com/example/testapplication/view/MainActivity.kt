@@ -34,9 +34,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
 
-    private val characterFragment = CharacterFragment()
-    private val episodeFragment = EpisodeFragment()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -55,10 +52,12 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.charactersPage -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, characterFragment, "MY_FRAGMENT").commit()
+                    val characterFragment = CharacterFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, characterFragment).commit()
                 }
                 R.id.episodesPage -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, episodeFragment, "ASD").commit()
+                    val episodeFragment = EpisodeFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, episodeFragment).commit()
                 }
             }
             true

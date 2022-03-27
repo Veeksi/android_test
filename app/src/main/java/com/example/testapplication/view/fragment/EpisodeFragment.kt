@@ -10,20 +10,20 @@ import com.example.testapplication.databinding.FragmentEpisodesBinding
 class EpisodeFragment: Fragment() {
     private var _binding: FragmentEpisodesBinding? = null
     // This property is only valid between onCreateView and onDestroyView
-    private val binding get() = _binding
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = "Episode fragment"
+        activity?.title = "Episodes"
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentEpisodesBinding.inflate(inflater, container, false)
-        return binding?.root
+        return binding.root
     }
 
     override fun onDestroyView() {

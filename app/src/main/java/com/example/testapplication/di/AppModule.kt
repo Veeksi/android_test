@@ -3,6 +3,7 @@ package com.example.testapplication.di
 import com.example.testapplication.api.ApiService
 import com.example.testapplication.data.repository.CharacterRepositoryImpl
 import com.example.testapplication.domain.repository.CharacterRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,7 +33,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+    fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
         .client(okHttpClient)
@@ -40,9 +41,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
-
-    @Singleton
-    @Provides
-    fun providesCharacterRepository(apiService: ApiService) = CharacterRepositoryImpl(apiService)
+    fun providesApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
 }
