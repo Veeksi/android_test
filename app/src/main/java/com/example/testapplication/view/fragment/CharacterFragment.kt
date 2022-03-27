@@ -29,6 +29,11 @@ class CharacterFragment : Fragment() {
     @Inject
     lateinit var characterAdapter: CharacterAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.title = "Character fragment"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

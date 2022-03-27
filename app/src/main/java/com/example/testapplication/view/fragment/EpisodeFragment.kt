@@ -12,6 +12,11 @@ class EpisodeFragment: Fragment() {
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.title = "Episode fragment"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
