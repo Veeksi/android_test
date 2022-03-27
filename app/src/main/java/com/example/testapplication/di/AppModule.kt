@@ -1,9 +1,6 @@
 package com.example.testapplication.di
 
-import com.example.testapplication.api.ApiService
-import com.example.testapplication.data.repository.CharacterRepositoryImpl
-import com.example.testapplication.domain.repository.CharacterRepository
-import dagger.Binds
+import com.example.testapplication.data.MortyService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,5 +38,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
+    fun providesApiService(retrofit: Retrofit): MortyService = retrofit.create(MortyService::class.java)
 }
