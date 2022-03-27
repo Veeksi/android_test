@@ -6,11 +6,9 @@ import androidx.paging.PagingState
 import com.example.testapplication.data.MortyService
 import com.example.testapplication.domain.model.Character
 
-private const val MORTY_STARTING_PAGE_INDEX = 1
-
 class CharactersPagingSource(private val service: MortyService): PagingSource<Int, Character>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
-        val pageNumber = params.key ?: MORTY_STARTING_PAGE_INDEX
+        val pageNumber = params.key ?: 1
 
         return try {
             val pagedResponse = service.getCharacters(pageNumber).toPagedResponseCharacter()

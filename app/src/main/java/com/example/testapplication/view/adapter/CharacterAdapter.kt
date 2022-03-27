@@ -29,7 +29,6 @@ class CharacterAdapter @Inject constructor() : PagingDataAdapter<Character, Char
     inner class ViewHolder(private val binding: CharacterItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(character: Character) {
-            Log.d("ASD", "asdasdasd")
             binding.apply {
                 character.also { (_, name, image, gender) ->
                     nameTextview.text = name

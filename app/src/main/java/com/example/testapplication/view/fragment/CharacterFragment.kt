@@ -73,7 +73,7 @@ class CharacterFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        with(viewLifecycleOwner.lifecycleScope) {
+        viewLifecycleOwner.lifecycleScope.apply {
             // Submits data to recyclerView
             launchWhenCreated {
                 characterViewModel.charactersFlow.collectLatest { pagingData ->
@@ -81,8 +81,8 @@ class CharacterFragment : Fragment() {
                 }
             }
 
+            // Controls refresh indicator
             launchWhenCreated {
-                // Controls refresh indicator
                 characterAdapter.loadStateFlow.collectLatest {
                     binding.swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
                 }

@@ -1,7 +1,6 @@
 package com.example.testapplication.data.dto
 
 import com.example.testapplication.domain.model.Character
-import com.example.testapplication.domain.model.Episode
 import com.example.testapplication.domain.model.PagedResponse
 
 data class PagedResponseDto<T>(
@@ -12,13 +11,6 @@ data class PagedResponseDto<T>(
         return PagedResponse(
             pageInfo = info.toPageInfo(),
             results = results.map { (it as CharacterDto).toCharacter() },
-        )
-    }
-
-    fun toPagedResponseEpisode(): PagedResponse<Episode> {
-        return PagedResponse(
-            pageInfo = info.toPageInfo(),
-            results = results.map { (it as EpisodeDto).toEpisode() },
         )
     }
 }
