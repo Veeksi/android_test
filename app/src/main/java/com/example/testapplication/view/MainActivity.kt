@@ -22,6 +22,7 @@ import com.example.testapplication.databinding.FragmentCharactersBinding
 import com.example.testapplication.view.adapter.CharacterAdapter
 import com.example.testapplication.view.fragment.CharacterFragment
 import com.example.testapplication.view.fragment.EpisodeFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -31,40 +32,20 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupBottomNavigationBar()
-    }
 
-    private fun setupBottomNavigationBar() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        navController = navHostFragment.navController
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.characterFragment, R.id.episodeFragment))
 
-        binding.bottomNav.setupWithNavController(navController)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setSupportActionBar(binding.toolbar)
-
-        binding.bottomNav.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.charactersPage -> {
-                    val characterFragment = CharacterFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, characterFragment).commit()
-                }
-                R.id.episodesPage -> {
-                    val episodeFragment = EpisodeFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, episodeFragment).commit()
-                }
-            }
-            true
+        with(binding) {
+            setSupportActionBar(toolbar)
+            bottomNav.setupWithNavController(navController)
+            toolbar.setupWithNavController(navController, appBarConfiguration)
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

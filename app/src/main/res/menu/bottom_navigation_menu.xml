@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/charactersPage"
-        android:enabled="true"
+        android:id="@+id/characters"
         android:title="@string/characters_page"
         android:icon="@drawable/ic_100tb"
         />
     <item
-        android:id="@+id/episodesPage"
-        android:enabled="true"
+        android:id="@+id/episodes"
         android:title="@string/episodes_page"
         android:icon="@drawable/ic_100tb"
         />

@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/characterFragment">
+    app:startDestination="@id/characters">
 
-    <fragment
-        android:id="@+id/characterFragment"
-        android:name="com.example.testapplication.view.fragment.CharacterFragment"
-        android:label="CharacterFragment"
-        tools:layout="@layout/fragment_characters" />
-    <fragment
-        android:id="@+id/episodeFragment"
-        android:name="com.example.testapplication.view.fragment.EpisodeFragment"
-        android:label="EpisodeFragment"
-        tools:layout="@layout/fragment_episodes" />
+    <include app:graph="@navigation/characters" />
+    <include app:graph="@navigation/episodes" />
 </navigation>

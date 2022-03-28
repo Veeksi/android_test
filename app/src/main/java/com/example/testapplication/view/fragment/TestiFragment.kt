@@ -1,18 +1,28 @@
 package com.example.testapplication.view.fragment
 
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.testapplication.R
-import com.example.testapplication.databinding.FragmentEpisodesBinding
+import com.example.testapplication.databinding.FragmentTestiBinding
 
-class EpisodeFragment: Fragment() {
-    private var _binding: FragmentEpisodesBinding? = null
-    // This property is only valid between onCreateView and onDestroyView
+/**
+ * An example full-screen fragment that shows and hides the system UI (i.e.
+ * status bar and navigation/system bar) with user interaction.
+ */
+class TestiFragment : Fragment() {
+    private var _binding: FragmentTestiBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,16 +34,15 @@ class EpisodeFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEpisodesBinding.inflate(inflater, container, false)
+        activity?.title = "Testi"
+        _binding = FragmentTestiBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.button.setOnClickListener {
-            view.findNavController().navigate(R.id.action_episodeFragment_to_testiFragment)
-        }
+        setHasOptionsMenu(true)
     }
 
     override fun onDestroyView() {

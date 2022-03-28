@@ -31,7 +31,6 @@ class CharacterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = "Characters"
     }
 
     override fun onCreateView(
@@ -41,11 +40,6 @@ class CharacterFragment : Fragment() {
     ): View {
         _binding = FragmentCharactersBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,5 +82,10 @@ class CharacterFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

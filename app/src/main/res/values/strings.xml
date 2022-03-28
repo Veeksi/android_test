@@ -3,4 +3,6 @@
     <string name="characters_page">Characters</string>
     <string name="episodes_page">Episodes</string>
     <string name="retry">Retry</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
