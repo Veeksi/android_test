@@ -17,5 +17,5 @@
     <fragment
         android:id="@+id/testiFragment"
         android:name="com.example.testapplication.view.fragment.TestiFragment"
-        android:label="Testi" />
+        android:label="" />
 </navigation>

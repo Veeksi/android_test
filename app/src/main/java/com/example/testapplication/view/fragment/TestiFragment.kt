@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentTestiBinding
+import com.example.testapplication.view.MainActivity
 
 /**
  * An example full-screen fragment that shows and hides the system UI (i.e.
@@ -42,11 +43,27 @@ class TestiFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         setHasOptionsMenu(true)
+
+        binding.toolbar.setNavigationOnClickListener { view ->
+            view.findNavController().navigateUp()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as MainActivity).supportActionBar?.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (requireActivity() as MainActivity).supportActionBar?.show()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (requireActivity() as MainActivity).supportActionBar?.show()
         _binding = null
     }
 }

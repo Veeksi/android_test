@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.characterFragment, R.id.episodeFragment))
 
+        onSupportNavigateUp()
+
         with(binding) {
             setSupportActionBar(toolbar)
             bottomNav.setupWithNavController(navController)
