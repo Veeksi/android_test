@@ -1,24 +1,25 @@
 package com.example.testapplication.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapplication.databinding.FragmentCharactersBinding
+import com.example.testapplication.domain.model.Character
+import com.example.testapplication.util.PagerEvents
 import com.example.testapplication.util.PagingLoadStateAdapter
 import com.example.testapplication.view.adapter.CharacterAdapter
 import com.example.testapplication.viewModel.CharacterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CharacterFragment : Fragment() {
@@ -27,7 +28,6 @@ class CharacterFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
 
-    @Inject
     lateinit var characterAdapter: CharacterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +49,18 @@ class CharacterFragment : Fragment() {
         setupObservers()
     }
 
+    fun characterItemClicked(character: Character) {
+        val modalBottomSheet = ModalBottomSheet(
+            onLike = { characterViewModel.onViewEvent(PagerEvents.Like(character)) },
+            onDelete = { characterViewModel.onViewEvent(PagerEvents.Remove(character)) }
+        )
+        modalBottomSheet.show(childFragmentManager, "TAG")
+    }
+
     private fun setupUi() {
+        characterAdapter = CharacterAdapter { character ->
+            characterItemClicked(character)
+        }
         with(binding) {
             characterRecyclerview.apply {
                 layoutManager = LinearLayoutManager(context)

@@ -1,13 +1,13 @@
 package com.example.testapplication.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
 import com.example.testapplication.data.MortyService
 import com.example.testapplication.data.data_source.CharactersPagingSource
 import com.example.testapplication.domain.model.Character
 import com.example.testapplication.domain.repository.CharacterRepository
+import com.example.testapplication.util.PagerEvents
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 class CharacterRepositoryImpl @Inject constructor(

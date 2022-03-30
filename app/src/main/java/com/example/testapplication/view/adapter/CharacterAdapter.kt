@@ -1,7 +1,5 @@
 package com.example.testapplication.view.adapter
 
-import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -10,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.testapplication.databinding.CharacterItemBinding
 import com.example.testapplication.domain.model.Character
-import javax.inject.Inject
 
-class CharacterAdapter @Inject constructor() : PagingDataAdapter<Character, CharacterAdapter.ViewHolder>(CharacterComparator) {
+class CharacterAdapter (
+    private val onCharacterItemClicked: (Character) -> Unit
+) : PagingDataAdapter<Character, CharacterAdapter.ViewHolder>(CharacterComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             CharacterItemBinding.inflate(
@@ -30,10 +29,15 @@ class CharacterAdapter @Inject constructor() : PagingDataAdapter<Character, Char
         RecyclerView.ViewHolder(binding.root) {
         fun bind(character: Character) {
             binding.apply {
-                character.also { (_, name, image, gender) ->
+                character.also { (_, name, image, gender, liked) ->
                     nameTextview.text = name
                     imageImageview.load(image)
                     genderTextview.text = gender
+                    likeText.text = liked.toString()
+                }
+
+                characterItem.setOnClickListener {
+                    onCharacterItemClicked(character)
                 }
             }
         }
