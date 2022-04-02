@@ -4,11 +4,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/characters"
-    app:startDestination="@+id/characterFragment">
+    app:startDestination="@+id/characterListFragment">
 
+    <fragment
+        android:id="@+id/characterListFragment"
+        android:name="com.example.testapplication.view.fragment.CharactersListFragment"
+        android:label="Characters"
+        tools:layout="@layout/fragment_characters_list" >
+        <action
+            android:id="@+id/action_characterListFragment_to_characterFragment"
+            app:destination="@id/characterFragment" />
+    </fragment>
     <fragment
         android:id="@+id/characterFragment"
         android:name="com.example.testapplication.view.fragment.CharacterFragment"
-        android:label="Characters"
-        tools:layout="@layout/fragment_characters" />
+        android:label="Character"
+        tools:layout="@layout/fragment_character" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
 </navigation>

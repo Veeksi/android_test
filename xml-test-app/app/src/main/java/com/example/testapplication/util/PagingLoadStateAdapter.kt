@@ -9,7 +9,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapplication.R
 import com.example.testapplication.databinding.ItemNetworkStateBinding
-import com.example.testapplication.view.fragment.CharacterFragment
 
 class PagingLoadStateAdapter<T : Any, VH : RecyclerView.ViewHolder>(
     private val adapter: PagingDataAdapter<T, VH>

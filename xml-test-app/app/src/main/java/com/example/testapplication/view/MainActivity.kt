@@ -1,6 +1,7 @@
 package com.example.testapplication.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
@@ -17,9 +18,30 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.characterFragment, R.id.episodeFragment))
+        val appBarConfiguration =
+            AppBarConfiguration(setOf(R.id.characterListFragment, R.id.episodeFragment))
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            run {
+                when (destination.id) {
+                    R.id.characterFragment -> {
+                        binding.bottomNav.visibility = View.GONE
+                        // binding.toolbar.visibility = View.GONE
+                    }
+                    R.id.testiFragment -> {
+                        binding.bottomNav.visibility = View.GONE
+                        binding.toolbar.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.bottomNav.visibility = View.VISIBLE
+                        binding.toolbar.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
 
         onSupportNavigateUp()
 

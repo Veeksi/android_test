@@ -10,6 +10,7 @@ import com.example.testapplication.domain.model.Character
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ModalBottomSheet(
+    private val onView: () -> Unit,
     private val onLike: () -> Unit,
     private val onDelete: () -> Unit,
 ): BottomSheetDialogFragment() {
@@ -33,6 +34,10 @@ class ModalBottomSheet(
 
     private fun setupClickListeners() {
         with(binding) {
+            viewListTile.setOnClickListener {
+                onView()
+                dismiss()
+            }
             likeListTile.setOnClickListener {
                 onLike()
                 dismiss()

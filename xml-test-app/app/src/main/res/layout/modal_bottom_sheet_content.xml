@@ -7,12 +7,47 @@
     style="?attr/bottomSheetStyle">
 
     <LinearLayout
-        android:id="@+id/likeListTile"
+        android:id="@+id/viewListTile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/likeListTile"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+        <ImageView
+            android:id="@+id/faceIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_face"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/faceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="View"
+            android:textSize="18sp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="@id/faceIcon"
+            app:layout_constraintStart_toEndOf="@id/faceIcon"
+            app:layout_constraintBottom_toBottomOf="@id/faceIcon"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/likeListTile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/viewListTile"
+        app:layout_constraintBottom_toTopOf="@id/deleteListTile"
         app:layout_constraintStart_toStartOf="parent"
         >
 
@@ -30,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Like"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:layout_marginStart="16dp"
             app:layout_constraintTop_toTopOf="@id/likeIcon"
             app:layout_constraintStart_toEndOf="@id/likeIcon"
@@ -47,6 +82,7 @@
         android:padding="16dp"
         app:layout_constraintTop_toBottomOf="@id/likeListTile"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
 
         <ImageView
@@ -63,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Remove"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:layout_marginStart="16dp"
             app:layout_constraintTop_toTopOf="@id/deleteIcon"
             app:layout_constraintStart_toEndOf="@id/deleteIcon"

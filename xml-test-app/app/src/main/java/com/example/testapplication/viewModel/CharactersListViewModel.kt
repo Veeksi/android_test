@@ -24,7 +24,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterViewModel @Inject constructor(private val repository: CharacterRepository) : ViewModel() {
+class CharactersListViewModel @Inject constructor(private val repository: CharacterRepository) : ViewModel() {
     private val modificationEvents = MutableStateFlow<List<PagerEvents>>(emptyList())
 
     private lateinit var _charactersFlow: Flow<PagingData<Character>>
@@ -37,7 +37,7 @@ class CharacterViewModel @Inject constructor(private val repository: CharacterRe
 
     private fun loadCharacters() {
         val handler = CoroutineExceptionHandler { _, exception ->
-            Log.d("CharacterViewModel", "Exception: $exception")
+            Timber.d("Exception: " + exception)
         }
 
         viewModelScope.launch(handler) {

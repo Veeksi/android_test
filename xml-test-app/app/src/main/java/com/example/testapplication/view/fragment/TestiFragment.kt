@@ -11,6 +11,7 @@ import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentTestiBinding
 import com.example.testapplication.view.MainActivity
@@ -43,13 +44,16 @@ class TestiFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         setHasOptionsMenu(true)
 
-        binding.toolbar.setNavigationOnClickListener { view ->
-            view.findNavController().navigateUp()
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
+
+    /*
 
     override fun onResume() {
         super.onResume()
@@ -66,4 +70,6 @@ class TestiFragment : Fragment() {
         (requireActivity() as MainActivity).supportActionBar?.show()
         _binding = null
     }
+
+     */
 }
