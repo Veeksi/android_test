@@ -1,10 +1,9 @@
 package com.example.jetpackapp.ui.screens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -12,66 +11,63 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
+import com.example.jetpackapp.domain.model.Character
 
-data class BottomSheetItem(val title: String, val icon: ImageVector)
 
-val bottomSheetItems = listOf(
-    BottomSheetItem(title = "View", icon = Icons.Default.Face),
-    BottomSheetItem(title = "Delete", icon = Icons.Default.Delete)
-)
-
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BottomSheet() {
-    ModalBottomSheetLayout(
-        sheetContent = {
-        Column(
-            content = {
-                Spacer(modifier = Modifier.padding(16.dp))
-                Text(
-                    text = "Create New",
+fun ModalBottomSheet(
+    character: Character?,
+    onView: () -> Unit,
+    onDelete: () -> Unit,
+) {
+    Column {
+        character?.let {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(model = character.image),
+                    contentDescription = "Image",
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 21.sp,
-                    color = Color.White
+                        .size(64.dp)
+                        .clip(CircleShape)
                 )
-                LazyVerticalGrid(
-                    cells = GridCells.Fixed(3)
-                ) {
-                    items(bottomSheetItems.size, itemContent = {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 24.dp)
-                        ) {
-                            Spacer(modifier = Modifier.padding(8.dp))
-                            Icon(
-                                bottomSheetItems[it].icon,
-                                "",
-                                tint = Color.White
-                            )
-                            Spacer(modifier = Modifier.padding(8.dp))
-                            Text(text = bottomSheetItems[it].title, color = Color.White)
-                        }
-
-                    })
-                }
-            }, modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .background(Color(0xAA3fa7cc))
-                .padding(16.dp)
+                Spacer(modifier = Modifier.padding(8.dp))
+                Text(character.name, fontWeight = FontWeight.Bold)
+            }
+        }
+        ListItem(
+            modifier = Modifier.clickable {
+                onView()
+            },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Face,
+                    contentDescription = "View"
+                )
+            },
+            text = { Text(text = "View") },
         )
-    }) {
-
+        Divider()
+        ListItem(
+            modifier = Modifier.clickable {
+                onDelete()
+            },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete"
+                )
+            },
+            text = { Text(text = "Delete") },
+        )
     }
 }

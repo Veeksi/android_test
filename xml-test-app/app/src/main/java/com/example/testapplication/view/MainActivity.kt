@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 when (destination.id) {
                     R.id.characterFragment -> {
                         binding.bottomNav.visibility = View.GONE
-                        // binding.toolbar.visibility = View.GONE
+                        binding.toolbar.visibility = View.GONE
                     }
                     R.id.testiFragment -> {
                         binding.bottomNav.visibility = View.GONE

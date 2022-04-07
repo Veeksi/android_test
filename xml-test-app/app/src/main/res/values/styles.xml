@@ -3,5 +3,13 @@
     <style name="Widget.Theme.TestApplication.ButtonBar.Fullscreen" parent="">
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/explode</item>
+        <item name="android:windowExitTransition">@transition/explode</item>
+
+        <!-- specify shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition">@transition/changebounds_with_arcmotion</item>
+        <item name="android:windowSharedElementExitTransition">@transition/changebounds_with_arcmotion</item>
     </style>
 </resources>

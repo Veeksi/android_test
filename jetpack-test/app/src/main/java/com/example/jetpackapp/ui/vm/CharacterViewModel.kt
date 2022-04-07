@@ -1,7 +1,12 @@
 package com.example.jetpackapp.ui.vm
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -19,6 +24,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class ExampleUiState(
+    val selectedCharacter: Character? = null
+)
+
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
     private val repository: CharacterRepository
@@ -29,8 +38,15 @@ class CharacterViewModel @Inject constructor(
     val charactersFlow: Flow<PagingData<Character>>
         get() = _charactersFlow
 
+    private val _selectedCharacter = MutableLiveData<Character>()
+    val selectedCharacter: LiveData<Character> = _selectedCharacter
+
     init {
         loadCharacters()
+    }
+
+    fun selectedCharacter(character: Character) {
+        _selectedCharacter.value = character
     }
 
     private fun loadCharacters() {

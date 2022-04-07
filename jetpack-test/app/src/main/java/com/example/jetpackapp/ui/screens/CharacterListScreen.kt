@@ -1,6 +1,9 @@
 package com.example.jetpackapp.ui.screens
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,34 +11,37 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.rememberAsyncImagePainter
 import com.example.jetpackapp.domain.model.Character
+import com.example.jetpackapp.navigation.Screens
 import com.example.jetpackapp.ui.vm.CharacterViewModel
+import com.example.jetpackapp.util.PagerEvents
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CharactersScreen(
+fun CharacterListScreen(
+    //navController: NavHostController,
+    navigateToCharacterDetails: (Int) -> Unit,
     characterViewModel: CharacterViewModel = hiltViewModel(),
-    navController: NavHostController,
 ) {
     val lazyCharacterItems: LazyPagingItems<Character> =
         characterViewModel.charactersFlow.collectAsLazyPagingItems()
@@ -62,21 +68,28 @@ fun CharactersScreen(
             scrimColor = Color.Black.copy(alpha = 0.32f),
             sheetState = modalBottomSheetState,
             sheetContent = {
+
                 ModalBottomSheet(
                     character = selectedCharacter.value,
                     onView = {
                         coroutineScope.launch {
                             modalBottomSheetState.hide()
+                            selectedCharacter.value?.let {
+                                navigateToCharacterDetails(it.id)
+                            }
                         }
-                        navController.navigate()
                     },
                     onDelete = {
                         coroutineScope.launch {
                             modalBottomSheetState.hide()
+                            selectedCharacter.value?.let {
+                                characterViewModel.onViewEvent(PagerEvents.Remove(it))
+                            }
                         }
                     },
                 )
             }) {
+
             LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
                 items(lazyCharacterItems) { character ->
                     character?.let {
@@ -86,6 +99,11 @@ fun CharactersScreen(
                             coroutineScope = coroutineScope,
                             onCharacterClicked = {
                                 characterViewModel.selectedCharacter(it)
+                                /*
+                            selectedCharacter.value?.let {
+                                navigateToCharacterDetails(it.id)
+                            }
+                             */
                             }
                         )
                     }
@@ -133,7 +151,6 @@ fun CharactersScreen(
                 }
             }
         }
-
     }
 }
 
@@ -203,5 +220,5 @@ fun ErrorItem(
 @Preview
 @Composable
 fun PreviewCharactersScreen() {
-    CharactersScreen()
+    // CharacterListScreen()
 }

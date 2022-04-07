@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/characters"
@@ -10,7 +9,7 @@
         android:id="@+id/characterListFragment"
         android:name="com.example.testapplication.view.fragment.CharactersListFragment"
         android:label="Characters"
-        tools:layout="@layout/fragment_characters_list" >
+        tools:layout="@layout/fragment_characters_list">
         <action
             android:id="@+id/action_characterListFragment_to_characterFragment"
             app:destination="@id/characterFragment" />
@@ -19,9 +18,12 @@
         android:id="@+id/characterFragment"
         android:name="com.example.testapplication.view.fragment.CharacterFragment"
         android:label="Character"
-        tools:layout="@layout/fragment_character" >
+        tools:layout="@layout/fragment_character">
         <argument
             android:name="id"
             app:argType="integer" />
+        <argument
+            android:name="uri"
+            app:argType="string" />
     </fragment>
 </navigation>

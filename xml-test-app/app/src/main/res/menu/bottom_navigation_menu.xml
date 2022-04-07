@@ -3,11 +3,11 @@
     <item
         android:id="@+id/characters"
         android:title="@string/characters_page"
-        android:icon="@drawable/ic_100tb"
+        android:icon="@drawable/ic_face"
         />
     <item
         android:id="@+id/episodes"
         android:title="@string/episodes_page"
-        android:icon="@drawable/ic_100tb"
+        android:icon="@drawable/ic_star"
         />
 </menu>
