@@ -1,6 +1,8 @@
 package com.example.testapplication.vm
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -24,24 +26,16 @@ class CharactersListViewModel @Inject constructor(
 ) : ViewModel() {
     private val modificationEvents = MutableStateFlow<List<PagerEvents>>(emptyList())
 
-    private lateinit var _charactersFlow: Flow<PagingData<Character>>
+    private val _charactersFlow: Flow<PagingData<Character>> =
+        repository.getCharacters().cachedIn(viewModelScope)
+            .combine(modificationEvents) { pagingData, modifications ->
+                modifications.fold(pagingData) { acc, event ->
+                    applyEvents(acc, event)
+                }
+            }
     val charactersFlow: Flow<PagingData<Character>>
         get() = _charactersFlow
 
-    init {
-        loadCharacters()
-    }
-
-    private fun loadCharacters() {
-        viewModelScope.launch {
-            _charactersFlow = repository.getCharacters().cachedIn(viewModelScope)
-                .combine(modificationEvents) { pagingData, modifications ->
-                    modifications.fold(pagingData) { acc, event ->
-                        applyEvents(acc, event)
-                    }
-                }
-        }
-    }
 
     fun onViewEvent(pagerEvents: PagerEvents) {
         modificationEvents.value += pagerEvents

@@ -11,8 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.navigation.NavArgs
+import androidx.navigation.fragment.navArgs
+import coil.load
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharacterBinding
 import com.example.testapplication.util.Resource
@@ -28,14 +29,13 @@ class CharacterFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
 
+    private val args: CharacterFragmentArgs by navArgs()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sharedElementEnterTransition = MaterialContainerTransform().apply {
-            // drawingViewId = R.id.nav_host_fragment
             duration = resources.getInteger(R.integer.anim_duration_long).toLong()
-            // Set the color of the scrim to transparent as we also want to animate the
-            // list fragment out of view
             scrimColor = Color.TRANSPARENT
             setPathMotion(MaterialArcMotion())
         }
@@ -57,23 +57,10 @@ class CharacterFragment : Fragment() {
     }
 
     private fun setupUi() {
-        val image = arguments?.getString("image")
-        val id = arguments?.getInt("id").toString()
-        image?.let {
-            id.let {
-                binding.characterImage.apply {
-                    transitionName = "$id-$image"
-                    load(image)
-                }
-            }
+        binding.characterImage.apply {
+            transitionName = "${args.id}-${args.uri}"
+            load(args.uri)
         }
-    }
-
-    fun ImageView.load(url: String) {
-        Glide.with(this)
-            .load(url)
-            .apply(RequestOptions.placeholderOf(R.drawable.ic_launcher_foreground))
-            .into(this)
     }
 
     private fun setupObservers() {
@@ -82,8 +69,8 @@ class CharacterFragment : Fragment() {
                 is Resource.Success -> {
                     with(binding) {
                         result.data?.let { character ->
-                            characterId.text = "ID: ${character.id.toString()}"
-                            characterGender.text = "Gender: ${character.gender}"
+                            characterId.text = character.id.toString()
+                            characterGender.text = character.gender
                             loadingIndicator.visibility = View.GONE
                         }
                     }

@@ -7,27 +7,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
+import coil.load
+import coil.size.Scale
+import coil.transform.CircleCropTransformation
 import com.example.testapplication.R
 import com.example.testapplication.databinding.CharacterItemBinding
 import com.example.testapplication.domain.model.Character
 
-interface OnImageReadyListener {
-    fun onImageReady(position: Int)
-}
 
 class CharacterAdapter(
-    private val onCharacterItemClicked: (Character, ImageView) -> Unit,
     private val fragment: Fragment,
+    private val onCharacterItemClicked: (Character, ImageView) -> Unit,
 ) : PagingDataAdapter<Character, CharacterAdapter.ViewHolder>(CharacterComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -40,17 +35,8 @@ class CharacterAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.d("TAG", "Setting transition name")
         getItem(position)?.let { holder.bind(it) }
-    }
-
-
-    fun ImageView.load(url: String, fragment: Fragment) {
-        Glide.with(fragment.requireActivity()).asBitmap()
-            .dontTransform()
-            .disallowHardwareConfig()
-            .load(url)
-            .apply(RequestOptions.placeholderOf(R.drawable.ic_launcher_foreground))
-            .into(this)
     }
 
     inner class ViewHolder(private val binding: CharacterItemBinding) :
@@ -58,22 +44,16 @@ class CharacterAdapter(
         fun bind(character: Character) {
             binding.apply {
                 character.also { (id, name, image, gender, liked) ->
-                    Log.d("TAG", image)
                     nameTextview.text = name
                     imageView.apply {
-                        load(image, fragment)
                         transitionName = "$id-$image"
-                        /*{
-
+                        load(image){
                             allowHardware(false)
                             memoryCacheKey(image)
                             crossfade(true)
                             placeholder(R.drawable.ic_launcher_foreground)
-                            transformations(CircleCropTransformation())
                             scale(Scale.FILL)
                         }
-
-                         */
                     }
                     genderTextview.text = gender
                     likeText.text = liked.toString()
