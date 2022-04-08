@@ -69,7 +69,7 @@ class CharacterFragment : Fragment() {
                 is Resource.Success -> {
                     with(binding) {
                         result.data?.let { character ->
-                            characterId.text = character.id.toString()
+                            characterName.text = "${character.name} - ${character.id}"
                             characterGender.text = character.gender
                             loadingIndicator.visibility = View.GONE
                         }

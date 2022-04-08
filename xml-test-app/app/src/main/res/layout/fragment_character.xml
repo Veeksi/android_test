@@ -12,41 +12,49 @@
         android:layout_height="256dp"
         android:scaleType="centerCrop"
         android:transitionName="heroAnimation"
+        app:layout_constraintBottom_toTopOf="@id/characterName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/characterId"
         tools:src="@drawable/ic_launcher_background" />
 
     <TextView
-        android:id="@+id/characterId"
+        android:id="@+id/characterName"
+        style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/characterImage"
-        app:layout_constraintStart_toStartOf="parent"
-        style="@style/TextAppearance.AppCompat.Title"
         android:padding="@dimen/spacing_normal"
-        tools:text="ID: 1" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/characterImage"
+        tools:text="Rick Sanchez" />
 
     <TextView
         android:id="@+id/characterGender"
+        style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/characterId"
-        app:layout_constraintStart_toStartOf="parent"
-        style="@style/TextAppearance.AppCompat.Title"
         android:padding="@dimen/spacing_normal"
-        tools:text="Gender: Male" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/characterName"
+        tools:text="Male" />
 
-    <TextView
-        android:id="@+id/characterEpisodes"
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/characterGender"
         app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/characterEpisodes"
         style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/spacing_normal"
-        tools:text="Episodes" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider1"
+        android:text="@string/episodes" />
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/loadingIndicator"

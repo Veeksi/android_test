@@ -35,7 +35,6 @@ class CharacterAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d("TAG", "Setting transition name")
         getItem(position)?.let { holder.bind(it) }
     }
 
@@ -44,7 +43,7 @@ class CharacterAdapter(
         fun bind(character: Character) {
             binding.apply {
                 character.also { (id, name, image, gender, liked) ->
-                    nameTextview.text = name
+                    title.text = name
                     imageView.apply {
                         transitionName = "$id-$image"
                         load(image){
@@ -55,11 +54,9 @@ class CharacterAdapter(
                             scale(Scale.FILL)
                         }
                     }
-                    genderTextview.text = gender
-                    likeText.text = liked.toString()
                 }
 
-                characterItem.setOnClickListener {
+                cardView.setOnClickListener {
                     onCharacterItemClicked(character, binding.imageView)
                 }
             }

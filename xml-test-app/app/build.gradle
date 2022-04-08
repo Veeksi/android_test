@@ -54,7 +54,8 @@ dependencies {
     implementation "androidx.activity:activity-ktx:$activity_version"
 
     // UI
-    implementation 'com.google.android.material:material:1.4.0'
+    def material_version = "1.5.0"
+    implementation "com.google.android.material:material:$material_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
 
     //  Lifecycle Components

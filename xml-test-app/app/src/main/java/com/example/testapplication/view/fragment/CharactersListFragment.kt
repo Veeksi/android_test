@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharactersListBinding
@@ -95,14 +96,12 @@ class CharactersListFragment : Fragment() {
 
         with(binding) {
             characterRecyclerview.apply {
-                layoutManager = LinearLayoutManager(context)
+                layoutManager = GridLayoutManager(context, 3)
                 setHasFixedSize(true)
                 adapter = characterAdapter.withLoadStateHeaderAndFooter(
                     header = PagingLoadStateAdapter(characterAdapter),
                     footer = PagingLoadStateAdapter(characterAdapter)
                 )
-
-                addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))
             }
 
             swipeRefreshLayout.setOnRefreshListener {
@@ -123,12 +122,10 @@ class CharactersListFragment : Fragment() {
 
             // Submits data to recyclerView
             launch {
-                charactersListViewModel.charactersFlow?.collectLatest { pagingData ->
+                charactersListViewModel.charactersFlow.collectLatest { pagingData ->
                     characterAdapter.submitData(pagingData)
                 }
             }
-
-            launchWhenCreated { }
         }
     }
 
