@@ -62,7 +62,7 @@ class CharacterFragment : Fragment() {
             }
             characterName.apply {
                 transitionName = "${args.id}-${args.name}"
-                text = "${args.name} - ${args.id}"
+                text = args.name
             }
         }
     }

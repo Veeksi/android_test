@@ -63,10 +63,10 @@
             android:id="@+id/headerBackground"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            motion:layout_constraintBottom_toTopOf="@+id/guideHeader2"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintBottom_toBottomOf="@+id/characterCard" />
         <Constraint
             android:id="@+id/characterCard"
             android:layout_width="match_parent"
@@ -83,17 +83,17 @@
         <Constraint
             android:id="@+id/characterName"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="60dp"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            motion:layout_constraintBottom_toTopOf="@+id/characterGender"
+            android:layout_marginEnd="8dp"
+            motion:layout_constraintBottom_toTopOf="@+id/characterEpisodes"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+            motion:layout_constraintTop_toBottomOf="@+id/headerBackground"
+            motion:layout_constraintHorizontal_bias="1.0">
             <Layout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 motion:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +108,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             motion:layout_constraintTop_toBottomOf="@id/characterName"
-            motion:layout_constraintStart_toStartOf="parent" />
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp" />
+        <Constraint
+            android:layout_width="0dp"
+            android:id="@+id/divider"
+            android:layout_height="0dp"
+            motion:layout_constraintEnd_toStartOf="@+id/headerBackground"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent" />
 
     </ConstraintSet>
 
@@ -119,7 +128,8 @@
             android:layout_width="0dp"
             android:layout_height="240dp"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toStartOf="parent">
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent">
             <CustomAttribute
                 motion:attributeName="radius"
                 motion:customDimension="0dp" />
@@ -134,7 +144,7 @@
             android:layout_marginBottom="8dp">
             <Layout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 motion:layout_constraintEnd_toEndOf="parent"
@@ -151,8 +161,7 @@
             android:layout_width="0dp"
             android:layout_height="240dp"
             motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintBottom_toBottomOf="@id/characterCard" />
+            motion:layout_constraintStart_toStartOf="parent" />
         <Constraint
             android:id="@+id/characterEpisodes"
             android:layout_width="match_parent"
@@ -200,20 +209,12 @@
                 motion:layout_constraintStart_toEndOf="@+id/characterCard"
                 motion:layout_constraintTop_toTopOf="@+id/characterCard"
                 motion:layout_constraintBottom_toBottomOf="@id/characterCard"
-                android:layout_height="wrap_content" />
+                android:layout_height="60dp" />
             <CustomAttribute
                 motion:attributeName="textSize"
                 motion:customFloatValue="18" />
         </Constraint>
 
-        <Constraint android:id="@+id/fabButton">
-            <Layout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                motion:layout_constraintBottom_toBottomOf="@id/headerBackground"
-                motion:layout_constraintTop_toBottomOf="@+id/headerBackground" />
-            <PropertySet android:visibility="visible" />
-        </Constraint>
         <Constraint
             android:id="@+id/characterEpisodes"
             android:layout_width="match_parent"
@@ -238,40 +239,47 @@
             android:id="@+id/characterCard"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginStart="56dp"
-            android:layout_marginTop="8dp"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent">
+            motion:layout_constraintTop_toTopOf="@id/backButton"
+            motion:layout_constraintBottom_toBottomOf="@id/backButton"
+            motion:layout_constraintStart_toEndOf="@+id/backButton">
             <CustomAttribute
                 motion:attributeName="radius"
                 motion:customDimension="28dp" />
         </Constraint>
 
-        <Constraint android:id="@+id/characterName">
+        <Constraint android:id="@+id/characterName"
+            android:layout_height="60dp"
+            android:layout_width="0dp"
+            motion:layout_constraintStart_toEndOf="@id/characterCard"
+            motion:layout_constraintTop_toTopOf="@id/characterCard"
+            motion:layout_constraintBottom_toBottomOf="@id/characterCard"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_editor_absoluteY="16dp"
+            motion:layout_editor_absoluteX="216dp">
             <Layout
                 android:layout_width="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="16dp"
-                motion:layout_constraintEnd_toEndOf="parent"
-                motion:layout_constraintStart_toEndOf="@+id/characterCard"
-                motion:layout_constraintTop_toTopOf="@+id/characterCard"
-                motion:layout_constraintVertical_chainStyle="packed"
-                android:layout_height="wrap_content"
-                motion:layout_constraintBottom_toBottomOf="@id/characterCard" />
+                android:layout_height="60dp" />
             <CustomAttribute
                 motion:attributeName="textSize"
                 motion:customFloatValue="16" />
         </Constraint>
 
-        <Constraint android:id="@+id/fabButton">
-            <Layout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                motion:layout_constraintBottom_toBottomOf="@id/headerBackground"
-                motion:layout_constraintTop_toBottomOf="@+id/headerBackground" />
-            <PropertySet android:visibility="invisible" />
-        </Constraint>
+        <Constraint
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            motion:layout_constraintTop_toBottomOf="@+id/headerBackground"
+            android:id="@+id/characterEpisodes" />
+        <Constraint
+            android:layout_height="48dp"
+            motion:layout_constraintTop_toTopOf="@+id/headerBackground"
+            motion:layout_constraintBottom_toBottomOf="@+id/headerBackground"
+            android:layout_width="48dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:id="@+id/backButton" />
     </ConstraintSet>
     <Transition
         motion:constraintSetStart="@+id/collapseProfile"
