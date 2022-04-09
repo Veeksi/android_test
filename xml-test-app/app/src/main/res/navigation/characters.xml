@@ -23,6 +23,9 @@
             android:name="id"
             app:argType="integer" />
         <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
             android:name="uri"
             app:argType="string" />
     </fragment>

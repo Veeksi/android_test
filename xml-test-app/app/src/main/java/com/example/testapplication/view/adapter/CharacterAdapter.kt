@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.paging.PagingDataAdapter
@@ -21,8 +22,7 @@ import com.example.testapplication.domain.model.Character
 
 
 class CharacterAdapter(
-    private val fragment: Fragment,
-    private val onCharacterItemClicked: (Character, ImageView) -> Unit,
+    private val onCharacterItemClicked: (Character, CardView) -> Unit,
 ) : PagingDataAdapter<Character, CharacterAdapter.ViewHolder>(CharacterComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -42,11 +42,11 @@ class CharacterAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(character: Character) {
             binding.apply {
-                character.also { (id, name, image, gender, liked) ->
+                character.also { (id, name, image, _, _) ->
+                    cardView.transitionName = "$id-$image"
                     title.text = name
                     imageView.apply {
-                        transitionName = "$id-$image"
-                        load(image){
+                        load(image) {
                             allowHardware(false)
                             memoryCacheKey(image)
                             crossfade(true)
@@ -57,7 +57,7 @@ class CharacterAdapter(
                 }
 
                 cardView.setOnClickListener {
-                    onCharacterItemClicked(character, binding.imageView)
+                    onCharacterItemClicked(character, binding.cardView)
                 }
             }
         }

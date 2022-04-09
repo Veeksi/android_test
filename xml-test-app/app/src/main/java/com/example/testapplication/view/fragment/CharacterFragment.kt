@@ -2,24 +2,22 @@ package com.example.testapplication.view.fragment
 
 import android.graphics.Color
 import android.os.Bundle
-import android.transition.ChangeBounds
-import android.transition.TransitionInflater
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharacterBinding
 import com.example.testapplication.util.Resource
+import com.example.testapplication.view.MainActivity
 import com.example.testapplication.vm.CharacterViewModel
 import com.google.android.material.transition.*
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class CharacterFragment : Fragment() {
@@ -57,9 +55,15 @@ class CharacterFragment : Fragment() {
     }
 
     private fun setupUi() {
-        binding.characterImage.apply {
-            transitionName = "${args.id}-${args.uri}"
-            load(args.uri)
+        with(binding) {
+            characterImage.apply {
+                transitionName = "${args.id}-${args.uri}"
+                load(args.uri)
+            }
+            characterName.apply {
+                transitionName = "${args.id}-${args.name}"
+                text = "${args.name} - ${args.id}"
+            }
         }
     }
 
@@ -69,8 +73,8 @@ class CharacterFragment : Fragment() {
                 is Resource.Success -> {
                     with(binding) {
                         result.data?.let { character ->
-                            characterName.text = "${character.name} - ${character.id}"
-                            characterGender.text = character.gender
+                            // characterName.text = "${character.name} - ${character.id}"
+                            // characterGender.text = character.gender
                             loadingIndicator.visibility = View.GONE
                         }
                     }

@@ -39,8 +39,6 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-
     // Kotlin
     def nav_version = "2.4.2"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

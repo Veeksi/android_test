@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
@@ -64,14 +65,15 @@ class CharactersListFragment : Fragment() {
 
     }
 
-    private fun characterItemClicked(character: Character, imageView: ImageView) {
+    private fun characterItemClicked(character: Character, cardView: CardView) {
         val extras = FragmentNavigatorExtras(
-            imageView to "${character.id}-${character.image}"
+            cardView to "${character.id}-${character.image}"
         )
         val action = CharactersListFragmentDirections
             .actionCharacterListFragmentToCharacterFragment(
                 id = character.id,
-                uri = character.image
+                uri = character.image,
+                name = character.name,
             )
 
         val modalBottomSheet = ModalBottomSheet(
@@ -92,11 +94,11 @@ class CharactersListFragment : Fragment() {
     }
 
     private fun setupUi() {
-        characterAdapter = CharacterAdapter(this, ::characterItemClicked)
+        characterAdapter = CharacterAdapter(::characterItemClicked)
 
         with(binding) {
             characterRecyclerview.apply {
-                layoutManager = GridLayoutManager(context, 3)
+                layoutManager = GridLayoutManager(context, 2)
                 setHasFixedSize(true)
                 adapter = characterAdapter.withLoadStateHeaderAndFooter(
                     header = PagingLoadStateAdapter(characterAdapter),
@@ -117,6 +119,12 @@ class CharactersListFragment : Fragment() {
             launch {
                 characterAdapter.loadStateFlow.collectLatest {
                     binding.swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
+                    if(it.refresh is LoadState.Error &&  characterAdapter.itemCount == 0){
+                        binding.errorMessage.visibility = View.VISIBLE
+                    }
+                    else {
+                        binding.errorMessage.visibility = View.GONE
+                    }
                 }
             }
 
