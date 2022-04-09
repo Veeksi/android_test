@@ -9,16 +9,23 @@
 
     <View
         android:id="@+id/headerBackground"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="?attr/colorPrimary" />
+        android:background="?attr/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/guideHeader2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/characterCard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:radius="50dp"
-        tools:layout_editor_absoluteY="623dp">
+        app:layout_constraintBottom_toTopOf="@id/guideHeader2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/characterImage"
@@ -45,18 +52,21 @@
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="28sp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="731dp"
-        tools:text="Galactic Federation Presidentas asdasd" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideHeader2"
+        tools:text="Galactic Federation Presidentas asdasdasd" />
 
     <TextView
         android:id="@+id/characterEpisodes"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_normal"
+        android:padding="8dp"
         android:text="@string/episodes"
-        tools:layout_editor_absoluteY="416dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/characterName" />
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/loadingIndicator"
