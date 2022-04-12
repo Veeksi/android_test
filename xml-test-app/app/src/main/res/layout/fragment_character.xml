@@ -67,6 +67,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerBackground" />
 
+
     <TextView
         android:id="@+id/characterEpisodes"
         style="@style/TextAppearance.AppCompat.Title"
@@ -77,7 +78,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/characterName" />
-
 
     <ImageView
         android:id="@+id/backButton"
@@ -92,13 +92,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/episodeRecyclerView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/characterEpisodes"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/characterEpisodes"
+        tools:listitem="@layout/episode_item"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"/>
 
     <TextView
         android:id="@+id/errorMessage"
