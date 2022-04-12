@@ -1,5 +1,6 @@
 package com.example.testapplication.data.dto
 
+import android.util.Log
 import com.example.testapplication.domain.model.Character
 import com.google.gson.annotations.SerializedName
 

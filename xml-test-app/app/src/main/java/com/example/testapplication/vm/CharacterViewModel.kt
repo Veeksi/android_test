@@ -2,35 +2,76 @@ package com.example.testapplication.vm
 
 import android.util.Log
 import androidx.lifecycle.*
-
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.testapplication.data.dto.CharacterDetailDto
 import com.example.testapplication.domain.model.Character
+import com.example.testapplication.domain.model.Episode
 import com.example.testapplication.domain.repository.CharacterRepository
+import com.example.testapplication.domain.repository.EpisodeRepository
 import com.example.testapplication.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import retrofit2.Response
+import java.net.URI
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
-    private val repository: CharacterRepository,
+    private val characterRepository: CharacterRepository,
+    private val episodeRepository: EpisodeRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _character = MutableLiveData<Resource<Character>>()
     val character: LiveData<Resource<Character>> = _character
 
+    private val _episodes = MutableLiveData<ArrayList<Episode>>()
+    val episodes: LiveData<ArrayList<Episode>> = _episodes
+
+    private val _episodeList = arrayListOf<Episode>()
+
     init {
         loadCharacter()
     }
 
     private fun loadCharacter() {
-        viewModelScope.launch() {
-            savedStateHandle.get<Int>("id")?.let {
+        viewModelScope.launch {
+            savedStateHandle.get<Int>("id")?.let { id ->
                 _character.postValue(Resource.Loading())
-                _character.postValue(repository.getCharacter(it))
+                characterRepository.getCharacter(id).collect { value ->
+                    _character.postValue(value)
+
+                    // Start fetching episodes
+                    value.data?.let {
+                        it.episodes?.map { episode ->
+                            val episodeId = parseId(episode)
+                            episodeRepository.getEpisode(episodeId).collect { asd ->
+                                when (asd) {
+                                    is Resource.Success -> {
+                                        asd.data?.let { it1 -> _episodeList.add(it1) }
+                                    }
+                                    is Resource.Error -> {
+                                    }
+                                    is Resource.Loading -> {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    _episodes.postValue(_episodeList)
+                }
             }
         }
+    }
+
+    private fun parseId(url: String): Int {
+        val uri = URI(url)
+        val segments = uri.path.split("/").toTypedArray()
+        val idStr = segments[segments.size - 1]
+        return idStr.toInt()
     }
 }

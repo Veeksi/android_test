@@ -2,6 +2,7 @@ package com.example.testapplication.data
 
 import com.example.testapplication.data.dto.CharacterDetailDto
 import com.example.testapplication.data.dto.CharacterDto
+import com.example.testapplication.data.dto.EpisodeDto
 import com.example.testapplication.data.dto.PagedResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
@@ -14,4 +15,7 @@ interface MortyService {
 
     @GET("character/{id}")
     suspend fun getCharacter(@Path("id") id: Int): Response<CharacterDetailDto>
+
+    @GET("episode/{id}")
+    suspend fun getEpisode(@Path("id") id: Int): Response<EpisodeDto>
 }

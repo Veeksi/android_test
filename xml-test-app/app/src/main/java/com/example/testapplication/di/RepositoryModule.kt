@@ -1,7 +1,9 @@
 package com.example.testapplication.di
 
 import com.example.testapplication.data.repository.CharacterRepositoryImpl
+import com.example.testapplication.data.repository.EpisodeRepositoryImpl
 import com.example.testapplication.domain.repository.CharacterRepository
+import com.example.testapplication.domain.repository.EpisodeRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +16,11 @@ abstract class RepositoryModule {
     abstract fun bindCharacterRepository(
         characterRepositoryImpl: CharacterRepositoryImpl
     ): CharacterRepository
+
+    @Binds
+    abstract fun bindEpisodeRepository(
+        episodeRepositoryImpl: EpisodeRepositoryImpl
+    ): EpisodeRepository
 }
 
 /*

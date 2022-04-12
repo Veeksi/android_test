@@ -1,33 +1,23 @@
 package com.example.testapplication.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
-import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.paging.LoadStates
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharactersListBinding
 import com.example.testapplication.domain.model.Character
 import com.example.testapplication.util.PagerEvents
 import com.example.testapplication.util.PagingLoadStateAdapter
-import com.example.testapplication.view.adapter.CharacterAdapter
+import com.example.testapplication.view.adapter.CharacterListAdapter
 import com.example.testapplication.vm.CharactersListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -39,7 +29,7 @@ class CharactersListFragment : Fragment() {
     private val charactersListViewModel: CharactersListViewModel by viewModels()
     private var _binding: FragmentCharactersListBinding? = null
 
-    private lateinit var characterAdapter: CharacterAdapter
+    private lateinit var characterListAdapter: CharacterListAdapter
 
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
@@ -62,7 +52,6 @@ class CharactersListFragment : Fragment() {
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
-
     }
 
     private fun characterItemClicked(character: Character, cardView: CardView) {
@@ -94,20 +83,20 @@ class CharactersListFragment : Fragment() {
     }
 
     private fun setupUi() {
-        characterAdapter = CharacterAdapter(::characterItemClicked)
+        characterListAdapter = CharacterListAdapter(::characterItemClicked)
 
         with(binding) {
             characterRecyclerview.apply {
                 layoutManager = GridLayoutManager(context, 2)
                 setHasFixedSize(true)
-                adapter = characterAdapter.withLoadStateHeaderAndFooter(
-                    header = PagingLoadStateAdapter(characterAdapter),
-                    footer = PagingLoadStateAdapter(characterAdapter)
+                adapter = characterListAdapter.withLoadStateHeaderAndFooter(
+                    header = PagingLoadStateAdapter(characterListAdapter),
+                    footer = PagingLoadStateAdapter(characterListAdapter)
                 )
             }
 
             swipeRefreshLayout.setOnRefreshListener {
-                characterAdapter.refresh()
+                characterListAdapter.refresh()
             }
         }
     }
@@ -117,9 +106,9 @@ class CharactersListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.apply {
             // Controls refresh indicator
             launch {
-                characterAdapter.loadStateFlow.collectLatest {
+                characterListAdapter.loadStateFlow.collectLatest {
                     binding.swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
-                    if(it.refresh is LoadState.Error &&  characterAdapter.itemCount == 0){
+                    if(it.refresh is LoadState.Error &&  characterListAdapter.itemCount == 0){
                         binding.errorMessage.visibility = View.VISIBLE
                     }
                     else {
@@ -131,7 +120,7 @@ class CharactersListFragment : Fragment() {
             // Submits data to recyclerView
             launch {
                 charactersListViewModel.charactersFlow.collectLatest { pagingData ->
-                    characterAdapter.submitData(pagingData)
+                    characterListAdapter.submitData(pagingData)
                 }
             }
         }

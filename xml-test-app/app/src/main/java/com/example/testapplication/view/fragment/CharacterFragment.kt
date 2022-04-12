@@ -6,14 +6,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharacterBinding
 import com.example.testapplication.util.Resource
+import com.example.testapplication.util.setMotionVisibility
 import com.example.testapplication.view.MainActivity
+import com.example.testapplication.view.adapter.EpisodeListAdapter
 import com.example.testapplication.vm.CharacterViewModel
 import com.google.android.material.transition.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +32,8 @@ class CharacterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val args: CharacterFragmentArgs by navArgs()
+
+    private lateinit var episodeListAdapter: EpisodeListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +61,13 @@ class CharacterFragment : Fragment() {
     }
 
     private fun setupUi() {
+        episodeListAdapter = EpisodeListAdapter()
         with(binding) {
+            episodeRecyclerView.apply {
+                adapter = episodeListAdapter
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+            }
             characterImage.apply {
                 transitionName = "${args.id}-${args.uri}"
                 load(args.uri)
@@ -68,26 +80,29 @@ class CharacterFragment : Fragment() {
     }
 
     private fun setupObservers() {
+        characterViewModel.episodes.observe(viewLifecycleOwner) { result ->
+            episodeListAdapter.submitList(result)
+        }
+
         characterViewModel.character.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Success -> {
                     with(binding) {
                         result.data?.let { character ->
-                            // characterName.text = "${character.name} - ${character.id}"
-                            // characterGender.text = character.gender
-                            loadingIndicator.visibility = View.GONE
+                            characterName.text = "${character.name} - ${character.id}"
                         }
+                        loadingIndicator.setMotionVisibility(View.GONE)
                     }
                 }
                 is Resource.Loading -> {
                     with(binding) {
-                        loadingIndicator.visibility = View.VISIBLE
+                        loadingIndicator.setMotionVisibility(View.VISIBLE)
                     }
                 }
                 is Resource.Error -> {
                     with(binding) {
                         errorMessage.text = result.message
-                        loadingIndicator.visibility = View.GONE
+                        loadingIndicator.setMotionVisibility(View.GONE)
                     }
                 }
             }

@@ -1,29 +1,21 @@
 package com.example.testapplication.view.adapter
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.cardview.widget.CardView
-import androidx.core.view.ViewCompat
-import androidx.fragment.app.Fragment
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.size.Scale
-import coil.transform.CircleCropTransformation
 import com.example.testapplication.R
 import com.example.testapplication.databinding.CharacterItemBinding
 import com.example.testapplication.domain.model.Character
 
 
-class CharacterAdapter(
+class CharacterListAdapter(
     private val onCharacterItemClicked: (Character, CardView) -> Unit,
-) : PagingDataAdapter<Character, CharacterAdapter.ViewHolder>(CharacterComparator) {
+) : PagingDataAdapter<Character, CharacterListAdapter.ViewHolder>(CharacterComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             CharacterItemBinding.inflate(
