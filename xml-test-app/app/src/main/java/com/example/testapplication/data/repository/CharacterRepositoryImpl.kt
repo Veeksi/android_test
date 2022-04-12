@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class CharacterRepositoryImpl @Inject constructor(
     private val service: MortyService
-) : CharacterRepository, BaseApiResponse() {
+) : CharacterRepository, BaseApiResponse {
     override fun getCharacters(): Flow<PagingData<Character>> {
         return Pager(
             config = PagingConfig(pageSize = 20, prefetchDistance = 2),

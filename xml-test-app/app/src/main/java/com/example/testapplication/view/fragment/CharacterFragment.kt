@@ -25,15 +25,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CharacterFragment : Fragment() {
+    private val args: CharacterFragmentArgs by navArgs()
     private val characterViewModel: CharacterViewModel by viewModels()
+    private lateinit var episodeListAdapter: EpisodeListAdapter
     private var _binding: FragmentCharacterBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
 
-    private val args: CharacterFragmentArgs by navArgs()
-
-    private lateinit var episodeListAdapter: EpisodeListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +83,12 @@ class CharacterFragment : Fragment() {
             episodeListAdapter.submitList(result)
         }
 
+        characterViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
+            if (loading == false) {
+                binding.loadingIndicator.setMotionVisibility(View.GONE)
+            }
+        }
+
         characterViewModel.character.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Success -> {
@@ -91,7 +96,6 @@ class CharacterFragment : Fragment() {
                         result.data?.let { character ->
                             characterName.text = "${character.name} - ${character.id}"
                         }
-                        loadingIndicator.setMotionVisibility(View.GONE)
                     }
                 }
                 is Resource.Loading -> {
@@ -102,7 +106,6 @@ class CharacterFragment : Fragment() {
                 is Resource.Error -> {
                     with(binding) {
                         errorMessage.text = result.message
-                        loadingIndicator.setMotionVisibility(View.GONE)
                     }
                 }
             }

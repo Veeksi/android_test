@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class EpisodeRepositoryImpl @Inject constructor(
     private val service: MortyService
-) : EpisodeRepository, BaseApiResponse() {
+) : EpisodeRepository, BaseApiResponse {
     override suspend fun getEpisode(id: Int): Flow<Resource<Episode>> {
         return flow {
             emit(

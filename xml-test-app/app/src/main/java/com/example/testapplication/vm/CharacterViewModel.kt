@@ -34,6 +34,8 @@ class CharacterViewModel @Inject constructor(
 
     private val _episodeList = arrayListOf<Episode>()
 
+    val isLoading: MutableLiveData<Boolean> = MutableLiveData()
+
     init {
         loadCharacter()
     }
@@ -41,7 +43,9 @@ class CharacterViewModel @Inject constructor(
     private fun loadCharacter() {
         viewModelScope.launch {
             savedStateHandle.get<Int>("id")?.let { id ->
-                _character.postValue(Resource.Loading())
+                isLoading.postValue(true)
+
+                // Start fetching specific character
                 characterRepository.getCharacter(id).collect { value ->
                     _character.postValue(value)
 
@@ -49,19 +53,14 @@ class CharacterViewModel @Inject constructor(
                     value.data?.let {
                         it.episodes?.map { episode ->
                             val episodeId = parseId(episode)
-                            episodeRepository.getEpisode(episodeId).collect { asd ->
-                                when (asd) {
-                                    is Resource.Success -> {
-                                        asd.data?.let { it1 -> _episodeList.add(it1) }
-                                    }
-                                    is Resource.Error -> {
-                                    }
-                                    is Resource.Loading -> {
-                                    }
+                            episodeRepository.getEpisode(episodeId).collect { result ->
+                                if (result is Resource.Success) {
+                                    result.data?.let { it -> _episodeList.add(it) }
                                 }
                             }
                         }
                     }
+                    isLoading.postValue(false)
                     _episodes.postValue(_episodeList)
                 }
             }

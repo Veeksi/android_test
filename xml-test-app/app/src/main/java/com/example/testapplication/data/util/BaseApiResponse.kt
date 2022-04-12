@@ -8,7 +8,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-abstract class BaseApiResponse {
+interface BaseApiResponse {
 
     suspend fun <T, U> safeApiCall(
         apiCall: suspend () -> Response<T>,
@@ -18,7 +18,7 @@ abstract class BaseApiResponse {
             val response = apiCall()
 
             if (response.isSuccessful) {
-                val body = (response.body() as T).toSomething()
+                val body = (response.body())?.toSomething()
                 body?.let {
                     return Resource.Success(data = it)
                 }
