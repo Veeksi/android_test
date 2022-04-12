@@ -3,58 +3,13 @@
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <Transition
-        motion:constraintSetEnd="@+id/collapseProfile"
+        motion:constraintSetEnd="@+id/middleCollapse"
         motion:constraintSetStart="@id/init"
-        motion:duration="600">
+        motion:duration="1200">
         <KeyFrameSet></KeyFrameSet>
         <OnSwipe
             motion:dragDirection="dragUp"
-            motion:touchAnchorId="@+id/characterCard"
-            motion:touchAnchorSide="bottom" />
-    </Transition>
-
-    <Transition
-        motion:constraintSetEnd="@+id/collapseProfile"
-        motion:constraintSetStart="@id/middleCollapse"
-        motion:duration="600"
-        motion:pathMotionArc="none">
-        <KeyFrameSet>
-            <KeyPosition
-                motion:framePosition="50"
-                motion:keyPositionType="deltaRelative"
-                motion:motionTarget="@+id/characterCard"
-                motion:percentX="1.0"
-                motion:percentY="0" />
-        </KeyFrameSet>
-        <OnSwipe
-            motion:dragDirection="dragDown"
-            motion:touchAnchorId="@+id/characterCard"
-            motion:touchAnchorSide="bottom" />
-    </Transition>
-
-    <Transition
-        motion:autoTransition="animateToEnd"
-        motion:constraintSetEnd="@+id/middleCollapse"
-        motion:constraintSetStart="@+id/collapseProfile"
-        motion:duration="600"
-        motion:motionInterpolator="easeInOut">
-        <KeyFrameSet>
-            <KeyPosition
-                motion:framePosition="50"
-                motion:keyPositionType="pathRelative"
-                motion:motionTarget="@+id/characterCard"
-                motion:percentX="0.0"
-                motion:percentY="0.0" />
-        </KeyFrameSet>
-    </Transition>
-
-    <Transition
-        motion:constraintSetEnd="@+id/finishCollapse"
-        motion:constraintSetStart="@id/middleCollapse"
-        motion:duration="600">
-        <OnSwipe
-            motion:touchAnchorId="@+id/characterCard"
-            motion:touchAnchorSide="bottom" />
+            motion:touchAnchorId="@+id/episodeRecyclerView" />
     </Transition>
 
     <ConstraintSet android:id="@+id/init">
@@ -104,6 +59,14 @@
             android:layout_marginTop="16dp"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toBottomOf="@id/characterName" />
+        <Constraint
+            android:id="@+id/episodeRecyclerView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/characterEpisodes"
+            motion:layout_constraintStart_toStartOf="parent" />
 
     </ConstraintSet>
 
@@ -155,6 +118,14 @@
             android:layout_height="wrap_content"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toBottomOf="@id/characterName" />
+        <Constraint
+            android:id="@+id/episodeRecyclerView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/characterEpisodes"
+            motion:layout_constraintStart_toStartOf="parent" />
 
     </ConstraintSet>
 
@@ -206,9 +177,18 @@
         <Constraint
             android:id="@+id/characterEpisodes"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="1dp"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/headerBackground" />
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/episodeRecyclerView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/headerBackground"
+            motion:layout_constraintStart_toStartOf="parent" />
 
     </ConstraintSet>
 
@@ -255,16 +235,28 @@
                 motion:attributeName="textSize"
                 motion:customFloatValue="16" />
         </Constraint>
-
         <Constraint
             android:id="@+id/characterEpisodes"
+            motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            motion:layout_constraintTop_toBottomOf="@+id/headerBackground" />
+            android:layout_height="1dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/episodeRecyclerView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/headerBackground"
+            motion:layout_constraintStart_toStartOf="parent" />
+
     </ConstraintSet>
     <Transition
-        motion:autoTransition="animateToEnd"
-        motion:constraintSetEnd="@+id/init"
-        motion:constraintSetStart="@+id/collapseProfile" />
+        motion:constraintSetStart="@+id/middleCollapse"
+        motion:constraintSetEnd="@+id/finishCollapse" >
+        <OnSwipe motion:dragDirection="dragUp"
+            motion:touchAnchorId="@+id/episodeRecyclerView" />
+    </Transition>
 
 </MotionScene>
