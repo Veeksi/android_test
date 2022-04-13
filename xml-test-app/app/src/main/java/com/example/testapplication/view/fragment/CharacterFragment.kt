@@ -2,11 +2,9 @@ package com.example.testapplication.view.fragment
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -16,10 +14,10 @@ import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharacterBinding
 import com.example.testapplication.util.Resource
 import com.example.testapplication.util.setMotionVisibility
-import com.example.testapplication.view.MainActivity
 import com.example.testapplication.view.adapter.EpisodeListAdapter
 import com.example.testapplication.vm.CharacterViewModel
-import com.google.android.material.transition.*
+import com.google.android.material.transition.MaterialArcMotion
+import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -94,7 +92,11 @@ class CharacterFragment : Fragment() {
                 is Resource.Success -> {
                     with(binding) {
                         result.data?.let { character ->
-                            characterName.text = "${character.name} - ${character.id}"
+                            characterName.text = getString(
+                                R.string.character_name,
+                                character.name,
+                                character.id
+                            )
                         }
                     }
                 }

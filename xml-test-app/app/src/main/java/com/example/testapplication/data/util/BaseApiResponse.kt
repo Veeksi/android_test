@@ -1,8 +1,5 @@
 package com.example.testapplication.data.util
 
-import android.content.Context
-import com.example.testapplication.data.dto.CharacterDetailDto
-import com.example.testapplication.domain.model.Character
 import com.example.testapplication.util.Resource
 import retrofit2.HttpException
 import retrofit2.Response

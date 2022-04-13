@@ -1,6 +1,5 @@
 package com.example.testapplication.util
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible

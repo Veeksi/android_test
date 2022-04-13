@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/character_item"
+            tools:listitem="@layout/item_character"
             tools:itemCount="3"
             tools:orientation="horizontal"
             tools:scrollbars="horizontal"

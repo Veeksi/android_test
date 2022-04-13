@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.size.Scale
 import com.example.testapplication.R
-import com.example.testapplication.databinding.CharacterItemBinding
+import com.example.testapplication.databinding.ItemCharacterBinding
 import com.example.testapplication.domain.model.Character
 
 
@@ -18,7 +18,7 @@ class CharacterListAdapter(
 ) : PagingDataAdapter<Character, CharacterListAdapter.ViewHolder>(CharacterComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            CharacterItemBinding.inflate(
+            ItemCharacterBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -30,7 +30,7 @@ class CharacterListAdapter(
         getItem(position)?.let { holder.bind(it) }
     }
 
-    inner class ViewHolder(private val binding: CharacterItemBinding) :
+    inner class ViewHolder(private val binding: ItemCharacterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(character: Character) {
             binding.apply {

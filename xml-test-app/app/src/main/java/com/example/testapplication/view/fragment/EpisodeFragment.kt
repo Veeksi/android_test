@@ -1,7 +1,6 @@
 package com.example.testapplication.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,6 @@ class EpisodeFragment: Fragment() {
     private var _binding: FragmentEpisodesBinding? = null
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

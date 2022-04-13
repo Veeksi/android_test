@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.testapplication.R
 import com.example.testapplication.databinding.ModalBottomSheetContentBinding
-import com.example.testapplication.domain.model.Character
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ModalBottomSheet(
@@ -54,7 +52,5 @@ class ModalBottomSheet(
         _binding = null
     }
 
-    companion object {
-        const val TAG = "ModalBottomSheet"
-    }
+    companion object
 }

@@ -1,8 +1,5 @@
 package com.example.testapplication.domain.model
 
-import com.example.testapplication.data.dto.LocationDto
-import com.example.testapplication.data.dto.OriginDto
-
 data class Character(
     val id: Int,
     val name: String,

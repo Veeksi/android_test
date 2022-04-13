@@ -1,21 +1,13 @@
 package com.example.testapplication.vm
 
-import android.util.Log
 import androidx.lifecycle.*
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.example.testapplication.data.dto.CharacterDetailDto
 import com.example.testapplication.domain.model.Character
 import com.example.testapplication.domain.model.Episode
 import com.example.testapplication.domain.repository.CharacterRepository
 import com.example.testapplication.domain.repository.EpisodeRepository
 import com.example.testapplication.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.net.URI
 import javax.inject.Inject
 

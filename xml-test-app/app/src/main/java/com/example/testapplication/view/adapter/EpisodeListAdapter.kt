@@ -1,12 +1,11 @@
 package com.example.testapplication.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.testapplication.databinding.EpisodeItemBinding
+import com.example.testapplication.databinding.ItemEpisodeBinding
 import com.example.testapplication.domain.model.Episode
 
 class EpisodeListAdapter :
@@ -14,7 +13,7 @@ class EpisodeListAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            EpisodeItemBinding.inflate(
+            ItemEpisodeBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -26,7 +25,7 @@ class EpisodeListAdapter :
         getItem(position)?.let { holder.bind(it) }
     }
 
-    inner class ViewHolder(private val binding: EpisodeItemBinding) :
+    inner class ViewHolder(private val binding: ItemEpisodeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(episode: Episode) {
             binding.apply {
