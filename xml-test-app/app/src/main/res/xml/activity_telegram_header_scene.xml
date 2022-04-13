@@ -3,7 +3,7 @@
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <Transition
-        motion:constraintSetEnd="@+id/middleCollapse"
+        motion:constraintSetEnd="@+id/finishCollapse"
         motion:constraintSetStart="@id/init"
         motion:duration="1200">
         <KeyFrameSet></KeyFrameSet>
@@ -252,11 +252,5 @@
             motion:layout_constraintStart_toStartOf="parent" />
 
     </ConstraintSet>
-    <Transition
-        motion:constraintSetStart="@+id/middleCollapse"
-        motion:constraintSetEnd="@+id/finishCollapse" >
-        <OnSwipe motion:dragDirection="dragUp"
-            motion:touchAnchorId="@+id/episodeRecyclerView" />
-    </Transition>
 
 </MotionScene>

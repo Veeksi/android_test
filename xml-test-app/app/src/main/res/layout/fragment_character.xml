@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/activity_telegram_header_scene"
-    tools:context=".view.fragment.CharacterFragment">
+    tools:context=".view.fragment.CharacterFragment"
+    >
+
 
     <View
         android:id="@+id/headerBackground"
