@@ -1,20 +1,24 @@
 package com.example.testapplication.view.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import androidx.cardview.widget.CardView
 import androidx.core.view.doOnPreDraw
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharactersListBinding
 import com.example.testapplication.domain.model.Character
+import com.example.testapplication.domain.model.CharacterStatus
+import com.example.testapplication.domain.model.FilterCharacters
 import com.example.testapplication.util.PagerEvents
 import com.example.testapplication.util.PagingLoadStateAdapter
 import com.example.testapplication.view.adapter.CharacterListAdapter
@@ -25,8 +29,8 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class CharactersListFragment : Fragment() {
-    private val charactersListViewModel: CharactersListViewModel by viewModels()
+class CharactersListFragment : Fragment(), FilterDialogFragment.NoticeDialogListener {
+    private val charactersListViewModel: CharactersListViewModel by activityViewModels()
     private var _binding: FragmentCharactersListBinding? = null
 
     private lateinit var characterListAdapter: CharacterListAdapter
@@ -39,8 +43,27 @@ class CharactersListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        setHasOptionsMenu(true)
         _binding = FragmentCharactersListBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.filter_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.filter -> {
+                val dialogFragment =
+                    FilterDialogFragment(previousFilters = charactersListViewModel.filterCharactersFlow.value)
+                dialogFragment.show(childFragmentManager, "filter")
+                dialogFragment.setCallback(this)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,6 +75,10 @@ class CharactersListFragment : Fragment() {
         view.doOnPreDraw {
             startPostponedEnterTransition()
         }
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment, filter: FilterCharacters) {
+        charactersListViewModel.onFiltersChange(filter)
     }
 
     private fun characterItemClicked(character: Character, cardView: CardView) {
@@ -108,10 +135,9 @@ class CharactersListFragment : Fragment() {
             launch {
                 characterListAdapter.loadStateFlow.collectLatest {
                     binding.swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
-                    if(it.refresh is LoadState.Error &&  characterListAdapter.itemCount == 0){
+                    if (it.refresh is LoadState.Error && characterListAdapter.itemCount == 0) {
                         binding.errorMessage.visibility = View.VISIBLE
-                    }
-                    else {
+                    } else {
                         binding.errorMessage.visibility = View.GONE
                     }
                 }

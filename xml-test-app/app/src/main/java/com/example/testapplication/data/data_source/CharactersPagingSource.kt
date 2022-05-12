@@ -5,13 +5,19 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.testapplication.data.MortyService
 import com.example.testapplication.domain.model.Character
+import com.example.testapplication.domain.model.FilterCharacters
 
-class CharactersPagingSource(private val service: MortyService): PagingSource<Int, Character>() {
+class CharactersPagingSource(
+    private val service: MortyService,
+    private val filter: FilterCharacters
+) :
+    PagingSource<Int, Character>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
         val pageNumber = params.key ?: 1
 
         return try {
-            val pagedResponse = service.getCharacters(pageNumber).toPagedResponseCharacter()
+            val pagedResponse =
+                service.getCharacters(pageNumber, filter.status.value).toPagedResponseCharacter()
             val data = pagedResponse.results
 
             var nextPageNumber: Int? = null

@@ -14,4 +14,13 @@
     <string name="like">Like</string>
     <string name="remove">Remove</string>
     <string name="character_name">%s - %d</string>
+    <string name="status">Status</string>
+    <string name="gender">Gender</string>
+    <string name="filter">Filter</string>
+    <string-array name="filterStatus">
+        <item>All</item>
+        <item>Alive </item>
+        <item>Dead</item>
+        <item>Unknown</item>
+    </string-array>
 </resources>

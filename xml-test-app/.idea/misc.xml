@@ -15,6 +15,12 @@
         <entry key="..\:/Users/Veikko/AndroidStudioProjects/TestApplication/xml-test-app/app/src/main/res/layout/modal_bottom_sheet_content.xml" value="0.33" />
         <entry key="..\:/Users/Veikko/AndroidStudioProjects/TestApplication/xml-test-app/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/Veikko/AndroidStudioProjects/TestApplication/xml-test-app/app/src/main/res/xml/activity_telegram_header_scene.xml" value="0.19114583333333332" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.15648148148148147" />
+        <entry key="app/src/main/res/layout/fragment_character.xml" value="0.13518518518518519" />
+        <entry key="app/src/main/res/layout/fragment_characters_list.xml" value="0.17753623188405798" />
+        <entry key="app/src/main/res/layout/fragment_episodes.xml" value="0.16134751773049646" />
+        <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.33177083333333335" />
+        <entry key="app/src/main/res/menu/filter_menu.xml" value="0.10648148148148148" />
       </map>
     </option>
   </component>
