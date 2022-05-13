@@ -13,9 +13,12 @@ import com.example.testapplication.databinding.ItemNetworkStateBinding
 
 class PagingLoadStateAdapter<T : Any, VH : RecyclerView.ViewHolder>(
     private val adapter: PagingDataAdapter<T, VH>
-    ) : LoadStateAdapter<PagingLoadStateAdapter.NetworkStateItemViewHolder>() {
+) : LoadStateAdapter<PagingLoadStateAdapter.NetworkStateItemViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): NetworkStateItemViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        loadState: LoadState
+    ): NetworkStateItemViewHolder {
         return NetworkStateItemViewHolder(
             ItemNetworkStateBinding.bind(
                 LayoutInflater.from(parent.context).inflate(
@@ -24,7 +27,9 @@ class PagingLoadStateAdapter<T : Any, VH : RecyclerView.ViewHolder>(
                     false
                 )
             )
-        ) { adapter.retry() }
+        ) {
+            adapter.retry()
+        }
     }
 
     override fun onBindViewHolder(
@@ -47,8 +52,8 @@ class PagingLoadStateAdapter<T : Any, VH : RecyclerView.ViewHolder>(
             with(binding) {
                 progressBar.isVisible = loadState is LoadState.Loading
                 retryButton.isVisible = loadState is LoadState.Error
-                errorMsg.isVisible =
-                    !(loadState as? LoadState.Error)?.error?.message.isNullOrBlank()
+                errorMsg.isVisible = !(loadState as? LoadState.Error)
+                    ?.error?.message.isNullOrBlank()
                 errorMsg.text = (loadState as? LoadState.Error)?.error?.message
             }
         }

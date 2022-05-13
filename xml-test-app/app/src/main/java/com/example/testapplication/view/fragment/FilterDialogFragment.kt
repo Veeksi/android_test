@@ -46,7 +46,6 @@ class FilterDialogFragment(
                         statusRadioButtonGroup.checkedRadioButtonId
                     )
                 )
-                Log.d("TAG", "Gender: ${CharacterGender.valueOf("FEMALE")}")
                 onSubmitFilter(
                     FilterCharacters(
                         status = CharacterStatus.values()[selectedIndex],

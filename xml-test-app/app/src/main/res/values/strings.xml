@@ -27,6 +27,9 @@
     <string name="female">Female</string>
     <string name="male">Male</string>
     <string name="genderless">Genderless</string>
+    <string name="unknown_error">Something went wrong, please try again</string>
+    <string name="internet_error">No internet connection, please try again</string>
+    <string name="not_found_error">Cannot find any characters, check filters</string>
     <string-array name="filterStatus">
         <item>All</item>
         <item>Alive </item>

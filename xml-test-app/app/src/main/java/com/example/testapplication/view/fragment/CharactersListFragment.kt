@@ -3,7 +3,9 @@ package com.example.testapplication.view.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
@@ -11,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +28,8 @@ import com.example.testapplication.vm.CharactersListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.net.UnknownHostException
 
 
 @AndroidEntryPoint
@@ -79,15 +84,6 @@ class CharactersListFragment : Fragment() {
         }
     }
 
-    private fun onSubmitFilter(filter: FilterCharacters) {
-        charactersListViewModel.onFiltersChange(filter)
-        scrollToTop()
-    }
-
-    private fun scrollToTop() {
-        binding.characterRecyclerview.smoothScrollToPosition(0)
-    }
-
     private fun characterItemClicked(character: Character, cardView: CardView) {
         val extras = FragmentNavigatorExtras(
             cardView to "${character.id}-${character.image}"
@@ -129,24 +125,12 @@ class CharactersListFragment : Fragment() {
                 )
 
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        if (dy > 0) { // scrolling down
-                            Handler(Looper.getMainLooper()).postDelayed(
-                                { floatingActionButton.visibility = View.GONE },
-                                2000
-                            )
-                        } else if (dy < 0) { // scrolling up
-                            floatingActionButton.visibility = View.VISIBLE
-                        }
-                    }
-
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                        // Hides fab if there is no scrolling
-                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            Handler(Looper.getMainLooper()).postDelayed(
-                                { floatingActionButton.visibility = View.GONE },
-                                2000
-                            )
+                        // Shows FAB if the recyclerView can be scrolled upwards
+                        if (recyclerView.canScrollVertically(-1)) {
+                            floatingActionButton.visibility = View.VISIBLE
+                        } else {
+                            floatingActionButton.visibility = View.GONE
                         }
                     }
                 })
@@ -165,14 +149,27 @@ class CharactersListFragment : Fragment() {
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.apply {
-            // Controls refresh indicator
             launch {
-                characterListAdapter.loadStateFlow.collectLatest {
-                    binding.swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
-                    if (it.refresh is LoadState.Error && characterListAdapter.itemCount == 0) {
-                        binding.errorMessage.visibility = View.VISIBLE
-                    } else {
-                        binding.errorMessage.visibility = View.GONE
+                characterListAdapter.loadStateFlow.collectLatest { loadState ->
+                    binding.swipeRefreshLayout.isRefreshing = loadState.refresh is LoadState.Loading
+                    when (loadState.refresh) {
+                        is LoadState.Error -> {
+                            showErrorToast(loadState)
+                            if (characterListAdapter.itemCount == 0) {
+                                binding.errorMessage.visibility = View.VISIBLE
+                                binding.circularProgressIndicator.visibility = View.GONE
+                            }
+                        }
+                        is LoadState.Loading -> {
+                            if (characterListAdapter.itemCount == 0) {
+                                binding.errorMessage.visibility = View.GONE
+                                binding.circularProgressIndicator.visibility = View.VISIBLE
+                            }
+                        }
+                        else -> {
+                            binding.errorMessage.visibility = View.GONE
+                            binding.circularProgressIndicator.visibility = View.GONE
+                        }
                     }
                 }
             }
@@ -184,6 +181,37 @@ class CharactersListFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showErrorToast(loadState: CombinedLoadStates) {
+        val errorState = when {
+            loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+            loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+            loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+            else -> null
+        }
+        errorState?.let {
+            var errorMessage = getString(R.string.unknown_error)
+            if (it.error is UnknownHostException) {
+                errorMessage = getString(R.string.internet_error)
+            } else if (it.error is HttpException) {
+                errorMessage = getString(R.string.not_found_error)
+            }
+            Toast.makeText(
+                requireContext(),
+                errorMessage,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun onSubmitFilter(filter: FilterCharacters) {
+        charactersListViewModel.onFiltersChange(filter)
+        scrollToTop()
+    }
+
+    private fun scrollToTop() {
+        binding.characterRecyclerview.smoothScrollToPosition(0)
     }
 
     override fun onDestroyView() {
