@@ -21,7 +21,7 @@ class CharactersPagingSource(
                     page = pageNumber,
                     status = filter.status.value,
                     name = filter.name,
-                    gender = filter.gender,
+                    gender = filter.gender.value,
                 ).toPagedResponseCharacter()
             val data = pagedResponse.results
 

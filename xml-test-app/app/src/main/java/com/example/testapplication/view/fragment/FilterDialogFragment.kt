@@ -46,11 +46,12 @@ class FilterDialogFragment(
                         statusRadioButtonGroup.checkedRadioButtonId
                     )
                 )
+                Log.d("TAG", "Gender: ${CharacterGender.valueOf("FEMALE")}")
                 onSubmitFilter(
                     FilterCharacters(
                         status = CharacterStatus.values()[selectedIndex],
                         name = nameTextInputEditText.text.toString(),
-                        gender = autoCompleteTextView.text.toString(),
+                        gender = CharacterGender.valueOf(autoCompleteTextView.text.toString().uppercase()),
                     )
                 )
                 this@FilterDialogFragment.dismiss()
@@ -74,7 +75,7 @@ class FilterDialogFragment(
                 previousFilters.status.ordinal
             ) as RadioButton).isChecked = true
             nameTextInputEditText.setText(previousFilters.name)
-            autoCompleteTextView.setText(previousFilters.gender)
+            autoCompleteTextView.setText(previousFilters.gender.identifier)
         }
     }
 }
