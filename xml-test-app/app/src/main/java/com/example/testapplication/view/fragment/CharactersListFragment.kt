@@ -1,23 +1,22 @@
 package com.example.testapplication.view.fragment
 
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.*
 import androidx.cardview.widget.CardView
 import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharactersListBinding
 import com.example.testapplication.domain.model.Character
-import com.example.testapplication.domain.model.CharacterStatus
 import com.example.testapplication.domain.model.FilterCharacters
 import com.example.testapplication.util.PagerEvents
 import com.example.testapplication.util.PagingLoadStateAdapter
@@ -121,10 +120,37 @@ class CharactersListFragment : Fragment(), FilterDialogFragment.NoticeDialogList
                     header = PagingLoadStateAdapter(characterListAdapter),
                     footer = PagingLoadStateAdapter(characterListAdapter)
                 )
+
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        if (dy > 0) { // scrolling down
+                            Handler(Looper.getMainLooper()).postDelayed(
+                                { floatingActionButton.visibility = View.GONE },
+                                2000
+                            )
+                        } else if (dy < 0) { // scrolling up
+                            floatingActionButton.visibility = View.VISIBLE
+                        }
+                    }
+
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        // Hides fab if there is no scrolling
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            Handler(Looper.getMainLooper()).postDelayed(
+                                { floatingActionButton.visibility = View.GONE },
+                                2000
+                            )
+                        }
+                    }
+                })
             }
 
             swipeRefreshLayout.setOnRefreshListener {
                 characterListAdapter.refresh()
+            }
+
+            floatingActionButton.setOnClickListener {
+                characterRecyclerview.smoothScrollToPosition(0)
             }
         }
     }

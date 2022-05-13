@@ -22,6 +22,7 @@
     <string name="dead">Dead</string>
     <string name="unknown">Unknown</string>
     <string name="cancel">Cancel</string>
+    <string name="floatingactionbutton">floatingActionButton</string>
     <string-array name="filterStatus">
         <item>All</item>
         <item>Alive </item>
