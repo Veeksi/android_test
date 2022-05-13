@@ -200,6 +200,7 @@ class CharactersListFragment : Fragment() {
             } else if (it.error is HttpException) {
                 errorMessage = getString(R.string.not_found_error)
             }
+            binding.errorMessage.text = errorMessage
             Toast.makeText(
                 requireContext(),
                 errorMessage,

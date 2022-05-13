@@ -74,6 +74,9 @@ class CharacterFragment : Fragment() {
                 transitionName = "${args.id}-${args.name}"
                 text = args.name
             }
+            backButton.setOnClickListener {
+                activity?.onBackPressed()
+            }
         }
     }
 
