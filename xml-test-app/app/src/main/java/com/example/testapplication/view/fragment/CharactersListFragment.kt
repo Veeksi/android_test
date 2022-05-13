@@ -81,6 +81,11 @@ class CharactersListFragment : Fragment() {
 
     private fun onSubmitFilter(filter: FilterCharacters) {
         charactersListViewModel.onFiltersChange(filter)
+        scrollToTop()
+    }
+
+    private fun scrollToTop() {
+        binding.characterRecyclerview.smoothScrollToPosition(0)
     }
 
     private fun characterItemClicked(character: Character, cardView: CardView) {
@@ -152,7 +157,7 @@ class CharactersListFragment : Fragment() {
             }
 
             floatingActionButton.setOnClickListener {
-                characterRecyclerview.smoothScrollToPosition(0)
+                scrollToTop()
             }
         }
     }

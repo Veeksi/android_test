@@ -16,6 +16,7 @@ interface MortyService {
         @Query("page") page: Int,
         @Query("status") status: String,
         @Query("name") name: String,
+        @Query("gender") gender: String,
     ): PagedResponseDto<CharacterDto>
 
     @GET("character/{id}")

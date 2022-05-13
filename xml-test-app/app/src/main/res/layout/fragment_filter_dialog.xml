@@ -40,36 +40,58 @@
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/statusTextview"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/status" />
+
         <RadioGroup
-            android:id="@+id/radioButtonGroup"
+            android:id="@+id/statusRadioButtonGroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:checkedButton="@id/radioAll">
+            android:checkedButton="@id/radioStatusAll"
+            android:orientation="horizontal">
 
             <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioAll"
-                android:layout_width="match_parent"
+                android:id="@+id/radioStatusAll"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/all" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioAlive"
-                android:layout_width="match_parent"
+                android:id="@+id/radioStatusAlive"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/alive" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioDead"
-                android:layout_width="match_parent"
+                android:id="@+id/radioStatusDead"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dead" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/radioUnknown"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/unknown" />
         </RadioGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dropdownMenu"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/gender">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

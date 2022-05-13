@@ -24,10 +24,20 @@
     <string name="cancel">Cancel</string>
     <string name="floatingactionbutton">floatingActionButton</string>
     <string name="name">Name</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="genderless">Genderless</string>
     <string-array name="filterStatus">
         <item>All</item>
         <item>Alive </item>
         <item>Dead</item>
+        <item>Unknown</item>
+    </string-array>
+    <string-array name="gender">
+        <item>All</item>
+        <item>Female</item>
+        <item>Male </item>
+        <item>Genderless</item>
         <item>Unknown</item>
     </string-array>
 </resources>

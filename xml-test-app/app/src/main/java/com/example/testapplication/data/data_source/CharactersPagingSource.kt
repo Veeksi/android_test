@@ -20,7 +20,8 @@ class CharactersPagingSource(
                 service.getCharacters(
                     page = pageNumber,
                     status = filter.status.value,
-                    name = filter.name
+                    name = filter.name,
+                    gender = filter.gender,
                 ).toPagedResponseCharacter()
             val data = pagedResponse.results
 

@@ -1,12 +1,17 @@
 package com.example.testapplication.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.RadioButton
 import androidx.fragment.app.DialogFragment
+import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentFilterDialogBinding
+import com.example.testapplication.domain.model.CharacterGender
 import com.example.testapplication.domain.model.CharacterStatus
 import com.example.testapplication.domain.model.FilterCharacters
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,19 +41,26 @@ class FilterDialogFragment(
         setupInitialValues()
         binding.apply {
             filterButton.setOnClickListener {
-                val selectedIndex = radioButtonGroup.indexOfChild(
-                    radioButtonGroup.findViewById(
-                        radioButtonGroup.checkedRadioButtonId
+                val selectedIndex = statusRadioButtonGroup.indexOfChild(
+                    statusRadioButtonGroup.findViewById(
+                        statusRadioButtonGroup.checkedRadioButtonId
                     )
                 )
                 onSubmitFilter(
                     FilterCharacters(
                         status = CharacterStatus.values()[selectedIndex],
-                        name = nameTextInputEditText.text.toString()
+                        name = nameTextInputEditText.text.toString(),
+                        gender = autoCompleteTextView.text.toString(),
                     )
                 )
                 this@FilterDialogFragment.dismiss()
             }
+
+            val genders = resources.getStringArray(R.array.gender)
+            val arrayAdapter = ArrayAdapter(
+                requireContext(), R.layout.item_gender_dropdown, genders
+            )
+            binding.autoCompleteTextView.setAdapter(arrayAdapter)
 
             cancelButton.setOnClickListener {
                 this@FilterDialogFragment.dismiss()
@@ -58,9 +70,11 @@ class FilterDialogFragment(
 
     private fun setupInitialValues() {
         binding.apply {
-            (radioButtonGroup.getChildAt(previousFilters.status.ordinal) as RadioButton)
-                .isChecked = true
+            (statusRadioButtonGroup.getChildAt(
+                previousFilters.status.ordinal
+            ) as RadioButton).isChecked = true
             nameTextInputEditText.setText(previousFilters.name)
+            autoCompleteTextView.setText(previousFilters.gender)
         }
     }
 }
