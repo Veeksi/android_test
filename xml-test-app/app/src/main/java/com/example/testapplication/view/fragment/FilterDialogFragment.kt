@@ -14,21 +14,13 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FilterDialogFragment(
-    val previousFilters: FilterCharacters
+    val previousFilters: FilterCharacters,
+    val onSubmitFilter: (filter: FilterCharacters) -> Unit,
 ) : DialogFragment() {
-    private lateinit var listener: NoticeDialogListener
     private var _binding: FragmentFilterDialogBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
-
-    interface NoticeDialogListener {
-        fun onDialogPositiveClick(filter: FilterCharacters)
-    }
-
-    fun setCallback(listener: NoticeDialogListener) {
-        this.listener = listener
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,26 +33,34 @@ class FilterDialogFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupInitialValues()
         binding.apply {
-            (radioButtonGroup.getChildAt(previousFilters.status.ordinal) as RadioButton).isChecked =
-                true
             filterButton.setOnClickListener {
                 val selectedIndex = radioButtonGroup.indexOfChild(
                     radioButtonGroup.findViewById(
                         radioButtonGroup.checkedRadioButtonId
                     )
                 )
-                listener.onDialogPositiveClick(
+                onSubmitFilter(
                     FilterCharacters(
-                        status = CharacterStatus.values()[selectedIndex]
+                        status = CharacterStatus.values()[selectedIndex],
+                        name = nameTextInputEditText.text.toString()
                     )
                 )
                 this@FilterDialogFragment.dismiss()
             }
+
             cancelButton.setOnClickListener {
                 this@FilterDialogFragment.dismiss()
             }
+        }
+    }
+
+    private fun setupInitialValues() {
+        binding.apply {
+            (radioButtonGroup.getChildAt(previousFilters.status.ordinal) as RadioButton)
+                .isChecked = true
+            nameTextInputEditText.setText(previousFilters.name)
         }
     }
 }

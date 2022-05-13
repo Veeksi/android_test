@@ -22,12 +22,7 @@ class CharactersListViewModel @Inject constructor(
 ) : ViewModel() {
     private val modificationEvents = MutableStateFlow<List<PagerEvents>>(emptyList())
 
-    private val _filterCharactersFlow =
-        MutableStateFlow(
-            FilterCharacters(
-                status = CharacterStatus.ALL
-            )
-        )
+    private val _filterCharactersFlow = MutableStateFlow(FilterCharacters())
 
     val filterCharactersFlow: StateFlow<FilterCharacters>
         get() = _filterCharactersFlow

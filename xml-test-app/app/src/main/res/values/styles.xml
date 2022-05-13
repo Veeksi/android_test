@@ -4,4 +4,9 @@
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
+
+    <style name="Theme.AppCompat.Dialog.MinWidth">
+        <item name="android:windowMinWidthMajor">70%</item>
+    </style>
+
 </resources>

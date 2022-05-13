@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/layout/fragment_characters_list.xml" value="0.17753623188405798" />
         <entry key="app/src/main/res/layout/fragment_episodes.xml" value="0.16134751773049646" />
         <entry key="app/src/main/res/layout/fragment_filter_dialog.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/item_network_state.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/menu/filter_menu.xml" value="0.10648148148148148" />
       </map>

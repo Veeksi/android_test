@@ -14,7 +14,8 @@ interface MortyService {
     @GET("character")
     suspend fun getCharacters(
         @Query("page") page: Int,
-        @Query("status") status: String
+        @Query("status") status: String,
+        @Query("name") name: String,
     ): PagedResponseDto<CharacterDto>
 
     @GET("character/{id}")

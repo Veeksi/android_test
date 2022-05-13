@@ -17,7 +17,11 @@ class CharactersPagingSource(
 
         return try {
             val pagedResponse =
-                service.getCharacters(pageNumber, filter.status.value).toPagedResponseCharacter()
+                service.getCharacters(
+                    page = pageNumber,
+                    status = filter.status.value,
+                    name = filter.name
+                ).toPagedResponseCharacter()
             val data = pagedResponse.results
 
             var nextPageNumber: Int? = null

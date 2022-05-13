@@ -7,4 +7,5 @@
     <string name="dead">Dead</string>
     <string name="unknown">Unknown</string>
     <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
 </resources>

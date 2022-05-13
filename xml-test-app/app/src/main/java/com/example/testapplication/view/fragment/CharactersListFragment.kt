@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class CharactersListFragment : Fragment(), FilterDialogFragment.NoticeDialogListener {
+class CharactersListFragment : Fragment() {
     private val charactersListViewModel: CharactersListViewModel by activityViewModels()
     private var _binding: FragmentCharactersListBinding? = null
 
@@ -56,10 +56,12 @@ class CharactersListFragment : Fragment(), FilterDialogFragment.NoticeDialogList
         return when (item.itemId) {
             R.id.filter -> {
                 val dialogFragment = FilterDialogFragment(
-                    previousFilters = charactersListViewModel.filterCharactersFlow.value
+                    previousFilters = charactersListViewModel.filterCharactersFlow.value,
+                    onSubmitFilter = {
+                        onSubmitFilter(it)
+                    }
                 )
                 dialogFragment.show(childFragmentManager, "filter")
-                dialogFragment.setCallback(this)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -77,7 +79,7 @@ class CharactersListFragment : Fragment(), FilterDialogFragment.NoticeDialogList
         }
     }
 
-    override fun onDialogPositiveClick(filter: FilterCharacters) {
+    private fun onSubmitFilter(filter: FilterCharacters) {
         charactersListViewModel.onFiltersChange(filter)
     }
 
