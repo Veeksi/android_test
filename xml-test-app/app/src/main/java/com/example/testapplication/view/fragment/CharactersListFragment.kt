@@ -96,12 +96,7 @@ class CharactersListFragment : Fragment() {
             )
 
         val modalBottomSheet = ModalBottomSheet(
-            onView = {
-                findNavController().navigate(
-                    action,
-                    extras,
-                )
-            },
+            onView = { findNavController().navigate(action, extras) },
             onLike = { charactersListViewModel.onViewEvent(PagerEvents.Like(character)) },
             onDelete = { charactersListViewModel.onViewEvent(PagerEvents.Remove(character)) }
         )
@@ -126,6 +121,7 @@ class CharactersListFragment : Fragment() {
 
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
                         // Shows FAB if the recyclerView can be scrolled upwards
                         if (recyclerView.canScrollVertically(-1)) {
                             floatingActionButton.visibility = View.VISIBLE
@@ -146,12 +142,20 @@ class CharactersListFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.apply {
+            if (characterRecyclerview.canScrollVertically(-1)) {
+                floatingActionButton.visibility = View.VISIBLE
+            }
+        }
+    }
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.apply {
             launch {
                 characterListAdapter.loadStateFlow.collectLatest { loadState ->
-                    binding.swipeRefreshLayout.isRefreshing = loadState.refresh is LoadState.Loading
+                    binding.swipeRefreshLayout.isRefreshing = false
                     when (loadState.refresh) {
                         is LoadState.Error -> {
                             showErrorToast(loadState)
@@ -166,7 +170,7 @@ class CharactersListFragment : Fragment() {
                                 binding.circularProgressIndicator.visibility = View.VISIBLE
                             }
                         }
-                        else -> {
+                        is LoadState.NotLoading -> {
                             binding.errorMessage.visibility = View.GONE
                             binding.circularProgressIndicator.visibility = View.GONE
                         }
@@ -174,7 +178,6 @@ class CharactersListFragment : Fragment() {
                 }
             }
 
-            // Submits data to recyclerView
             launch {
                 charactersListViewModel.charactersFlow.collectLatest { pagingData ->
                     characterListAdapter.submitData(pagingData)
@@ -207,7 +210,7 @@ class CharactersListFragment : Fragment() {
 
     private fun onSubmitFilter(filter: FilterCharacters) {
         charactersListViewModel.onFiltersChange(filter)
-        scrollToTop()
+        /*scrollToTop()*/
     }
 
     private fun scrollToTop() {
