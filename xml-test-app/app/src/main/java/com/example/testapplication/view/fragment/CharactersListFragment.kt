@@ -56,8 +56,9 @@ class CharactersListFragment : Fragment(), FilterDialogFragment.NoticeDialogList
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.filter -> {
-                val dialogFragment =
-                    FilterDialogFragment(previousFilters = charactersListViewModel.filterCharactersFlow.value)
+                val dialogFragment = FilterDialogFragment(
+                    previousFilters = charactersListViewModel.filterCharactersFlow.value
+                )
                 dialogFragment.show(childFragmentManager, "filter")
                 dialogFragment.setCallback(this)
                 true
@@ -77,7 +78,7 @@ class CharactersListFragment : Fragment(), FilterDialogFragment.NoticeDialogList
         }
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, filter: FilterCharacters) {
+    override fun onDialogPositiveClick(filter: FilterCharacters) {
         charactersListViewModel.onFiltersChange(filter)
     }
 

@@ -17,6 +17,11 @@
     <string name="status">Status</string>
     <string name="gender">Gender</string>
     <string name="filter">Filter</string>
+    <string name="all">All</string>
+    <string name="alive">Alive</string>
+    <string name="dead">Dead</string>
+    <string name="unknown">Unknown</string>
+    <string name="cancel">Cancel</string>
     <string-array name="filterStatus">
         <item>All</item>
         <item>Alive </item>

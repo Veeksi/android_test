@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:theme="?attr/materialAlertDialogTheme">
+
+    <LinearLayout
+        android:id="@+id/radioButtonLinearLayout"
+        style="@style/ThemeOverlay.Material3.MaterialAlertDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/titleTextview"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/filter" />
+
+        <RadioGroup
+            android:id="@+id/radioButtonGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkedButton="@id/radioAll">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioAll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/all" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioAlive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/alive" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioDead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dead" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioUnknown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/unknown" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/filter" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancelButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

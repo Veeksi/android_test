@@ -2,4 +2,9 @@
 <resources>
     <string name="check_network">Please check your network connection.</string>
     <string name="character_name">%s - %d</string>
+    <string name="all">All</string>
+    <string name="alive">Alive</string>
+    <string name="dead">Dead</string>
+    <string name="unknown">Unknown</string>
+    <string name="cancel">Cancel</string>
 </resources>
