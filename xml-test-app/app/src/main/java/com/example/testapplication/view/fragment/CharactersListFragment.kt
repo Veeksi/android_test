@@ -35,11 +35,8 @@ import java.net.UnknownHostException
 @AndroidEntryPoint
 class CharactersListFragment : Fragment() {
     private val charactersListViewModel: CharactersListViewModel by activityViewModels()
-    private var _binding: FragmentCharactersListBinding? = null
-
     private lateinit var characterListAdapter: CharacterListAdapter
-
-    // This property is only valid between onCreateView and onDestroyView
+    private var _binding: FragmentCharactersListBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(

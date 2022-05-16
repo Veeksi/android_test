@@ -28,10 +28,7 @@ class CharacterFragment : Fragment() {
     private val characterViewModel: CharacterViewModel by viewModels()
     private lateinit var episodeListAdapter: EpisodeListAdapter
     private var _binding: FragmentCharacterBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -2,16 +2,16 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/episodes"
+    android:id="@+id/other"
     app:startDestination="@id/episodeFragment">
 
     <fragment
         android:id="@+id/episodeFragment"
-        android:name="com.example.testapplication.view.fragment.EpisodeFragment"
+        android:name="com.example.testapplication.view.fragment.OtherFragment"
         android:label="Other"
-        tools:layout="@layout/fragment_episodes">
+        tools:layout="@layout/fragment_other">
         <action
-            android:id="@+id/action_episodeFragment_to_testiFragment"
+            android:id="@+id/action_otherFragment_to_testiFragment"
             app:destination="@id/testiFragment" />
     </fragment>
     <fragment

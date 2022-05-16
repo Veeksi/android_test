@@ -23,8 +23,6 @@ class FilterDialogFragment(
     val onSubmitFilter: (filter: FilterCharacters) -> Unit,
 ) : DialogFragment() {
     private var _binding: FragmentFilterDialogBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -50,7 +48,9 @@ class FilterDialogFragment(
                     FilterCharacters(
                         status = CharacterStatus.values()[selectedIndex],
                         name = nameTextInputEditText.text.toString(),
-                        gender = CharacterGender.valueOf(autoCompleteTextView.text.toString().uppercase()),
+                        gender = CharacterGender.valueOf(
+                            autoCompleteTextView.text.toString().uppercase()
+                        ),
                     )
                 )
                 this@FilterDialogFragment.dismiss()
@@ -76,5 +76,10 @@ class FilterDialogFragment(
             nameTextInputEditText.setText(previousFilters.name)
             autoCompleteTextView.setText(previousFilters.gender.identifier)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

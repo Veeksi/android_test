@@ -11,9 +11,8 @@ class ModalBottomSheet(
     private val onView: () -> Unit,
     private val onLike: () -> Unit,
     private val onDelete: () -> Unit,
-): BottomSheetDialogFragment() {
+) : BottomSheetDialogFragment() {
     private var _binding: ModalBottomSheetContentBinding? = null
-    // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -51,6 +50,4 @@ class ModalBottomSheet(
         super.onDestroyView()
         _binding = null
     }
-
-    companion object
 }

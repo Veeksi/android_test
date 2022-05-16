@@ -15,9 +15,6 @@ import com.example.testapplication.databinding.FragmentTestiBinding
  */
 class TestiFragment : Fragment() {
     private var _binding: FragmentTestiBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -42,23 +39,8 @@ class TestiFragment : Fragment() {
         }
     }
 
-    /*
-
-    override fun onResume() {
-        super.onResume()
-        (requireActivity() as MainActivity).supportActionBar?.hide()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (requireActivity() as MainActivity).supportActionBar?.show()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        (requireActivity() as MainActivity).supportActionBar?.show()
         _binding = null
     }
-
-     */
 }

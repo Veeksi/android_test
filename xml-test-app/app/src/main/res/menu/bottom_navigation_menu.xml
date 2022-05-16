@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/characters"
-        android:title="@string/characters_page"
+        android:id="@+id/home"
+        android:title="@string/home"
         android:icon="@drawable/ic_face"
         />
     <item
-        android:id="@+id/episodes"
-        android:title="@string/episodes_page"
+        android:id="@+id/other"
+        android:title="@string/other"
         android:icon="@drawable/ic_star"
         />
 </menu>
