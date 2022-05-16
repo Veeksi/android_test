@@ -1,5 +1,7 @@
 package com.example.testapplication.view.fragment
 
+import android.content.res.Configuration
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +10,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.view.doOnPreDraw
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -39,6 +42,16 @@ class CharactersListFragment : Fragment() {
     private var _binding: FragmentCharactersListBinding? = null
     private val binding get() = _binding!!
 
+    /* private val filterDialogFragmentFactory = FilterDialogFragmentFactory(
+         // charactersListViewModel.filterCharactersFlow.value,
+         // ::onSubmitFilter
+     )*/
+
+    /*override fun onCreate(savedInstanceState: Bundle?) {
+        childFragmentManager.fragmentFactory = filterDialogFragmentFactory
+        super.onCreate(savedInstanceState)
+    }*/
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,12 +70,7 @@ class CharactersListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.filter -> {
-                val dialogFragment = FilterDialogFragment(
-                    previousFilters = charactersListViewModel.filterCharactersFlow.value,
-                    onSubmitFilter = {
-                        onSubmitFilter(it)
-                    }
-                )
+                val dialogFragment = FilterDialogFragment()
                 dialogFragment.show(childFragmentManager, "filter")
                 true
             }
@@ -109,7 +117,12 @@ class CharactersListFragment : Fragment() {
 
         with(binding) {
             characterRecyclerview.apply {
-                layoutManager = GridLayoutManager(context, 2)
+                layoutManager =
+                    if (activity?.resources?.configuration?.orientation == ORIENTATION_PORTRAIT) {
+                        GridLayoutManager(context, 3)
+                    } else {
+                        GridLayoutManager(context, 4)
+                    }
                 setHasFixedSize(true)
                 adapter = characterListAdapter.withLoadStateHeaderAndFooter(
                     header = PagingLoadStateAdapter(characterListAdapter),
@@ -204,11 +217,6 @@ class CharactersListFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-    }
-
-    private fun onSubmitFilter(filter: FilterCharacters) {
-        charactersListViewModel.onFiltersChange(filter)
-        /*scrollToTop()*/
     }
 
     private fun scrollToTop() {

@@ -6,24 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.RadioButton
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentFactory
+import androidx.fragment.app.activityViewModels
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentFilterDialogBinding
 import com.example.testapplication.domain.model.CharacterGender
 import com.example.testapplication.domain.model.CharacterStatus
 import com.example.testapplication.domain.model.FilterCharacters
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.testapplication.vm.CharactersListViewModel
 
 
-@AndroidEntryPoint
-class FilterDialogFragment(
-    val previousFilters: FilterCharacters,
-    val onSubmitFilter: (filter: FilterCharacters) -> Unit,
-) : DialogFragment() {
+class FilterDialogFragment : DialogFragment() {
     private var _binding: FragmentFilterDialogBinding? = null
     private val binding get() = _binding!!
+
+    private val charactersListViewModel: CharactersListViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +32,15 @@ class FilterDialogFragment(
     ): View {
         _binding = FragmentFilterDialogBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        val genders = resources.getStringArray(R.array.gender)
+        val arrayAdapter = ArrayAdapter(
+            requireContext(), R.layout.item_gender_dropdown, genders
+        )
+        binding.autoCompleteTextView.setAdapter(arrayAdapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,7 +53,7 @@ class FilterDialogFragment(
                         statusRadioButtonGroup.checkedRadioButtonId
                     )
                 )
-                onSubmitFilter(
+                charactersListViewModel.onFiltersChange(
                     FilterCharacters(
                         status = CharacterStatus.values()[selectedIndex],
                         name = nameTextInputEditText.text.toString(),
@@ -56,12 +65,6 @@ class FilterDialogFragment(
                 this@FilterDialogFragment.dismiss()
             }
 
-            val genders = resources.getStringArray(R.array.gender)
-            val arrayAdapter = ArrayAdapter(
-                requireContext(), R.layout.item_gender_dropdown, genders
-            )
-            binding.autoCompleteTextView.setAdapter(arrayAdapter)
-
             cancelButton.setOnClickListener {
                 this@FilterDialogFragment.dismiss()
             }
@@ -70,11 +73,13 @@ class FilterDialogFragment(
 
     private fun setupInitialValues() {
         binding.apply {
-            (statusRadioButtonGroup.getChildAt(
-                previousFilters.status.ordinal
-            ) as RadioButton).isChecked = true
-            nameTextInputEditText.setText(previousFilters.name)
-            autoCompleteTextView.setText(previousFilters.gender.identifier)
+            with(charactersListViewModel.filterCharactersFlow.value) {
+                (statusRadioButtonGroup.getChildAt(
+                    this.status.ordinal
+                ) as RadioButton).isChecked = true
+                nameTextInputEditText.setText(this.name)
+                autoCompleteTextView.setText(this.gender.identifier)
+            }
         }
     }
 
