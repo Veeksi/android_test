@@ -159,10 +159,9 @@ class CharactersListFragment : Fragment() {
                     when (loadState.refresh) {
                         is LoadState.Error -> {
                             showErrorToast(loadState)
-                            if (characterListAdapter.itemCount == 0) {
-                                binding.errorMessage.visibility = View.VISIBLE
-                                binding.circularProgressIndicator.visibility = View.GONE
-                            }
+                            binding.errorMessage.visibility = View.VISIBLE
+                            binding.circularProgressIndicator.visibility = View.GONE
+                            binding.characterRecyclerview.visibility = View.GONE
                         }
                         is LoadState.Loading -> {
                             if (characterListAdapter.itemCount == 0) {
@@ -173,6 +172,7 @@ class CharactersListFragment : Fragment() {
                         is LoadState.NotLoading -> {
                             binding.errorMessage.visibility = View.GONE
                             binding.circularProgressIndicator.visibility = View.GONE
+                            binding.characterRecyclerview.visibility = View.VISIBLE
                         }
                     }
                 }

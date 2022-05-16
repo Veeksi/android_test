@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/episodeFragment"
         android:name="com.example.testapplication.view.fragment.EpisodeFragment"
-        android:label="Episodes"
+        android:label="Other"
         tools:layout="@layout/fragment_episodes">
         <action
             android:id="@+id/action_episodeFragment_to_testiFragment"

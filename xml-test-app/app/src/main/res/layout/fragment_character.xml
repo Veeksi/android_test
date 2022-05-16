@@ -13,7 +13,7 @@
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="?attr/colorPrimary"
+        android:background="?attr/colorSurface"
         app:layout_constraintBottom_toTopOf="@id/guideHeader2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_launcher_background" />
+            tools:src="@drawable/ic_launcher_background"
+            android:contentDescription="@string/launcher_foreground"/>
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -91,7 +92,8 @@
         android:padding="12dp"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/headerBackground" />
+        app:layout_constraintTop_toTopOf="@+id/headerBackground"
+        android:contentDescription="@string/back_button"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/episodeRecyclerView"
