@@ -3,8 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/filter"
+        android:contentDescription="@string/filter_item"
         android:icon="@drawable/ic_filter_list"
         android:title="@string/filter"
-        app:showAsAction="ifRoom"
-        android:contentDescription="@string/filter_item"/>
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/like"
+        android:contentDescription="@string/like_item"
+        android:icon="@drawable/ic_star"
+        android:title="@string/like"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/remove"
+        android:contentDescription="@string/remove_item"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/delete"
+        app:showAsAction="ifRoom" />
 </menu>

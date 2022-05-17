@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_characterListFragment_to_characterFragment"
             app:destination="@id/characterFragment" />
+        <action
+            android:id="@+id/action_characterListFragment_to_modalBottomSheet"
+            app:destination="@id/modalBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/characterFragment"
@@ -29,4 +32,12 @@
             android:name="uri"
             app:argType="string" />
     </fragment>
+    <dialog
+        android:id="@+id/modalBottomSheet"
+        android:name="com.example.testapplication.view.fragment.ModalBottomSheet"
+        android:label="ModalBottomSheet" >
+        <argument
+            android:name="character"
+            app:argType="com.example.testapplication.domain.model.Character" />
+    </dialog>
 </navigation>

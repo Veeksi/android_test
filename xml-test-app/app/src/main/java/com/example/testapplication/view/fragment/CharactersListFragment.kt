@@ -1,18 +1,14 @@
 package com.example.testapplication.view.fragment
 
-import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.*
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -23,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharactersListBinding
 import com.example.testapplication.domain.model.Character
-import com.example.testapplication.domain.model.FilterCharacters
-import com.example.testapplication.util.PagerEvents
 import com.example.testapplication.util.PagingLoadStateAdapter
 import com.example.testapplication.view.adapter.CharacterListAdapter
 import com.example.testapplication.vm.CharactersListViewModel
@@ -42,15 +36,23 @@ class CharactersListFragment : Fragment() {
     private var _binding: FragmentCharactersListBinding? = null
     private val binding get() = _binding!!
 
-    /* private val filterDialogFragmentFactory = FilterDialogFragmentFactory(
-         // charactersListViewModel.filterCharactersFlow.value,
-         // ::onSubmitFilter
-     )*/
-
-    /*override fun onCreate(savedInstanceState: Bundle?) {
-        childFragmentManager.fragmentFactory = filterDialogFragmentFactory
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }*/
+
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (charactersListViewModel.isEditing.value == true) {
+                    charactersListViewModel.stopEditing()
+                    requireActivity().invalidateOptionsMenu()
+                } else if (binding.characterRecyclerview.canScrollVertically(-1)) {
+                    scrollToTop()
+                } else {
+                    isEnabled = false
+                    activity?.onBackPressed()
+                }
+            }
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,11 +69,31 @@ class CharactersListFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        val filterItem = menu.findItem(R.id.filter)
+        val likeItem = menu.findItem(R.id.like)
+        val removeItem = menu.findItem(R.id.remove)
+        filterItem.isVisible = !charactersListViewModel.isEditing.value!!
+        likeItem.isVisible = charactersListViewModel.isEditing.value ?: false
+        removeItem.isVisible = charactersListViewModel.isEditing.value ?: false
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.filter -> {
                 val dialogFragment = FilterDialogFragment()
                 dialogFragment.show(childFragmentManager, "filter")
+                true
+            }
+            R.id.like -> {
+                /*val dialogFragment = FilterDialogFragment()
+                dialogFragment.show(childFragmentManager, "filter")*/
+                true
+            }
+            R.id.remove -> {
+                /*val dialogFragment = FilterDialogFragment()
+                dialogFragment.show(childFragmentManager, "filter")*/
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -100,20 +122,17 @@ class CharactersListFragment : Fragment() {
                 name = character.name,
             )
 
-        val modalBottomSheet = ModalBottomSheet(
-            onView = { findNavController().navigate(action, extras) },
-            onLike = { charactersListViewModel.onViewEvent(PagerEvents.Like(character)) },
-            onDelete = { charactersListViewModel.onViewEvent(PagerEvents.Remove(character)) }
-        )
+        findNavController().navigate(action, extras)
+    }
 
-        // Ensures that no multiple dialogs can be visible
-        if (childFragmentManager.findFragmentByTag("dialogTAG") == null) {
-            modalBottomSheet.show(childFragmentManager, "dialogTAG")
-        }
+    private fun characterItemLongClicked(character: Character) {
+        charactersListViewModel.startEditing()
+        requireActivity().invalidateOptionsMenu()
     }
 
     private fun setupUi() {
-        characterListAdapter = CharacterListAdapter(::characterItemClicked)
+        characterListAdapter =
+            CharacterListAdapter(::characterItemClicked, ::characterItemLongClicked)
 
         with(binding) {
             characterRecyclerview.apply {
@@ -130,7 +149,10 @@ class CharactersListFragment : Fragment() {
                 )
 
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    override fun onScrollStateChanged(
+                        recyclerView: RecyclerView,
+                        newState: Int
+                    ) {
                         super.onScrollStateChanged(recyclerView, newState)
                         // Shows FAB if the recyclerView can be scrolled upwards
                         if (recyclerView.canScrollVertically(-1)) {

@@ -35,6 +35,9 @@
     <string name="launcher_foreground">launcher_foreground</string>
     <string name="home">Home</string>
     <string name="other">Other</string>
+    <string name="like_item">Like item</string>
+    <string name="remove_item">Remove item</string>
+    <string name="delete">Delete</string>
     <string-array name="filterStatus">
         <item>All</item>
         <item>Alive </item>

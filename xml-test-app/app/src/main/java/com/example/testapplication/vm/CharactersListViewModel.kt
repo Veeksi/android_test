@@ -23,9 +23,12 @@ class CharactersListViewModel @Inject constructor(
     private val modificationEvents = MutableStateFlow<List<PagerEvents>>(emptyList())
 
     private val _filterCharactersFlow = MutableStateFlow(FilterCharacters())
-
     val filterCharactersFlow: StateFlow<FilterCharacters>
         get() = _filterCharactersFlow
+
+    private val _isEditing = MutableLiveData(false)
+    val isEditing: LiveData<Boolean>
+        get() = _isEditing
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val _charactersFlow: Flow<PagingData<Character>> =
@@ -43,6 +46,14 @@ class CharactersListViewModel @Inject constructor(
 
     fun onFiltersChange(filter: FilterCharacters) {
         _filterCharactersFlow.value = filter
+    }
+
+    fun startEditing() {
+        _isEditing.postValue(!_isEditing.value!!)
+    }
+
+    fun stopEditing() {
+        _isEditing.postValue(false)
     }
 
     fun onViewEvent(pagerEvents: PagerEvents) {

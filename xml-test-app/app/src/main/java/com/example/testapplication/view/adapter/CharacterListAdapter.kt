@@ -15,6 +15,7 @@ import com.example.testapplication.domain.model.Character
 
 class CharacterListAdapter(
     private val onCharacterItemClicked: (Character, CardView) -> Unit,
+    private val onCharacterItemLongClicked: (Character) -> Unit,
 ) : PagingDataAdapter<Character, CharacterListAdapter.ViewHolder>(CharacterComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -47,9 +48,10 @@ class CharacterListAdapter(
                         }
                     }
                 }
-
-                cardView.setOnClickListener {
-                    onCharacterItemClicked(character, binding.cardView)
+                cardView.setOnClickListener { onCharacterItemClicked(character, binding.cardView) }
+                cardView.setOnLongClickListener {
+                    onCharacterItemLongClicked(character)
+                    true
                 }
             }
         }
