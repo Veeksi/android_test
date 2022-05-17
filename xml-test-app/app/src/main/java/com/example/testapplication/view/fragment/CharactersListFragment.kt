@@ -7,17 +7,17 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.*
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapplication.R
@@ -26,9 +26,11 @@ import com.example.testapplication.domain.model.Character
 import com.example.testapplication.util.PagerEvents
 import com.example.testapplication.util.PagingLoadStateAdapter
 import com.example.testapplication.view.adapter.CharacterListAdapter
+import com.example.testapplication.view.adapter.ItemDetailsLookUp
+import com.example.testapplication.view.adapter.ItemsKeyProvider
 import com.example.testapplication.vm.CharactersListViewModel
+import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -40,7 +42,15 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
     private val charactersListViewModel: CharactersListViewModel by activityViewModels()
     private lateinit var characterListAdapter: CharacterListAdapter
 
+    private var tracker: SelectionTracker<Character>? = null
+
     override fun getViewBinding() = FragmentCharactersListBinding.inflate(layoutInflater)
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        tracker?.setItemsSelected(charactersListViewModel.editState.value.editableCharacters, true)
+        super.onViewStateRestored(savedInstanceState)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +60,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
     private fun setupCustomUpHandler() {
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (charactersListViewModel.viewState.value.isEditing) {
+                if (charactersListViewModel.editState.value.isEditing) {
                     charactersListViewModel.stopEditing()
                 } else if (binding.characterRecyclerview.canScrollVertically(-1)) {
                     scrollToTop()
@@ -78,7 +88,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                         true
                     }
                     R.id.remove -> {
-                        charactersListViewModel.viewState.value.editableCharacters.map { character ->
+                        charactersListViewModel.editState.value.editableCharacters.map { character ->
                             charactersListViewModel.onViewEvent(
                                 PagerEvents.Remove(character)
                             )
@@ -104,33 +114,25 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         }
     }
 
-    private fun characterItemClicked(character: Character, cardView: CardView) {
-        if (charactersListViewModel.viewState.value.isEditing) {
-            charactersListViewModel.addOrRemoveEditableCharacter(character)
-        } else {
-            val extras = FragmentNavigatorExtras(
-                cardView to "${character.id}-${character.image}"
+    private fun characterItemClicked(
+        character: Character,
+        card: MaterialCardView,
+    ) {
+        val extras = FragmentNavigatorExtras(
+            card to "${character.id}-${character.image}"
+        )
+        val action = CharactersListFragmentDirections
+            .actionCharacterListFragmentToCharacterFragment(
+                id = character.id,
+                uri = character.image,
+                name = character.name,
             )
-            val action = CharactersListFragmentDirections
-                .actionCharacterListFragmentToCharacterFragment(
-                    id = character.id,
-                    uri = character.image,
-                    name = character.name,
-                )
 
-            findNavController().navigate(action, extras)
-        }
-
-    }
-
-    private fun characterItemLongClicked(character: Character, imageView: ImageView) {
-        charactersListViewModel.startEditing(character)
-        imageView.visibility = View.VISIBLE
+        findNavController().navigate(action, extras)
     }
 
     private fun setupUi() {
-        characterListAdapter =
-            CharacterListAdapter(::characterItemClicked, ::characterItemLongClicked)
+        characterListAdapter = CharacterListAdapter(::characterItemClicked)
 
         with(binding) {
             characterRecyclerview.apply {
@@ -145,6 +147,32 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                     header = PagingLoadStateAdapter(characterListAdapter),
                     footer = PagingLoadStateAdapter(characterListAdapter)
                 )
+
+                tracker = SelectionTracker.Builder(
+                    "selectionItem",
+                    binding.characterRecyclerview,
+                    ItemsKeyProvider(characterListAdapter),
+                    ItemDetailsLookUp(binding.characterRecyclerview),
+                    StorageStrategy.createParcelableStorage(Character::class.java)
+                ).withSelectionPredicate(
+                    SelectionPredicates.createSelectAnything()
+                ).build()
+
+                tracker?.addObserver(
+                    object : SelectionTracker.SelectionObserver<Character>() {
+                        override fun onSelectionChanged() {
+                            super.onSelectionChanged()
+                            tracker?.let {
+                                charactersListViewModel.startEditing(it.selection.toList())
+                                if (!it.hasSelection()) {
+                                    charactersListViewModel.stopEditing()
+                                }
+                            }
+                        }
+                    }
+                )
+
+                characterListAdapter.tracker = tracker
 
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(
@@ -187,20 +215,21 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.apply {
+
             launchWhenStarted {
-                charactersListViewModel.viewState.collect { viewState ->
+                charactersListViewModel.editState.collect { editState ->
                     with(binding) {
-                        if (viewState.isEditing) {
-                            binding.toolbar.title = "${viewState.editableCharacters.size}"
+                        if (editState.isEditing) {
+                            binding.toolbar.title = "${editState.editableCharacters.size}"
                             toolbar.setNavigationIcon(R.drawable.ic_close)
                         } else {
                             toolbar.title = "Characters"
                             toolbar.navigationIcon = null
                         }
 
-                        toolbar.menu.findItem(R.id.filter).isVisible = !viewState.isEditing
-                        toolbar.menu.findItem(R.id.like).isVisible = viewState.isEditing
-                        toolbar.menu.findItem(R.id.remove).isVisible = viewState.isEditing
+                        toolbar.menu.findItem(R.id.filter).isVisible = !editState.isEditing
+                        toolbar.menu.findItem(R.id.like).isVisible = editState.isEditing
+                        toolbar.menu.findItem(R.id.remove).isVisible = editState.isEditing
                     }
                 }
             }

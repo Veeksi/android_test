@@ -22,13 +22,13 @@ class CharactersListViewModel @Inject constructor(
 ) : ViewModel() {
     private val modificationEvents = MutableStateFlow<List<PagerEvents>>(emptyList())
 
-    data class ViewState(
+    data class EditState(
         val isEditing: Boolean = false,
         val editableCharacters: List<Character> = arrayListOf()
     )
 
-    private val _viewState = MutableStateFlow(ViewState())
-    val viewState = _viewState.asStateFlow()
+    private val _editState = MutableStateFlow(EditState())
+    val editState = _editState.asStateFlow()
 
     private val _filterCharactersFlow = MutableStateFlow(FilterCharacters())
     val filterCharactersFlow: StateFlow<FilterCharacters>
@@ -52,43 +52,21 @@ class CharactersListViewModel @Inject constructor(
         _filterCharactersFlow.value = filter
     }
 
-    fun startEditing(character: Character) {
-        _viewState.update {
-            it.copy(isEditing = true)
+    fun startEditing(characters: List<Character>) {
+        _editState.update {
+            it.copy(
+                isEditing = true,
+                editableCharacters = characters
+            )
         }
-        addOrRemoveEditableCharacter(character)
     }
 
     fun stopEditing() {
-        _viewState.update {
-            it.copy(isEditing = false)
-        }
-        clearEditableCharacters()
-    }
-
-    fun addOrRemoveEditableCharacter(character: Character) {
-        if (_viewState.value.editableCharacters.contains(character)) {
-            _viewState.update {
-                val oldList = it.editableCharacters.toList()
-                val newList = oldList.filter { filteredCharacter ->
-                    filteredCharacter.id != character.id
-                }
-                it.copy(editableCharacters = newList)
-            }
-            if (_viewState.value.editableCharacters.isEmpty()) {
-                _viewState.update { it.copy(isEditing = false) }
-            }
-        } else {
-            _viewState.update {
-                val newList = it.editableCharacters.toList()
-                it.copy(editableCharacters = newList + arrayListOf(character))
-            }
-        }
-    }
-
-    private fun clearEditableCharacters() {
-        _viewState.update {
-            it.copy(editableCharacters = arrayListOf())
+        _editState.update {
+            it.copy(
+                isEditing = false,
+                editableCharacters = arrayListOf()
+            )
         }
     }
 
