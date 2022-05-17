@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.168" />
+        <entry key="app/src/main/res/drawable/ic_done.xml" value="0.174" />
         <entry key="app/src/main/res/drawable/ic_filter_list.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/ic_star.xml" value="0.168" />
         <entry key="app/src/main/res/layout-v23/item_navigation.xml" value="0.1578125" />
@@ -29,6 +30,7 @@
         <entry key="app/src/main/res/layout/fragment_episodes.xml" value="0.16134751773049646" />
         <entry key="app/src/main/res/layout/fragment_filter_dialog.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_other.xml" value="0.1340782122905028" />
+        <entry key="app/src/main/res/layout/fragment_test.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/fragment_testi.xml" value="0.15885416666666666" />
         <entry key="app/src/main/res/layout/item_character.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/layout/item_episode.xml" value="0.15885416666666666" />

@@ -11,12 +11,15 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentFilterDialogBinding
 import com.example.testapplication.domain.model.CharacterGender
 import com.example.testapplication.domain.model.CharacterStatus
 import com.example.testapplication.domain.model.FilterCharacters
 import com.example.testapplication.vm.CharactersListViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 class FilterDialogFragment : DialogFragment() {
@@ -45,7 +48,7 @@ class FilterDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupInitialValues()
+        setupObservers()
         binding.apply {
             filterButton.setOnClickListener {
                 val selectedIndex = statusRadioButtonGroup.indexOfChild(
@@ -71,14 +74,14 @@ class FilterDialogFragment : DialogFragment() {
         }
     }
 
-    private fun setupInitialValues() {
-        binding.apply {
-            with(charactersListViewModel.filterCharactersFlow.value) {
+    private fun setupObservers() {
+        charactersListViewModel.filterCharactersFlow.value.apply {
+            with(binding) {
                 (statusRadioButtonGroup.getChildAt(
-                    this.status.ordinal
+                    this@apply.status.ordinal
                 ) as RadioButton).isChecked = true
-                nameTextInputEditText.setText(this.name)
-                autoCompleteTextView.setText(this.gender.identifier)
+                nameTextInputEditText.setText(this@apply.name)
+                autoCompleteTextView.setText(this@apply.gender.identifier)
             }
         }
     }

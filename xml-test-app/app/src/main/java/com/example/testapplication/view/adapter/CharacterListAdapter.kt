@@ -2,6 +2,7 @@ package com.example.testapplication.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -15,7 +16,7 @@ import com.example.testapplication.domain.model.Character
 
 class CharacterListAdapter(
     private val onCharacterItemClicked: (Character, CardView) -> Unit,
-    private val onCharacterItemLongClicked: (Character) -> Unit,
+    private val onCharacterItemLongClicked: (Character, ImageView) -> Unit,
 ) : PagingDataAdapter<Character, CharacterListAdapter.ViewHolder>(CharacterComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -50,7 +51,7 @@ class CharacterListAdapter(
                 }
                 cardView.setOnClickListener { onCharacterItemClicked(character, binding.cardView) }
                 cardView.setOnLongClickListener {
-                    onCharacterItemLongClicked(character)
+                    onCharacterItemLongClicked(character, binding.selectedIcon)
                     true
                 }
             }

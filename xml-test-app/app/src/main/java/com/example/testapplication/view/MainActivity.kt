@@ -21,34 +21,11 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        val appBarConfiguration =
-            AppBarConfiguration(setOf(R.id.characterListFragment, R.id.episodeFragment))
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            run {
-                when (destination.id) {
-                    R.id.characterFragment -> {
-                        binding.bottomNav.visibility = View.GONE
-                        binding.toolbar.visibility = View.GONE
-                    }
-                    R.id.testFragment -> {
-                        binding.bottomNav.visibility = View.GONE
-                        binding.toolbar.visibility = View.GONE
-                    }
-                    else -> {
-                        binding.bottomNav.visibility = View.VISIBLE
-                        binding.toolbar.visibility = View.VISIBLE
-                    }
-                }
-            }
-        }
 
         onSupportNavigateUp()
 
         with(binding) {
-            setSupportActionBar(toolbar)
             bottomNav.setupWithNavController(navController)
-            toolbar.setupWithNavController(navController, appBarConfiguration)
         }
     }
 }

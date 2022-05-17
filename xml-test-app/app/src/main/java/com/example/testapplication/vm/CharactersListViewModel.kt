@@ -22,13 +22,17 @@ class CharactersListViewModel @Inject constructor(
 ) : ViewModel() {
     private val modificationEvents = MutableStateFlow<List<PagerEvents>>(emptyList())
 
+    data class ViewState(
+        val isEditing: Boolean = false,
+        val editableCharacters: List<Character> = arrayListOf()
+    )
+
+    private val _viewState = MutableStateFlow(ViewState())
+    val viewState = _viewState.asStateFlow()
+
     private val _filterCharactersFlow = MutableStateFlow(FilterCharacters())
     val filterCharactersFlow: StateFlow<FilterCharacters>
         get() = _filterCharactersFlow
-
-    private val _isEditing = MutableLiveData(false)
-    val isEditing: LiveData<Boolean>
-        get() = _isEditing
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val _charactersFlow: Flow<PagingData<Character>> =
@@ -48,12 +52,44 @@ class CharactersListViewModel @Inject constructor(
         _filterCharactersFlow.value = filter
     }
 
-    fun startEditing() {
-        _isEditing.postValue(!_isEditing.value!!)
+    fun startEditing(character: Character) {
+        _viewState.update {
+            it.copy(isEditing = true)
+        }
+        addOrRemoveEditableCharacter(character)
     }
 
     fun stopEditing() {
-        _isEditing.postValue(false)
+        _viewState.update {
+            it.copy(isEditing = false)
+        }
+        clearEditableCharacters()
+    }
+
+    fun addOrRemoveEditableCharacter(character: Character) {
+        if (_viewState.value.editableCharacters.contains(character)) {
+            _viewState.update {
+                val oldList = it.editableCharacters.toList()
+                val newList = oldList.filter { filteredCharacter ->
+                    filteredCharacter.id != character.id
+                }
+                it.copy(editableCharacters = newList)
+            }
+            if (_viewState.value.editableCharacters.isEmpty()) {
+                _viewState.update { it.copy(isEditing = false) }
+            }
+        } else {
+            _viewState.update {
+                val newList = it.editableCharacters.toList()
+                it.copy(editableCharacters = newList + arrayListOf(character))
+            }
+        }
+    }
+
+    private fun clearEditableCharacters() {
+        _viewState.update {
+            it.copy(editableCharacters = arrayListOf())
+        }
     }
 
     fun onViewEvent(pagerEvents: PagerEvents) {
@@ -67,7 +103,9 @@ class CharactersListViewModel @Inject constructor(
         return when (pagerEvents) {
             is PagerEvents.Remove -> {
                 paging
-                    .filter { pagerEvents.character.id != it.id }
+                    .filter {
+                        pagerEvents.character.id != it.id
+                    }
             }
             is PagerEvents.Like -> {
                 paging

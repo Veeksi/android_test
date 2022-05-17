@@ -39,11 +39,9 @@ class ModalBottomSheet() : BottomSheetDialogFragment() {
                 dismiss()
             }
             likeListTile.setOnClickListener {
-                charactersListViewModel.onViewEvent(PagerEvents.Like(args.character))
                 dismiss()
             }
             deleteListTile.setOnClickListener {
-                charactersListViewModel.onViewEvent(PagerEvents.Remove(args.character))
                 dismiss()
             }
         }

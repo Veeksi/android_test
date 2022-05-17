@@ -2,14 +2,18 @@ package com.example.testapplication.view.fragment
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.*
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
@@ -19,10 +23,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharactersListBinding
 import com.example.testapplication.domain.model.Character
+import com.example.testapplication.util.PagerEvents
 import com.example.testapplication.util.PagingLoadStateAdapter
 import com.example.testapplication.view.adapter.CharacterListAdapter
 import com.example.testapplication.vm.CharactersListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -38,12 +44,14 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupCustomUpHandler()
+    }
 
+    private fun setupCustomUpHandler() {
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (charactersListViewModel.isEditing.value == true) {
+                if (charactersListViewModel.viewState.value.isEditing) {
                     charactersListViewModel.stopEditing()
-                    requireActivity().invalidateOptionsMenu()
                 } else if (binding.characterRecyclerview.canScrollVertically(-1)) {
                     scrollToTop()
                 } else {
@@ -54,54 +62,40 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         })
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.filter_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        val filterItem = menu.findItem(R.id.filter)
-        val likeItem = menu.findItem(R.id.like)
-        val removeItem = menu.findItem(R.id.remove)
-        filterItem.isVisible = !charactersListViewModel.isEditing.value!!
-        likeItem.isVisible = charactersListViewModel.isEditing.value ?: false
-        removeItem.isVisible = charactersListViewModel.isEditing.value ?: false
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.filter -> {
-                val dialogFragment = FilterDialogFragment()
-                dialogFragment.show(childFragmentManager, "filter")
-                true
+    private fun setupAppbar() {
+        binding.apply {
+            toolbar.inflateMenu(R.menu.filter_menu)
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.filter -> {
+                        val dialogFragment = FilterDialogFragment()
+                        dialogFragment.show(childFragmentManager, "filter")
+                        true
+                    }
+                    R.id.like -> {
+                        /*val dialogFragment = FilterDialogFragment()
+                        dialogFragment.show(childFragmentManager, "filter")*/
+                        true
+                    }
+                    R.id.remove -> {
+                        charactersListViewModel.viewState.value.editableCharacters.map { character ->
+                            charactersListViewModel.onViewEvent(
+                                PagerEvents.Remove(character)
+                            )
+                        }
+                        charactersListViewModel.stopEditing()
+                        true
+                    }
+                    else -> false
+                }
             }
-            R.id.like -> {
-                /*val dialogFragment = FilterDialogFragment()
-                dialogFragment.show(childFragmentManager, "filter")*/
-                true
-            }
-            R.id.remove -> {
-                /*val dialogFragment = FilterDialogFragment()
-                dialogFragment.show(childFragmentManager, "filter")*/
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
+        setupAppbar()
         setupUi()
         setupObservers()
         // Postpones return transition when the view is ready
@@ -111,22 +105,27 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
     }
 
     private fun characterItemClicked(character: Character, cardView: CardView) {
-        val extras = FragmentNavigatorExtras(
-            cardView to "${character.id}-${character.image}"
-        )
-        val action = CharactersListFragmentDirections
-            .actionCharacterListFragmentToCharacterFragment(
-                id = character.id,
-                uri = character.image,
-                name = character.name,
+        if (charactersListViewModel.viewState.value.isEditing) {
+            charactersListViewModel.addOrRemoveEditableCharacter(character)
+        } else {
+            val extras = FragmentNavigatorExtras(
+                cardView to "${character.id}-${character.image}"
             )
+            val action = CharactersListFragmentDirections
+                .actionCharacterListFragmentToCharacterFragment(
+                    id = character.id,
+                    uri = character.image,
+                    name = character.name,
+                )
 
-        findNavController().navigate(action, extras)
+            findNavController().navigate(action, extras)
+        }
+
     }
 
-    private fun characterItemLongClicked(character: Character) {
-        charactersListViewModel.startEditing()
-        requireActivity().invalidateOptionsMenu()
+    private fun characterItemLongClicked(character: Character, imageView: ImageView) {
+        charactersListViewModel.startEditing(character)
+        imageView.visibility = View.VISIBLE
     }
 
     private fun setupUi() {
@@ -170,6 +169,10 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
             floatingActionButton.setOnClickListener {
                 scrollToTop()
             }
+
+            toolbar.setNavigationOnClickListener {
+                charactersListViewModel.stopEditing()
+            }
         }
     }
 
@@ -184,6 +187,24 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.apply {
+            launchWhenStarted {
+                charactersListViewModel.viewState.collect { viewState ->
+                    with(binding) {
+                        if (viewState.isEditing) {
+                            binding.toolbar.title = "${viewState.editableCharacters.size}"
+                            toolbar.setNavigationIcon(R.drawable.ic_close)
+                        } else {
+                            toolbar.title = "Characters"
+                            toolbar.navigationIcon = null
+                        }
+
+                        toolbar.menu.findItem(R.id.filter).isVisible = !viewState.isEditing
+                        toolbar.menu.findItem(R.id.like).isVisible = viewState.isEditing
+                        toolbar.menu.findItem(R.id.remove).isVisible = viewState.isEditing
+                    }
+                }
+            }
+
             launch {
                 characterListAdapter.loadStateFlow.collectLatest { loadState ->
                     binding.swipeRefreshLayout.isRefreshing = false
