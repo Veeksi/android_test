@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,15 +14,16 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        card_view:cardElevation="4dp"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toTopOf="parent"
-        app:cardUseCompatPadding="true">
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
 
             <ImageView
                 android:id="@+id/imageView"
@@ -35,12 +36,13 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:padding="8dp"
                 android:gravity="center"
+                android:padding="8dp"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
-                tools:text="Morty asdadsasdasdassdasdasdasdasdsasdasdasda" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                tools:text="Morty" />
 
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

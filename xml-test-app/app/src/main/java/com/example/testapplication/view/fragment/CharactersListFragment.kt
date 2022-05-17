@@ -30,11 +30,11 @@ import java.net.UnknownHostException
 
 
 @AndroidEntryPoint
-class CharactersListFragment : Fragment() {
+class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
     private val charactersListViewModel: CharactersListViewModel by activityViewModels()
     private lateinit var characterListAdapter: CharacterListAdapter
-    private var _binding: FragmentCharactersListBinding? = null
-    private val binding get() = _binding!!
+
+    override fun getViewBinding() = FragmentCharactersListBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,10 +58,9 @@ class CharactersListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         setHasOptionsMenu(true)
-        _binding = FragmentCharactersListBinding.inflate(inflater, container, false)
-        return binding.root
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -243,10 +242,5 @@ class CharactersListFragment : Fragment() {
 
     private fun scrollToTop() {
         binding.characterRecyclerview.smoothScrollToPosition(0)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

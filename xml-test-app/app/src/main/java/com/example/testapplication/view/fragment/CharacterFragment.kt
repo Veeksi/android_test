@@ -23,12 +23,12 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class CharacterFragment : Fragment() {
+class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
     private val args: CharacterFragmentArgs by navArgs()
     private val characterViewModel: CharacterViewModel by viewModels()
     private lateinit var episodeListAdapter: EpisodeListAdapter
-    private var _binding: FragmentCharacterBinding? = null
-    private val binding get() = _binding!!
+
+    override fun getViewBinding() = FragmentCharacterBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,15 +38,6 @@ class CharacterFragment : Fragment() {
             scrimColor = Color.TRANSPARENT
             setPathMotion(MaterialArcMotion())
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        _binding = FragmentCharacterBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -113,11 +104,6 @@ class CharacterFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
 

@@ -17,6 +17,6 @@ val navigationItems = arrayListOf(
     NavigationItem(
         "Collapsible toolbar",
         "Describes how to implement collapsible toolbar",
-        R.id.action_otherFragment_to_testiFragment
+        R.id.action_otherFragment_to_testFragment
     ),
 )

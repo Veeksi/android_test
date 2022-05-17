@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                         binding.bottomNav.visibility = View.GONE
                         binding.toolbar.visibility = View.GONE
                     }
-                    R.id.testiFragment -> {
+                    R.id.testFragment -> {
                         binding.bottomNav.visibility = View.GONE
                         binding.toolbar.visibility = View.GONE
                     }

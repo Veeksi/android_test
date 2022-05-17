@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:title="Testi"
+                app:title="Test"
                 />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

@@ -16,18 +16,8 @@ import com.example.testapplication.domain.model.NavigationItem
 import com.example.testapplication.domain.model.navigationItems
 import com.example.testapplication.view.adapter.PageAdapter
 
-class OtherFragment : Fragment() {
-    private var _binding: FragmentOtherBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentOtherBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+class OtherFragment : BaseFragment<FragmentOtherBinding>() {
+    override fun getViewBinding() = FragmentOtherBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,11 +36,7 @@ class OtherFragment : Fragment() {
     private fun onNavigationItemCLicked(navigationItem: NavigationItem) {
         try {
             view?.findNavController()?.navigate(navigationItem.action)
-        } catch (e: Throwable) { }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        } catch (e: Throwable) {
+        }
     }
 }

@@ -1,25 +1,15 @@
 package com.example.testapplication.view.fragment
 
-import android.media.metrics.Event
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.*
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.testapplication.databinding.ModalBottomSheetContentBinding
-import com.example.testapplication.domain.model.Character
 import com.example.testapplication.util.PagerEvents
 import com.example.testapplication.vm.CharactersListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-
-sealed class EventCharacter {
-    data class ViewCharacter(val character: Character) : EventCharacter()
-    data class DeleteCharacter(val character: Character) : EventCharacter()
-}
 
 class ModalBottomSheet() : BottomSheetDialogFragment() {
     private var _binding: ModalBottomSheetContentBinding? = null
