@@ -51,7 +51,6 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         super.onViewStateRestored(savedInstanceState)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupCustomUpHandler()
@@ -61,6 +60,10 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (charactersListViewModel.editState.value.isEditing) {
+                    tracker?.setItemsSelected(
+                        charactersListViewModel.editState.value.editableCharacters,
+                        false
+                    )
                     charactersListViewModel.stopEditing()
                 } else if (binding.characterRecyclerview.canScrollVertically(-1)) {
                     scrollToTop()
@@ -222,6 +225,13 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                         if (editState.isEditing) {
                             binding.toolbar.title = "${editState.editableCharacters.size}"
                             toolbar.setNavigationIcon(R.drawable.ic_close)
+                            toolbar.setNavigationOnClickListener {
+                                tracker?.setItemsSelected(
+                                    charactersListViewModel.editState.value.editableCharacters,
+                                    false
+                                )
+                                charactersListViewModel.stopEditing()
+                            }
                         } else {
                             toolbar.title = "Characters"
                             toolbar.navigationIcon = null
