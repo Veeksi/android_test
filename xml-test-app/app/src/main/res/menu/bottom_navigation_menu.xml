@@ -4,12 +4,10 @@
         android:id="@+id/home"
         android:title="@string/home"
         android:icon="@drawable/ic_face"
-        android:menuCategory="secondary"
         />
     <item
         android:id="@+id/other"
         android:title="@string/other"
         android:icon="@drawable/ic_star"
-        android:menuCategory="secondary"
         />
 </menu>
