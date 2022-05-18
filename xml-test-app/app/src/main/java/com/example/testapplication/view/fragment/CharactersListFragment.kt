@@ -2,6 +2,7 @@ package com.example.testapplication.view.fragment
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
+import android.text.method.Touch.onTouchEvent
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
@@ -15,16 +16,17 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import androidx.recyclerview.selection.SelectionPredicates
-import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.selection.StorageStrategy
+import androidx.recyclerview.selection.*
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharactersListBinding
 import com.example.testapplication.domain.model.Character
 import com.example.testapplication.util.PagerEvents
 import com.example.testapplication.util.PagingLoadStateAdapter
+import com.example.testapplication.util.navigate
 import com.example.testapplication.view.adapter.CharacterListAdapter
 import com.example.testapplication.view.adapter.ItemDetailsLookUp
 import com.example.testapplication.view.adapter.ItemsKeyProvider
@@ -60,11 +62,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (charactersListViewModel.editState.value.isEditing) {
-                    tracker?.setItemsSelected(
-                        charactersListViewModel.editState.value.editableCharacters,
-                        false
-                    )
-                    charactersListViewModel.stopEditing()
+                    stopEditing()
                 } else if (binding.characterRecyclerview.canScrollVertically(-1)) {
                     scrollToTop()
                 } else {
@@ -131,7 +129,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                 name = character.name,
             )
 
-        findNavController().navigate(action, extras)
+        navigate(action, extras)
     }
 
     private fun setupUi() {
@@ -141,7 +139,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
             characterRecyclerview.apply {
                 layoutManager =
                     if (activity?.resources?.configuration?.orientation == ORIENTATION_PORTRAIT) {
-                        GridLayoutManager(context, 3)
+                        GridLayoutManager(context, 2)
                     } else {
                         GridLayoutManager(context, 4)
                     }
@@ -163,10 +161,15 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
                 tracker?.addObserver(
                     object : SelectionTracker.SelectionObserver<Character>() {
+                        override fun onItemStateChanged(key: Character, selected: Boolean) {
+                            super.onItemStateChanged(key, selected)
+                            charactersListViewModel.changeSelection(key, selected)
+                        }
+
                         override fun onSelectionChanged() {
                             super.onSelectionChanged()
                             tracker?.let {
-                                charactersListViewModel.startEditing(it.selection.toList())
+                                charactersListViewModel.startEditing()
                                 if (!it.hasSelection()) {
                                     charactersListViewModel.stopEditing()
                                 }
@@ -220,21 +223,17 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         viewLifecycleOwner.lifecycleScope.apply {
 
             launchWhenStarted {
-                charactersListViewModel.editState.collect { editState ->
+                charactersListViewModel.editState.collectLatest { editState ->
                     with(binding) {
                         if (editState.isEditing) {
-                            binding.toolbar.title = "${editState.editableCharacters.size}"
+                            binding.toolbar.title = "${editState.editableCharacters.size} selected"
                             toolbar.setNavigationIcon(R.drawable.ic_close)
-                            toolbar.setNavigationOnClickListener {
-                                tracker?.setItemsSelected(
-                                    charactersListViewModel.editState.value.editableCharacters,
-                                    false
-                                )
-                                charactersListViewModel.stopEditing()
-                            }
+                            toolbar.setNavigationOnClickListener { stopEditing() }
+                            swipeRefreshLayout.isEnabled = false
                         } else {
                             toolbar.title = "Characters"
                             toolbar.navigationIcon = null
+                            swipeRefreshLayout.isEnabled = true
                         }
 
                         toolbar.menu.findItem(R.id.filter).isVisible = !editState.isEditing
@@ -302,5 +301,13 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
     private fun scrollToTop() {
         binding.characterRecyclerview.smoothScrollToPosition(0)
+    }
+
+    private fun stopEditing() {
+        tracker?.setItemsSelected(
+            charactersListViewModel.editState.value.editableCharacters,
+            false
+        )
+        charactersListViewModel.stopEditing()
     }
 }

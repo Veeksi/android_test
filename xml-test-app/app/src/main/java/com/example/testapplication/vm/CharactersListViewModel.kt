@@ -52,13 +52,8 @@ class CharactersListViewModel @Inject constructor(
         _filterCharactersFlow.value = filter
     }
 
-    fun startEditing(characters: List<Character>) {
-        _editState.update {
-            it.copy(
-                isEditing = true,
-                editableCharacters = characters
-            )
-        }
+    fun startEditing() {
+        _editState.update { it.copy(isEditing = true) }
     }
 
     fun stopEditing() {
@@ -66,6 +61,21 @@ class CharactersListViewModel @Inject constructor(
             it.copy(
                 isEditing = false,
                 editableCharacters = arrayListOf()
+            )
+        }
+    }
+
+    fun changeSelection(character: Character, selected: Boolean) {
+        val oldList = _editState.value.editableCharacters.toList()
+        _editState.update {
+            it.copy(
+                editableCharacters =
+                if (selected && !oldList.contains(character)) oldList + character
+                else if (!selected && oldList.contains(
+                        character
+                    )
+                ) oldList - character
+                else oldList
             )
         }
     }

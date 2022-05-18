@@ -36,7 +36,7 @@ class ItemDetailsLookUp(
 class ItemsKeyProvider(private val adapter: CharacterListAdapter) : ItemKeyProvider<Character>(
     SCOPE_CACHED
 ) {
-    override fun getKey(position: Int): Character? {
+    override fun getKey(position: Int): Character {
         return adapter.snapshot().items[position]
     }
 

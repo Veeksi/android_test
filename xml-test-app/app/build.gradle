@@ -51,7 +51,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation "androidx.activity:activity-ktx:$activity_version"
-    implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
+    implementation "androidx.recyclerview:recyclerview-selection:1.2.0-alpha01"
 
     // UI
     def material_version = "1.5.0"
