@@ -1,7 +1,10 @@
 package com.example.testapplication.data.local
 
+import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.testapplication.domain.model.Character
+import com.example.testapplication.domain.model.CharacterGender
+import com.example.testapplication.domain.model.FilterCharacters
 
 @Dao
 @TypeConverters(Converters::class)
@@ -10,11 +13,11 @@ interface CharacterDao {
     suspend fun insertAll(characters: List<Character>)
 
     @Query("SELECT * FROM characters")
-    fun getAllFavorites(): List<Character>
+    fun getAllCharacters(): PagingSource<Int, Character>
 
     @Delete
     fun deleteFromFavorite(character: Character)
 
     @Query("DELETE FROM characters")
-    fun deleteAllFavorites()
+    suspend fun clearAllCharacters()
 }

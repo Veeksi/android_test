@@ -14,6 +14,7 @@ import com.example.testapplication.util.PagerEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,6 +34,10 @@ class CharactersListViewModel @Inject constructor(
     private val _filterCharactersFlow = MutableStateFlow(FilterCharacters())
     val filterCharactersFlow: StateFlow<FilterCharacters>
         get() = _filterCharactersFlow
+
+    private val _favoriteCharactersFlow = MutableStateFlow<List<Character>>(emptyList())
+    val favoriteCharactersFlow: StateFlow<List<Character>>
+        get() = _favoriteCharactersFlow
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val _charactersFlow: Flow<PagingData<Character>> =
@@ -60,8 +65,14 @@ class CharactersListViewModel @Inject constructor(
         _editState.update {
             it.copy(
                 isEditing = false,
-                editableCharacters = arrayListOf()
+                editableCharacters = emptyList()
             )
+        }
+    }
+
+    fun addCharactersToFavorites(characters: List<Character>) {
+        viewModelScope.launch {
+            /*repository.addFavoriteCharacters(characters)*/
         }
     }
 
@@ -98,8 +109,10 @@ class CharactersListViewModel @Inject constructor(
             is PagerEvents.Like -> {
                 paging
                     .map {
-                        if (pagerEvents.character.id == it.id) return@map it.copy(liked = !it.liked)
-                        else return@map it
+                        if (pagerEvents.character.id == it.id)
+                            return@map it.copy(liked = !it.liked)
+                        else
+                            return@map it
                     }
             }
         }

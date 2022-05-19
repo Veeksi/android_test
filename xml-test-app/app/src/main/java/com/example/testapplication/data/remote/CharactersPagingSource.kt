@@ -1,19 +1,16 @@
-package com.example.testapplication.data.data_source
+package com.example.testapplication.data.remote
 
 import android.net.Uri
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.testapplication.data.MortyService
 import com.example.testapplication.domain.model.Character
 import com.example.testapplication.domain.model.FilterCharacters
-import retrofit2.HttpException
 
 class CharactersPagingSource(
     private val service: MortyService,
     private val filter: FilterCharacters
-) :
-    PagingSource<Int, Character>() {
+) : PagingSource<Int, Character>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
         val pageNumber = params.key ?: 1
 

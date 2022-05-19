@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.cardview.widget.CardView
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.isVisible
 import androidx.fragment.app.*
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -84,8 +85,8 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                         true
                     }
                     R.id.like -> {
-                        /*val dialogFragment = FilterDialogFragment()
-                        dialogFragment.show(childFragmentManager, "filter")*/
+                        charactersListViewModel.addCharactersToFavorites(charactersListViewModel.editState.value.editableCharacters)
+                        stopEditing()
                         true
                     }
                     R.id.remove -> {
@@ -94,7 +95,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                                 PagerEvents.Remove(character)
                             )
                         }
-                        charactersListViewModel.stopEditing()
+                        stopEditing()
                         true
                     }
                     else -> false
@@ -137,17 +138,31 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
         with(binding) {
             characterRecyclerview.apply {
-                layoutManager =
-                    if (activity?.resources?.configuration?.orientation == ORIENTATION_PORTRAIT) {
-                        GridLayoutManager(context, 2)
-                    } else {
-                        GridLayoutManager(context, 4)
-                    }
-                setHasFixedSize(true)
-                adapter = characterListAdapter.withLoadStateHeaderAndFooter(
-                    header = PagingLoadStateAdapter(characterListAdapter),
-                    footer = PagingLoadStateAdapter(characterListAdapter)
+                val layoutManager = GridLayoutManager(context, 4)
+                if (activity?.resources?.configuration?.orientation == ORIENTATION_PORTRAIT) {
+                    layoutManager.spanCount = 2
+                }
+                characterRecyclerview.layoutManager = layoutManager
+
+                val footerAdapter = PagingLoadStateAdapter(characterListAdapter)
+                adapter = characterListAdapter.withLoadStateFooter(
+                    footer = footerAdapter
                 )
+
+                layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (position == characterListAdapter.itemCount && footerAdapter.itemCount > 0) {
+                            if (activity?.resources?.configuration?.orientation == ORIENTATION_PORTRAIT) {
+                                2
+                            } else {
+                                4
+                            }
+                        } else {
+                            1
+                        }
+                    }
+
+                }
 
                 tracker = SelectionTracker.Builder(
                     "selectionItem",
@@ -205,7 +220,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
             }
 
             toolbar.setNavigationOnClickListener {
-                charactersListViewModel.stopEditing()
+                stopEditing()
             }
         }
     }
@@ -245,25 +260,17 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
             launch {
                 characterListAdapter.loadStateFlow.collectLatest { loadState ->
-                    binding.swipeRefreshLayout.isRefreshing = false
-                    when (loadState.refresh) {
-                        is LoadState.Error -> {
-                            showErrorToast(loadState)
-                            binding.errorMessage.visibility = View.VISIBLE
-                            binding.circularProgressIndicator.visibility = View.GONE
-                            binding.characterRecyclerview.visibility = View.GONE
-                        }
-                        is LoadState.Loading -> {
-                            if (characterListAdapter.itemCount == 0) {
-                                binding.errorMessage.visibility = View.GONE
-                                binding.circularProgressIndicator.visibility = View.VISIBLE
-                            }
-                        }
-                        is LoadState.NotLoading -> {
-                            binding.errorMessage.visibility = View.GONE
-                            binding.circularProgressIndicator.visibility = View.GONE
-                            binding.characterRecyclerview.visibility = View.VISIBLE
-                        }
+                    with(binding) {
+                        showErrorToast(loadState)
+                        swipeRefreshLayout.isRefreshing = false
+                        circularProgressIndicator.isVisible =
+                            loadState.mediator?.refresh is LoadState.Loading && characterListAdapter.itemCount == 0
+                        errorMessage.isVisible =
+                            loadState.refresh is LoadState.Error
+                                    && characterListAdapter.itemCount == 0
+                        characterRecyclerview.isVisible =
+                            loadState.source.refresh is LoadState.NotLoading
+                                    || loadState.mediator?.refresh is LoadState.NotLoading
                     }
                 }
             }

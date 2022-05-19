@@ -6,17 +6,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.testapplication.domain.model.Character
+import com.example.testapplication.domain.model.RemoteKeys
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 
 @Database(
-    entities = [Character::class],
-    version = 2,
+    entities = [Character::class, RemoteKeys::class],
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class CharacterDatabase : RoomDatabase() {
     abstract fun charactersDao(): CharacterDao
+    abstract fun charactersRemoteKeyDao(): RemoteKeysDao
 
     companion object {
 

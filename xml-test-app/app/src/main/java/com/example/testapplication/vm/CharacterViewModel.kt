@@ -26,7 +26,6 @@ class CharacterViewModel @Inject constructor(
         get() = _episodes
 
     private val _episodeList = arrayListOf<Episode>()
-
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading: LiveData<Boolean>
         get() = _isLoading
@@ -46,7 +45,7 @@ class CharacterViewModel @Inject constructor(
 
                     // Start fetching episodes
                     value.data?.let {
-                        it.episodes?.map { episode ->
+                        it.episodes.map { episode ->
                             val episodeId = parseId(episode)
                             episodeRepository.getEpisode(episodeId).collect { result ->
                                 if (result is Resource.Success) {

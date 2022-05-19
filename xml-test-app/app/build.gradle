@@ -85,8 +85,8 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$http_logging_version"
 
     // Pagination
-    def paging_version = "3.0.0"
-    implementation "androidx.paging:paging-runtime:$paging_version"
+    def paging_version = "3.1.1"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     // Swipe refresh layout
     def swipe_refresh_version = "1.1.0"
@@ -100,6 +100,7 @@ dependencies {
     // Room w/ paging 3 integration
     def room_version = "2.4.2"
     implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-paging:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

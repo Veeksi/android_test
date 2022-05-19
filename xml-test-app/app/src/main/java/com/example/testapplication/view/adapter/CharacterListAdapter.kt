@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
+import androidx.paging.LoadState
+import androidx.paging.LoadStateAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.ItemKeyProvider
 import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -26,8 +29,10 @@ class ItemDetailsLookUp(
     override fun getItemDetails(event: MotionEvent): ItemDetails<Character>? {
         val view = recyclerView.findChildViewUnder(event.x, event.y)
         if (view != null) {
-            return (recyclerView.getChildViewHolder(view) as CharacterListAdapter.ViewHolder)
-                .getItemDetails()
+            val holder = recyclerView.getChildViewHolder(view)
+            if (holder is CharacterListAdapter.ViewHolder)
+                return (recyclerView.getChildViewHolder(view) as CharacterListAdapter.ViewHolder)
+                    .getItemDetails()
         }
         return null
     }
@@ -50,6 +55,18 @@ class CharacterListAdapter(
 ) : PagingDataAdapter<Character, CharacterListAdapter.ViewHolder>(CharacterComparator) {
 
     var tracker: SelectionTracker<Character>? = null
+
+    fun withMySpecificFooter(
+        footer: LoadStateAdapter<*>
+    ): ConcatAdapter {
+        addLoadStateListener { loadStates ->
+            footer.loadState = when {
+                loadStates.refresh is LoadState.NotLoading -> loadStates.append
+                else -> loadStates.refresh
+            }
+        }
+        return ConcatAdapter(this, footer)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
