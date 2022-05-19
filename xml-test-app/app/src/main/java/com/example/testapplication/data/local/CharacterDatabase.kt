@@ -12,7 +12,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 
 @Database(
     entities = [Character::class, RemoteKeys::class],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

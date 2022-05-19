@@ -43,6 +43,9 @@ class CharacterMediator(
             val isEndOfList = response.pageInfo.next == null
 
             database.withTransaction {
+                // Refresh always removes old cache
+                // (So whenever user for example filters characters, the local database
+                // gets cleared
                 if (loadType == LoadType.REFRESH) {
                     with(database) {
                         charactersRemoteKeyDao().clearRemoteKeys()

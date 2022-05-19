@@ -13,6 +13,7 @@ data class Character(
     val name: String,
     val image: String,
     val gender: String,
+    val status: String,
     var liked: Boolean = false,
     @Embedded
     val location: Location? = null,
@@ -20,7 +21,6 @@ data class Character(
     @Embedded
     val origin: Origin? = null,
     val species: String? = null,
-    val status: String? = null,
     val type: String? = null,
     val episodes: List<String> = emptyList()
 ) : Parcelable

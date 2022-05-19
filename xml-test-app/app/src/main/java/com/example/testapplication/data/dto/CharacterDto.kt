@@ -7,6 +7,7 @@ data class CharacterDto(
     val name: String,
     val image: String,
     val gender: String,
+    val status: String,
 ) {
     fun toCharacter(): Character {
         return Character(
@@ -14,6 +15,7 @@ data class CharacterDto(
             name = name,
             image = image,
             gender = gender,
+            status = status
         )
     }
 }
