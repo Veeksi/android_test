@@ -145,7 +145,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                 characterRecyclerview.layoutManager = layoutManager
 
                 val footerAdapter = PagingLoadStateAdapter(characterListAdapter)
-                adapter = characterListAdapter.withLoadStateFooter(
+                adapter = characterListAdapter.withCustomLoadStateFooter(
                     footer = footerAdapter
                 )
 

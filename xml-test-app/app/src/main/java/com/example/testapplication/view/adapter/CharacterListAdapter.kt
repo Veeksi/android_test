@@ -56,13 +56,16 @@ class CharacterListAdapter(
 
     var tracker: SelectionTracker<Character>? = null
 
-    fun withMySpecificFooter(
+    fun withCustomLoadStateFooter(
         footer: LoadStateAdapter<*>
     ): ConcatAdapter {
         addLoadStateListener { loadStates ->
-            footer.loadState = when {
-                loadStates.refresh is LoadState.NotLoading -> loadStates.append
-                else -> loadStates.refresh
+            loadStates.mediator?.let {
+                if (it.refresh is LoadState.Error) {
+                    footer.loadState = it.refresh
+                } else {
+                    footer.loadState = loadStates.append
+                }
             }
         }
         return ConcatAdapter(this, footer)
