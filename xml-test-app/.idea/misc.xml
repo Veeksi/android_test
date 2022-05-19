@@ -23,12 +23,14 @@
         <entry key="app/src/main/res/drawable/ic_done.xml" value="0.174" />
         <entry key="app/src/main/res/drawable/ic_filter_list.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/ic_star.xml" value="0.168" />
+        <entry key="app/src/main/res/layout-land/fragment_character.xml" value="0.1" />
         <entry key="app/src/main/res/layout-v23/item_navigation.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15648148148148147" />
-        <entry key="app/src/main/res/layout/fragment_character.xml" value="0.13518518518518519" />
+        <entry key="app/src/main/res/layout/fragment_character.xml" value="0.14109347442680775" />
         <entry key="app/src/main/res/layout/fragment_characters_list.xml" value="0.17753623188405798" />
         <entry key="app/src/main/res/layout/fragment_episodes.xml" value="0.16134751773049646" />
-        <entry key="app/src/main/res/layout/fragment_filter_dialog.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_filter_dialog.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_image_carousel.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_other.xml" value="0.1340782122905028" />
         <entry key="app/src/main/res/layout/fragment_test.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/fragment_testi.xml" value="0.15885416666666666" />
@@ -41,6 +43,7 @@
         <entry key="app/src/main/res/layout/modal_bottom_sheet_content.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/menu/filter_menu.xml" value="0.10648148148148148" />
+        <entry key="app/src/main/res/xml/activity_telegram_header_scene_land.xml" value="0.1" />
       </map>
     </option>
   </component>

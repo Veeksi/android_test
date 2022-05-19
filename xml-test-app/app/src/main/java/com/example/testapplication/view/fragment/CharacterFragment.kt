@@ -1,5 +1,6 @@
 package com.example.testapplication.view.fragment
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.example.testapplication.R
@@ -29,6 +31,18 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
     private lateinit var episodeListAdapter: EpisodeListAdapter
 
     override fun getViewBinding() = FragmentCharacterBinding.inflate(layoutInflater)
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBundle("motionLayoutState", binding.characterMotionLayout.transitionState)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            binding.characterMotionLayout.transitionState = savedInstanceState.getBundle("motionLayoutState")
+        }
+        super.onViewStateRestored(savedInstanceState)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +65,12 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
         with(binding) {
             episodeRecyclerView.apply {
                 adapter = episodeListAdapter
-                layoutManager = LinearLayoutManager(context)
+                layoutManager =
+                    if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        LinearLayoutManager(context)
+                    } else {
+                        GridLayoutManager(context, 4)
+                    }
                 setHasFixedSize(true)
             }
             characterImage.apply {

@@ -6,10 +6,19 @@
         motion:constraintSetEnd="@+id/finishCollapse"
         motion:constraintSetStart="@id/init"
         motion:duration="1200">
-        <KeyFrameSet></KeyFrameSet>
         <OnSwipe
             motion:dragDirection="dragUp"
             motion:touchAnchorId="@+id/episodeRecyclerView" />
+        <KeyFrameSet >
+            <KeyAttribute
+                motion:motionTarget="@+id/characterEpisodes"
+                motion:framePosition="70"
+                android:alpha="0" />
+            <KeyAttribute
+                motion:motionTarget="@+id/characterEpisodes"
+                motion:framePosition="100"
+                android:alpha="0" />
+        </KeyFrameSet>
     </Transition>
 
     <ConstraintSet android:id="@+id/init">
@@ -71,130 +80,7 @@
     </ConstraintSet>
 
 
-    <ConstraintSet android:id="@+id/collapseProfile">
-        <Constraint
-            android:id="@+id/characterCard"
-            android:layout_width="0dp"
-            android:layout_height="240dp"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent">
-            <CustomAttribute
-                motion:attributeName="radius"
-                motion:customDimension="0dp" />
-        </Constraint>
-
-        <Constraint
-            android:id="@+id/characterName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp">
-            <Layout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                motion:layout_constraintEnd_toEndOf="parent"
-                motion:layout_constraintStart_toStartOf="parent"
-                motion:layout_constraintTop_toBottomOf="@id/headerBackground" />
-            <CustomAttribute
-                motion:attributeName="textSize"
-                motion:customFloatValue="28" />
-        </Constraint>
-        <Constraint
-            android:id="@+id/headerBackground"
-            android:layout_width="0dp"
-            android:layout_height="240dp"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
-        <Constraint
-            android:id="@+id/characterEpisodes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/characterName" />
-        <Constraint
-            android:id="@+id/episodeRecyclerView"
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/characterEpisodes"
-            motion:layout_constraintStart_toStartOf="parent" />
-
-    </ConstraintSet>
-
-
-    <ConstraintSet
-        android:id="@+id/middleCollapse"
-        motion:deriveConstraintsFrom="@id/collapseProfile">
-
-        <Constraint
-            android:id="@+id/headerBackground"
-            android:layout_width="0dp"
-            android:layout_height="188dp"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
-
-        <Constraint
-            android:id="@+id/characterCard"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_marginStart="16dp"
-            motion:layout_constraintBottom_toBottomOf="@+id/headerBackground"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/backButton">
-
-            <CustomAttribute
-                motion:attributeName="radius"
-                motion:customDimension="50dp" />
-        </Constraint>
-
-        <Constraint
-            android:id="@+id/characterName"
-            android:layout_marginTop="8dp">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="16dp"
-                motion:layout_constraintBottom_toBottomOf="@id/characterCard"
-                motion:layout_constraintEnd_toEndOf="parent"
-                motion:layout_constraintStart_toEndOf="@+id/characterCard"
-                motion:layout_constraintTop_toTopOf="@+id/characterCard" />
-            <CustomAttribute
-                motion:attributeName="textSize"
-                motion:customFloatValue="18" />
-        </Constraint>
-
-        <Constraint
-            android:id="@+id/characterEpisodes"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
-        <Constraint
-            android:id="@+id/episodeRecyclerView"
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/headerBackground"
-            motion:layout_constraintStart_toStartOf="parent" />
-
-    </ConstraintSet>
-
-
     <ConstraintSet android:id="@+id/finishCollapse">
-
         <Constraint
             android:id="@+id/headerBackground"
             android:layout_width="0dp"
@@ -202,7 +88,6 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
-
         <Constraint
             android:id="@+id/characterCard"
             android:layout_width="56dp"
@@ -239,7 +124,7 @@
             android:id="@+id/characterEpisodes"
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="wrap_content"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
         <Constraint

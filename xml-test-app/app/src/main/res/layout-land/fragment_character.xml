@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/activity_telegram_header_scene"
+    app:layoutDescription="@xml/activity_telegram_header_scene_land"
     tools:context=".view.fragment.CharacterFragment"
     android:saveEnabled="true"
     android:id="@+id/characterMotionLayout"
@@ -12,40 +12,31 @@
 
     <View
         android:id="@+id/headerBackground"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
         android:background="?attr/colorSurface"
-        app:layout_constraintBottom_toTopOf="@id/guideHeader2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/characterCard"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:radius="50dp"
-        app:layout_constraintBottom_toTopOf="@id/guideHeader2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:radius="56dp"
+        app:layout_constraintBottom_toBottomOf="@id/backButton"
+        app:layout_constraintStart_toEndOf="@id/backButton"
+        app:layout_constraintTop_toTopOf="@id/backButton">
 
         <ImageView
             android:id="@+id/characterImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/launcher_foreground"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_launcher_background"
-            android:contentDescription="@string/launcher_foreground"/>
+            tools:src="@drawable/ic_launcher_background" />
 
     </com.google.android.material.card.MaterialCardView>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideHeader2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="340dp" />
 
     <TextView
         android:id="@+id/characterName"
@@ -57,9 +48,10 @@
         android:text="@string/character_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideHeader2"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/characterCard"
+        app:layout_constraintStart_toEndOf="@id/characterCard"
+        app:layout_constraintTop_toTopOf="@id/characterCard"
         tools:text="Galactic Federation Presidentas asdasdasd" />
 
     <androidx.core.widget.ContentLoadingProgressBar
@@ -82,7 +74,7 @@
         android:text="@string/episodes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/characterName" />
+        app:layout_constraintTop_toBottomOf="@id/headerBackground" />
 
     <ImageView
         android:id="@+id/backButton"

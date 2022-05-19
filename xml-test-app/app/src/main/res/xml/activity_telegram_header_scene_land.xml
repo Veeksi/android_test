@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/finishCollapse"
+        motion:constraintSetStart="@id/init"
+        motion:duration="1200">
+        <OnSwipe
+            motion:dragDirection="dragUp"
+            motion:touchAnchorId="@+id/episodeRecyclerView" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/finishCollapse">
+        <Constraint
+            android:id="@+id/headerBackground"
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/characterCard"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            motion:layout_constraintBottom_toBottomOf="@id/backButton"
+            motion:layout_constraintStart_toEndOf="@+id/backButton"
+            motion:layout_constraintTop_toTopOf="@id/backButton">
+            <CustomAttribute
+                motion:attributeName="radius"
+                motion:customDimension="28dp" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/characterName"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            motion:layout_constraintBottom_toBottomOf="@id/characterCard"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toEndOf="@id/characterCard"
+            motion:layout_constraintTop_toTopOf="@id/characterCard"
+            motion:layout_editor_absoluteX="216dp"
+            motion:layout_editor_absoluteY="16dp">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="16dp" />
+            <CustomAttribute
+                motion:attributeName="textSize"
+                motion:customFloatValue="16" />
+        </Constraint>
+        <Constraint
+            android:id="@+id/characterEpisodes"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toBottomOf="@id/headerBackground"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/episodeRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/characterEpisodes" />
+
+    </ConstraintSet>
+
+</MotionScene>
