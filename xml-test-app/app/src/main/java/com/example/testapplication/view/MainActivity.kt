@@ -16,6 +16,7 @@ import com.example.testapplication.R
 import com.example.testapplication.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import me.toptas.fancyshowcase.FancyShowCaseView
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_otherFragment_to_carouselRecyclerViewFragment"
             app:destination="@id/carouselRecyclerViewFragment" />
+        <action
+            android:id="@+id/action_otherFragment_to_fancyShowCaseFragment"
+            app:destination="@id/fancyShowCaseFragment" />
     </fragment>
     <fragment
         android:id="@+id/testFragment"
@@ -26,4 +29,9 @@
         android:name="com.example.testapplication.view.fragment.CarouselRecyclerViewFragment"
         android:label="fragment_carousel_recycler_view"
         tools:layout="@layout/fragment_carousel_recycler_view" />
+    <fragment
+        android:id="@+id/fancyShowCaseFragment"
+        android:name="com.example.testapplication.view.fragment.FancyShowCaseFragment"
+        android:label="fragment_fancy_show_case"
+        tools:layout="@layout/fragment_fancy_show_case" />
 </navigation>

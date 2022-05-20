@@ -107,4 +107,10 @@ dependencies {
 
     // MultiSnapRecyclerView
     implementation 'com.github.takusemba:multisnaprecyclerview:2.0.3'
+
+    // Drag-Select-RecyclerView
+    implementation 'com.afollestad:drag-select-recyclerview:2.4.0'
+
+    // Fancy show case view
+    implementation 'com.github.faruktoptas:FancyShowCaseView:1.3.9'
 }

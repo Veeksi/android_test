@@ -30,7 +30,9 @@
         <entry key="app/src/main/res/layout/fragment_carousel_recycler_view.xml" value="0.11" />
         <entry key="app/src/main/res/layout/fragment_character.xml" value="0.14109347442680775" />
         <entry key="app/src/main/res/layout/fragment_characters_list.xml" value="0.17753623188405798" />
+        <entry key="app/src/main/res/layout/fragment_dropbox_store.xml" value="0.12008547008547009" />
         <entry key="app/src/main/res/layout/fragment_episodes.xml" value="0.16134751773049646" />
+        <entry key="app/src/main/res/layout/fragment_fancy_show_case.xml" value="0.13675213675213677" />
         <entry key="app/src/main/res/layout/fragment_filter_dialog.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_image_carousel.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_other.xml" value="0.1340782122905028" />
@@ -45,7 +47,7 @@
         <entry key="app/src/main/res/layout/item_reflective_character.xml" value="0.13076923076923078" />
         <entry key="app/src/main/res/layout/modal_bottom_sheet_content.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.33177083333333335" />
-        <entry key="app/src/main/res/menu/filter_menu.xml" value="0.10648148148148148" />
+        <entry key="app/src/main/res/menu/filter_menu.xml" value="0.25" />
         <entry key="app/src/main/res/xml/activity_telegram_header_scene_land.xml" value="0.1" />
       </map>
     </option>

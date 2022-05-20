@@ -35,10 +35,6 @@ class CharactersListViewModel @Inject constructor(
     val filterCharactersFlow: StateFlow<FilterCharacters>
         get() = _filterCharactersFlow
 
-    private val _favoriteCharactersFlow = MutableStateFlow<List<Character>>(emptyList())
-    val favoriteCharactersFlow: StateFlow<List<Character>>
-        get() = _favoriteCharactersFlow
-
     @OptIn(ExperimentalCoroutinesApi::class)
     private val _charactersFlow: Flow<PagingData<Character>> =
         _filterCharactersFlow.flatMapLatest { filter ->
@@ -81,12 +77,13 @@ class CharactersListViewModel @Inject constructor(
         _editState.update {
             it.copy(
                 editableCharacters =
-                if (selected && !oldList.contains(character)) oldList + character
-                else if (!selected && oldList.contains(
-                        character
-                    )
-                ) oldList - character
-                else oldList
+                if (selected && !oldList.contains(character)) {
+                    oldList + character
+                } else if (!selected && oldList.contains(character)) {
+                    oldList - character
+                } else {
+                    oldList
+                }
             )
         }
     }
