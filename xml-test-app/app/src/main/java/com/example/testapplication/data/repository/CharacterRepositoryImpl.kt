@@ -27,18 +27,16 @@ class CharacterRepositoryImpl @Inject constructor(
 ) : CharacterRepository, BaseApiResponse {
     @OptIn(ExperimentalPagingApi::class)
     override fun getCharacters(filter: FilterCharacters): Flow<PagingData<Character>> {
-        val pagingSourceFactory = {
+        /*val pagingSourceFactory = {
             characterDatabase.charactersDao()
                 .getAllCharacters(filter.name, filter.gender.value, filter.status.value)
-        }
+        }*/
         return Pager(
             config = PagingConfig(pageSize = 20, prefetchDistance = 2),
-            pagingSourceFactory = pagingSourceFactory,
-            /*
-            Old PagingSource when only online support
             pagingSourceFactory = { CharactersPagingSource(service, filter) },
-            */
-            remoteMediator = CharacterMediator(service, characterDatabase, filter)
+            /*// Caching support which does not work because of https://issuetracker.google.com/issues/231836963
+            pagingSourceFactory = pagingSourceFactory,
+            remoteMediator = CharacterMediator(service, characterDatabase, filter)*/
         ).flow
     }
 

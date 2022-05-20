@@ -145,7 +145,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                 characterRecyclerview.layoutManager = layoutManager
 
                 val footerAdapter = PagingLoadStateAdapter(characterListAdapter)
-                adapter = characterListAdapter.withCustomLoadStateFooter(
+                adapter = characterListAdapter.withLoadStateFooter(
                     footer = footerAdapter
                 )
 
@@ -264,7 +264,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                         showErrorToast(loadState)
                         swipeRefreshLayout.isRefreshing = false
                         circularProgressIndicator.isVisible =
-                            loadState.mediator?.refresh is LoadState.Loading && characterListAdapter.itemCount == 0
+                            loadState.refresh is LoadState.Loading && characterListAdapter.itemCount == 0
                         errorMessage.isVisible =
                             loadState.refresh is LoadState.Error
                                     && characterListAdapter.itemCount == 0

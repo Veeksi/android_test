@@ -21,6 +21,7 @@ import coil.size.Scale
 import com.example.testapplication.R
 import com.example.testapplication.databinding.ItemCharacterBinding
 import com.example.testapplication.domain.model.Character
+import com.example.testapplication.util.PagingLoadStateAdapter
 import com.google.android.material.card.MaterialCardView
 
 class ItemDetailsLookUp(
@@ -29,17 +30,17 @@ class ItemDetailsLookUp(
     override fun getItemDetails(event: MotionEvent): ItemDetails<Character>? {
         val view = recyclerView.findChildViewUnder(event.x, event.y)
         if (view != null) {
-            val holder = recyclerView.getChildViewHolder(view)
-            if (holder is CharacterListAdapter.ViewHolder)
-                return (recyclerView.getChildViewHolder(view) as CharacterListAdapter.ViewHolder)
-                    .getItemDetails()
+            val holder = view.let { recyclerView.getChildViewHolder(it) }
+            if (holder is CharacterListAdapter.ViewHolder) {
+                return holder.getItemDetails()
+            }
         }
         return null
     }
 }
 
 class ItemsKeyProvider(private val adapter: CharacterListAdapter) : ItemKeyProvider<Character>(
-    SCOPE_CACHED
+    SCOPE_MAPPED
 ) {
     override fun getKey(position: Int): Character {
         return adapter.snapshot().items[position]
@@ -56,7 +57,7 @@ class CharacterListAdapter(
 
     var tracker: SelectionTracker<Character>? = null
 
-    fun withCustomLoadStateFooter(
+    /*fun withCustomLoadStateFooter(
         footer: LoadStateAdapter<*>
     ): ConcatAdapter {
         addLoadStateListener { loadStates ->
@@ -69,7 +70,7 @@ class CharacterListAdapter(
             }
         }
         return ConcatAdapter(this, footer)
-    }
+    }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -91,7 +92,10 @@ class CharacterListAdapter(
         fun getItemDetails(): ItemDetailsLookup.ItemDetails<Character> =
             object : ItemDetailsLookup.ItemDetails<Character>() {
                 override fun getPosition(): Int = bindingAdapterPosition
-                override fun getSelectionKey(): Character = snapshot().items[position]
+                override fun getSelectionKey(): Character {
+                    Log.d("ASD", "Snapshot size ${snapshot().items.size}")
+                    return snapshot().items[position]
+                }
             }
 
         fun bind(character: Character) {
