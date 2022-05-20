@@ -113,4 +113,7 @@ dependencies {
 
     // Fancy show case view
     implementation 'com.github.faruktoptas:FancyShowCaseView:1.3.9'
+
+    // Balloon
+    implementation "com.github.skydoves:balloon:1.4.5"
 }

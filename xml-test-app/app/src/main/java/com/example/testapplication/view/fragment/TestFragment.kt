@@ -9,10 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentTestBinding
 
-/**
- * An example full-screen fragment that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 class TestFragment : BaseFragment<FragmentTestBinding>() {
 
     override fun getViewBinding() = FragmentTestBinding.inflate(layoutInflater)
