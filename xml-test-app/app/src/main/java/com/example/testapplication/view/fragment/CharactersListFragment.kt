@@ -138,11 +138,13 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
         with(binding) {
             characterRecyclerview.apply {
+                setHasFixedSize(true)
                 val layoutManager = GridLayoutManager(context, 4)
                 if (activity?.resources?.configuration?.orientation == ORIENTATION_PORTRAIT) {
                     layoutManager.spanCount = 2
                 }
                 characterRecyclerview.layoutManager = layoutManager
+
 
                 val footerAdapter = PagingLoadStateAdapter(characterListAdapter)
                 adapter = characterListAdapter.withLoadStateFooter(
@@ -161,7 +163,6 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                             1
                         }
                     }
-
                 }
 
                 tracker = SelectionTracker.Builder(

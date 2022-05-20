@@ -38,6 +38,7 @@
     <string name="like_item">Like item</string>
     <string name="remove_item">Remove item</string>
     <string name="delete">Delete</string>
+    <string name="snapping_horizontal_recyclerview">Snapping horizontal recyclerView</string>
     <string-array name="filterStatus">
         <item>All</item>
         <item>Alive </item>

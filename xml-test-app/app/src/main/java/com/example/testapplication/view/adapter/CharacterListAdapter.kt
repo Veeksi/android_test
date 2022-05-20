@@ -93,7 +93,6 @@ class CharacterListAdapter(
             object : ItemDetailsLookup.ItemDetails<Character>() {
                 override fun getPosition(): Int = bindingAdapterPosition
                 override fun getSelectionKey(): Character {
-                    Log.d("ASD", "Snapshot size ${snapshot().items.size}")
                     return snapshot().items[position]
                 }
             }

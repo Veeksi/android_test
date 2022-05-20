@@ -19,4 +19,9 @@ val navigationItems = arrayListOf(
         "Describes how to implement collapsible toolbar",
         R.id.action_otherFragment_to_testFragment
     ),
+    NavigationItem(
+        "Carousel RecyclerView",
+        "Describes how to implement carousel recyclerView",
+        R.id.action_otherFragment_to_carouselRecyclerViewFragment
+    ),
 )

@@ -28,11 +28,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/character_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             tools:itemCount="3"
-            tools:listitem="@layout/item_character"
-            tools:orientation="horizontal"
-            tools:scrollbars="horizontal" />
+            tools:listitem="@layout/item_character" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
