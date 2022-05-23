@@ -1,6 +1,7 @@
 package com.example.jetpackapp.ui.screens
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -27,7 +28,7 @@ import androidx.paging.compose.items
 import coil.compose.rememberAsyncImagePainter
 import com.example.jetpackapp.domain.model.Character
 import com.example.jetpackapp.navigation.Screens
-import com.example.jetpackapp.ui.vm.CharacterViewModel
+import com.example.jetpackapp.ui.vm.CharactersListViewModel
 import com.example.jetpackapp.util.PagerEvents
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -38,10 +39,10 @@ import okhttp3.internal.wait
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CharacterListScreen(
+fun CharactersListScreen(
     //navController: NavHostController,
     navigateToCharacterDetails: (Int) -> Unit,
-    characterViewModel: CharacterViewModel = hiltViewModel(),
+    characterViewModel: CharactersListViewModel = hiltViewModel(),
 ) {
     val lazyCharacterItems: LazyPagingItems<Character> =
         characterViewModel.charactersFlow.collectAsLazyPagingItems()
@@ -58,17 +59,23 @@ fun CharacterListScreen(
 
     val coroutineScope = rememberCoroutineScope()
 
+    BackHandler(
+        enabled = modalBottomSheetState.isVisible,
+    ) {
+        coroutineScope.launch {
+            modalBottomSheetState.hide()
+        }
+    }
     SwipeRefresh(
         state = swipeRefreshState,
         onRefresh = {
             lazyCharacterItems.refresh()
         }) {
-
         ModalBottomSheetLayout(
             scrimColor = Color.Black.copy(alpha = 0.32f),
             sheetState = modalBottomSheetState,
+            modifier = Modifier.padding(bottom = 56.dp),
             sheetContent = {
-
                 ModalBottomSheet(
                     character = selectedCharacter.value,
                     onView = {
@@ -99,11 +106,6 @@ fun CharacterListScreen(
                             coroutineScope = coroutineScope,
                             onCharacterClicked = {
                                 characterViewModel.selectedCharacter(it)
-                                /*
-                            selectedCharacter.value?.let {
-                                navigateToCharacterDetails(it.id)
-                            }
-                             */
                             }
                         )
                     }
@@ -206,13 +208,16 @@ fun ErrorItem(
     modifier: Modifier = Modifier,
     onClickRetry: () -> Unit
 ) {
-    Row(
+    Column(
         modifier = modifier.padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
+        Text(
+            text = "Something went wrong, try again!"
+        )
         OutlinedButton(onClick = onClickRetry) {
-            Text(text = "Something went wrong, try again!")
+            Text(text = "Retry")
         }
     }
 }
@@ -220,5 +225,5 @@ fun ErrorItem(
 @Preview
 @Composable
 fun PreviewCharactersScreen() {
-    // CharacterListScreen()
+    // CharactersListScreen()
 }

@@ -1,6 +1,7 @@
 package com.example.jetpackapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.jetpackapp.navigation.Navigation

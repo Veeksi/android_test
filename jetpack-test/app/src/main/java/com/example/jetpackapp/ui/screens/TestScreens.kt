@@ -10,19 +10,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun TestScreen() {
+fun TestScreen1() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .wrapContentSize(Alignment.Center),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Test screen")
+        Text(text = "Test screen1")
     }
 }
 
-@Preview
 @Composable
-fun PreviewTestScreen() {
-    TestScreen()
+fun TestScreen2() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Test screen2")
+    }
 }

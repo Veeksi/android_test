@@ -29,7 +29,7 @@ data class ExampleUiState(
 )
 
 @HiltViewModel
-class CharacterViewModel @Inject constructor(
+class CharactersListViewModel @Inject constructor(
     private val repository: CharacterRepository
 ) : ViewModel() {
     private val modificationEvents = MutableStateFlow<List<PagerEvents>>(emptyList())
