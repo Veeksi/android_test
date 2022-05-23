@@ -32,7 +32,6 @@ class EpisodeListAdapter :
                 episodeName.text = episode.name
                 episodeAirDate.text = episode.air_date
                 episodeCode.text = episode.episode
-                episodeId.text = episode.id.toString()
             }
         }
     }

@@ -39,7 +39,8 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-            binding.characterMotionLayout.transitionState = savedInstanceState.getBundle("motionLayoutState")
+            binding.characterMotionLayout.transitionState =
+                savedInstanceState.getBundle("motionLayoutState")
         }
         super.onViewStateRestored(savedInstanceState)
     }
@@ -65,12 +66,10 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
         with(binding) {
             episodeRecyclerView.apply {
                 adapter = episodeListAdapter
-                layoutManager =
-                    if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                        LinearLayoutManager(context)
-                    } else {
-                        GridLayoutManager(context, 4)
-                    }
+                layoutManager = GridLayoutManager(context, 4)
+                if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    layoutManager = GridLayoutManager(context, 2)
+                }
                 setHasFixedSize(true)
             }
             characterImage.apply {
