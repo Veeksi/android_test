@@ -34,7 +34,7 @@ class CharacterViewModel @Inject constructor(
         loadCharacter()
     }
 
-    private fun loadCharacter() {
+    fun loadCharacter() {
         viewModelScope.launch {
             savedStateHandle.get<Int>("id")?.let { id ->
                 _isLoading.postValue(true)

@@ -2,13 +2,12 @@
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/characterMotionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/activity_telegram_header_scene_land"
-    tools:context=".view.fragment.CharacterFragment"
     android:saveEnabled="true"
-    android:id="@+id/characterMotionLayout"
-    >
+    app:layoutDescription="@xml/activity_telegram_header_scene_land"
+    tools:context=".view.fragment.CharacterFragment">
 
     <View
         android:id="@+id/headerBackground"
@@ -42,13 +41,13 @@
         android:id="@+id/characterName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
         android:text="@string/character_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="28sp"
-        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@id/characterCard"
         app:layout_constraintStart_toEndOf="@id/characterCard"
         app:layout_constraintTop_toTopOf="@id/characterCard"
@@ -82,32 +81,46 @@
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        android:contentDescription="@string/back_button"
         android:padding="12dp"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/headerBackground"
-        android:contentDescription="@string/back_button"/>
+        app:layout_constraintTop_toTopOf="@+id/headerBackground" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/episodeRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/characterEpisodes"
-        tools:listitem="@layout/item_episode"
-        android:clipToPadding="false"
-        android:paddingBottom="8dp"/>
+        tools:listitem="@layout/item_episode" />
 
     <TextView
         android:id="@+id/errorMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerBackground"
         tools:text="Please check your network connection." />
+
+    <ImageButton
+        android:id="@+id/retryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_refresh"
+        android:text="@string/retry"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/errorMessage" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

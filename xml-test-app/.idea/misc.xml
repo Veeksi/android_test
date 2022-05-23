@@ -23,12 +23,13 @@
         <entry key="app/src/main/res/drawable/ic_done.xml" value="0.174" />
         <entry key="app/src/main/res/drawable/ic_filter_list.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/ic_like.xml" value="0.1755" />
+        <entry key="app/src/main/res/drawable/ic_refresh.xml" value="0.323" />
         <entry key="app/src/main/res/drawable/ic_star.xml" value="0.168" />
         <entry key="app/src/main/res/layout-land/fragment_character.xml" value="0.1" />
         <entry key="app/src/main/res/layout-v23/item_navigation.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/layout/fragment_carousel_recycler_view.xml" value="0.11" />
-        <entry key="app/src/main/res/layout/fragment_character.xml" value="0.14109347442680775" />
+        <entry key="app/src/main/res/layout/fragment_character.xml" value="0.125" />
         <entry key="app/src/main/res/layout/fragment_characters_list.xml" value="0.17753623188405798" />
         <entry key="app/src/main/res/layout/fragment_dropbox_store.xml" value="0.12008547008547009" />
         <entry key="app/src/main/res/layout/fragment_episodes.xml" value="0.16134751773049646" />

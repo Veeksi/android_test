@@ -83,6 +83,9 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
             backButton.setOnClickListener {
                 activity?.onBackPressed()
             }
+            retryButton?.setOnClickListener {
+                characterViewModel.loadCharacter()
+            }
         }
     }
 
@@ -92,7 +95,11 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
         }
 
         characterViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
-            if (loading == false) {
+            if (loading == true) {
+                binding.errorMessage.setMotionVisibility(View.GONE)
+                binding.retryButton?.setMotionVisibility(View.GONE)
+                binding.loadingIndicator.setMotionVisibility(View.VISIBLE)
+            } else {
                 binding.loadingIndicator.setMotionVisibility(View.GONE)
             }
         }
@@ -110,14 +117,11 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
                         }
                     }
                 }
-                is Resource.Loading -> {
-                    with(binding) {
-                        loadingIndicator.setMotionVisibility(View.VISIBLE)
-                    }
-                }
                 is Resource.Error -> {
                     with(binding) {
                         errorMessage.text = result.message
+                        errorMessage.setMotionVisibility(View.VISIBLE)
+                        retryButton?.setMotionVisibility(View.VISIBLE)
                     }
                 }
             }
