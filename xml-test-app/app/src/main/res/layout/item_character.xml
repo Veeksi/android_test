@@ -10,11 +10,11 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="0dp"
         android:checkable="true"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="0dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -53,13 +53,16 @@
 
 
         </LinearLayout>
-        <ImageView
+
+        <ImageButton
+            android:id="@+id/likeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:selectableItemBackground"
             android:src="@drawable/ic_like"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </com.google.android.material.card.MaterialCardView>
 

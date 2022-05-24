@@ -51,4 +51,15 @@ class CharacterRepositoryImpl @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
+    override suspend fun addCharactersToFavorite(characters: List<Character>) {
+        characterDatabase.charactersDao().addCharactersToFavorite(characters)
+    }
+
+    override suspend fun getAllFavoriteCharacters(): List<Character> {
+        return characterDatabase.charactersDao().getAllFavoriteCharacters()
+    }
+
+    override suspend fun deleteCharactersFromFavorite(characters: List<Character>) {
+        characterDatabase.charactersDao().deleteFromFavorites(characters)
+    }
 }

@@ -23,6 +23,10 @@ class CharactersListViewModel @Inject constructor(
 ) : ViewModel() {
     private val modificationEvents = MutableStateFlow<List<PagerEvents>>(emptyList())
 
+    init {
+        getFavoriteCharacters()
+    }
+
     data class EditState(
         val isEditing: Boolean = false,
         val editableCharacters: List<Character> = arrayListOf()
@@ -30,6 +34,10 @@ class CharactersListViewModel @Inject constructor(
 
     private val _editState = MutableStateFlow(EditState())
     val editState = _editState.asStateFlow()
+
+    private val _favoriteCharacters = MutableLiveData<List<Character>>()
+    val favoriteCharacters: LiveData<List<Character>>
+        get() = _favoriteCharacters
 
     private val _filterCharactersFlow = MutableStateFlow(FilterCharacters())
     val filterCharactersFlow: StateFlow<FilterCharacters>
@@ -68,7 +76,21 @@ class CharactersListViewModel @Inject constructor(
 
     fun addCharactersToFavorites(characters: List<Character>) {
         viewModelScope.launch {
-            /*repository.addFavoriteCharacters(characters)*/
+            repository.addCharactersToFavorite(characters)
+            _favoriteCharacters.value = _favoriteCharacters.value?.plus(characters)
+        }
+    }
+
+    private fun getFavoriteCharacters() {
+        viewModelScope.launch {
+            _favoriteCharacters.postValue(repository.getAllFavoriteCharacters())
+        }
+    }
+
+    fun deleteCharactersFromFavorites(characters: List<Character>) {
+        viewModelScope.launch {
+            repository.deleteCharactersFromFavorite(characters)
+            _favoriteCharacters.value = _favoriteCharacters.value?.minus(characters.toSet())
         }
     }
 

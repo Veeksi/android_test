@@ -9,4 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface CharacterRepository {
     fun getCharacters(filter: FilterCharacters): Flow<PagingData<Character>>
     suspend fun getCharacter(id: Int): Flow<Resource<Character>>
+    suspend fun addCharactersToFavorite(characters: List<Character>)
+    suspend fun getAllFavoriteCharacters(): List<Character>
+    suspend fun deleteCharactersFromFavorite(characters: List<Character>)
 }

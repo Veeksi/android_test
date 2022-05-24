@@ -21,9 +21,17 @@ interface CharacterDao {
     )
     fun getAllCharacters(name: String, gender: String, status: String): PagingSource<Int, Character>
 
-    @Delete
-    fun deleteFromFavorite(character: Character)
-
     @Query("DELETE FROM characters")
     suspend fun clearAllCharacters()
+
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addCharactersToFavorite(characters: List<Character>)
+
+    @Query("SELECT * FROM characters")
+    suspend fun getAllFavoriteCharacters(): List<Character>
+
+    @Delete
+    suspend fun deleteFromFavorites(characters: List<Character>)
 }
