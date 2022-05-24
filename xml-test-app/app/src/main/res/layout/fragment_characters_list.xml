@@ -6,15 +6,14 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/swipeRefreshLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/swipeRefreshLayout"
-        app:title="Characters"
-        />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Characters" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -29,10 +28,10 @@
             android:id="@+id/character_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_character"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+            tools:itemCount="3"
+            tools:listitem="@layout/item_character" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -41,31 +40,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_arrow_up"
-        app:layout_constraintBottom_toBottomOf="@+id/swipeRefreshLayout"
-        app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/floatingactionbutton"
-        android:visibility="gone"/>
+        android:src="@drawable/ic_arrow_up"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/swipeRefreshLayout"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/circularProgressIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:indeterminate="true"
         android:visibility="gone"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/errorMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/check_network"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

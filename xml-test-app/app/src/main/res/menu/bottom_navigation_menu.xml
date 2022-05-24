@@ -2,12 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
-        android:title="@string/home"
-        android:icon="@drawable/ic_face"
-        />
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/favorites"
+        android:icon="@drawable/ic_star"
+        android:title="@string/favorites" />
     <item
         android:id="@+id/other"
-        android:title="@string/other"
-        android:icon="@drawable/ic_star"
-        />
+        android:icon="@drawable/ic_other"
+        android:title="@string/other" />
 </menu>
