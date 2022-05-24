@@ -2,18 +2,18 @@ package com.example.jetpackapp.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.*
+import androidx.navigation.compose.composable
 import com.example.jetpackapp.ui.screens.CharacterScreen
 import com.example.jetpackapp.ui.screens.CharactersListScreen
-import com.google.accompanist.navigation.animation.composable
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.charactersGraph(navController: NavHostController) {
+fun NavGraphBuilder.charactersGraph(navController: NavController) {
     navigation(
-        startDestination = BottomNavItem.Characters.Route,
+        startDestination = BottomNavItem.Characters.route,
         route = CHARACTERS_GRAPH_ROUTE
     ) {
         composable(
-            route = BottomNavItem.Characters.Route,
+            route = BottomNavItem.Characters.route,
         ) {
             CharactersListScreen(
                 navigateToCharacterDetails = {
