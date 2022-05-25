@@ -14,7 +14,7 @@ import com.example.testapplication.domain.model.Character
 import com.google.android.material.card.MaterialCardView
 
 class FavoriteCharactersAdapter(
-    private val onCharacterItemClicked: (Character, MaterialCardView) -> Unit,
+    private val onCharacterItemClicked: (Character) -> Unit,
 ) : ListAdapter<Character, FavoriteCharactersAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,6 +36,8 @@ class FavoriteCharactersAdapter(
         fun bind(character: Character) {
             binding.apply {
                 character.also { (id, name, image) ->
+                    cardView.layoutParams.width = 360
+                    characterItem.maxWidth = 360
                     cardView.transitionName = "$id-$image"
                     cardView.isClickable = false
                     cardView.isFocusable = false
@@ -51,7 +53,7 @@ class FavoriteCharactersAdapter(
                     }
                     likeButton.visibility = View.VISIBLE
                     likeButton.setOnClickListener {
-                        onCharacterItemClicked(character, binding.cardView)
+                        onCharacterItemClicked(character)
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package com.example.testapplication.view.fragment
 
+import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.text.method.Touch.onTouchEvent
@@ -18,10 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.selection.*
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharactersListBinding
 import com.example.testapplication.domain.model.Character
@@ -29,6 +27,7 @@ import com.example.testapplication.util.PagerEvents
 import com.example.testapplication.util.PagingLoadStateAdapter
 import com.example.testapplication.util.navigate
 import com.example.testapplication.view.adapter.CharacterListAdapter
+import com.example.testapplication.view.adapter.FavoriteCharactersAdapter
 import com.example.testapplication.view.adapter.ItemDetailsLookUp
 import com.example.testapplication.view.adapter.ItemsKeyProvider
 import com.example.testapplication.vm.CharactersListViewModel
@@ -44,6 +43,7 @@ import java.net.UnknownHostException
 class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
     private val charactersListViewModel: CharactersListViewModel by activityViewModels()
     private lateinit var characterListAdapter: CharacterListAdapter
+    private lateinit var favoriteCharactersAdapter: FavoriteCharactersAdapter
 
     private var tracker: SelectionTracker<Character>? = null
 
@@ -64,7 +64,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
             override fun handleOnBackPressed() {
                 if (charactersListViewModel.editState.value.isEditing) {
                     stopEditing()
-                } else if (binding.characterRecyclerview.canScrollVertically(-1)) {
+                } else if (binding.charactersRecyclerview.canScrollVertically(-1)) {
                     scrollToTop()
                 } else {
                     isEnabled = false
@@ -85,8 +85,11 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                         true
                     }
                     R.id.like -> {
-                        charactersListViewModel.addCharactersToFavorites(charactersListViewModel.editState.value.editableCharacters)
+                        val charactersToAdd =
+                            charactersListViewModel.editState.value.editableCharacters
+                        charactersListViewModel.addCharactersToFavorites(charactersToAdd)
                         stopEditing()
+                        notify(getString(R.string.new_item_added, charactersToAdd.size))
                         true
                     }
                     R.id.remove -> {
@@ -135,16 +138,17 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
     private fun setupUi() {
         characterListAdapter = CharacterListAdapter(::characterItemClicked)
-
         with(binding) {
-            characterRecyclerview.apply {
+            charactersRecyclerview.apply {
                 setHasFixedSize(true)
+                isNestedScrollingEnabled = false
                 val layoutManager = GridLayoutManager(context, 4)
                 if (activity?.resources?.configuration?.orientation == ORIENTATION_PORTRAIT) {
                     layoutManager.spanCount = 2
                 }
-                characterRecyclerview.layoutManager = layoutManager
+                charactersRecyclerview.layoutManager = layoutManager
 
+                val concatAdapter = ConcatAdapter()
 
                 val footerAdapter = PagingLoadStateAdapter(characterListAdapter)
                 adapter = characterListAdapter.withLoadStateFooter(
@@ -167,9 +171,9 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
                 tracker = SelectionTracker.Builder(
                     "selectionItem",
-                    binding.characterRecyclerview,
+                    binding.charactersRecyclerview,
                     ItemsKeyProvider(characterListAdapter),
-                    ItemDetailsLookUp(binding.characterRecyclerview),
+                    ItemDetailsLookUp(binding.charactersRecyclerview),
                     StorageStrategy.createParcelableStorage(Character::class.java)
                 ).withSelectionPredicate(
                     SelectionPredicates.createSelectAnything()
@@ -229,7 +233,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
     override fun onResume() {
         super.onResume()
         binding.apply {
-            if (characterRecyclerview.canScrollVertically(-1)) {
+            if (charactersRecyclerview.canScrollVertically(-1)) {
                 floatingActionButton.visibility = View.VISIBLE
             }
         }
@@ -269,7 +273,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                         errorMessage.isVisible =
                             loadState.refresh is LoadState.Error
                                     && characterListAdapter.itemCount == 0
-                        characterRecyclerview.isVisible =
+                        charactersRecyclerview.isVisible =
                             loadState.source.refresh is LoadState.NotLoading
                                     || loadState.mediator?.refresh is LoadState.NotLoading
                     }
@@ -308,7 +312,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
     }
 
     private fun scrollToTop() {
-        binding.characterRecyclerview.smoothScrollToPosition(0)
+        binding.charactersRecyclerview.smoothScrollToPosition(0)
     }
 
     private fun stopEditing() {
