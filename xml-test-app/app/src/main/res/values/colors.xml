@@ -18,4 +18,8 @@
     <color name="overlay_light_onPrimary">#FFFFFF</color>
     <color name="overlay_light_primaryContainer">#FFDADB</color>
     <color name="overlay_light_onPrimaryContainer">#400008</color>
+
+    <!--72% transparent button-->
+    <color name="transparentWhite">#72FFFFFF</color>
+    <color name="colorRipple">#1f000000</color>
 </resources>

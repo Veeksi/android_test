@@ -37,6 +37,8 @@ class FavoriteCharactersAdapter(
             binding.apply {
                 character.also { (id, name, image) ->
                     cardView.transitionName = "$id-$image"
+                    cardView.isClickable = false
+                    cardView.isFocusable = false
                     title.text = name
                     imageView.apply {
                         load(image) {

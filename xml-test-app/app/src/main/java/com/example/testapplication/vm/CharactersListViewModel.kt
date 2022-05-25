@@ -77,7 +77,7 @@ class CharactersListViewModel @Inject constructor(
     fun addCharactersToFavorites(characters: List<Character>) {
         viewModelScope.launch {
             repository.addCharactersToFavorite(characters)
-            _favoriteCharacters.value = _favoriteCharacters.value?.plus(characters)
+            _favoriteCharacters.value = _favoriteCharacters.value?.union(characters)?.toList()
         }
     }
 
