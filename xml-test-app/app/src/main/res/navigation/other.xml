@@ -12,17 +12,20 @@
         tools:layout="@layout/fragment_other">
         <action
             android:id="@+id/action_otherFragment_to_testFragment"
-            app:destination="@id/testFragment" />
+            app:destination="@id/collapsibleToolbarFragment" />
         <action
             android:id="@+id/action_otherFragment_to_carouselRecyclerViewFragment"
             app:destination="@id/carouselRecyclerViewFragment" />
         <action
             android:id="@+id/action_otherFragment_to_fancyShowCaseFragment"
             app:destination="@id/fancyShowCaseFragment" />
+        <action
+            android:id="@+id/action_otherFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/testFragment"
-        android:name="com.example.testapplication.view.fragment.TestFragment"
+        android:id="@+id/collapsibleToolbarFragment"
+        android:name="com.example.testapplication.view.fragment.CollapsibleToolbarFragment"
         android:label="" />
     <fragment
         android:id="@+id/carouselRecyclerViewFragment"
@@ -34,4 +37,9 @@
         android:name="com.example.testapplication.view.fragment.FancyShowCaseFragment"
         android:label="fragment_fancy_show_case"
         tools:layout="@layout/fragment_fancy_show_case" />
+    <fragment
+        android:id="@+id/viewPagerFragment"
+        android:name="com.example.testapplication.view.fragment.ViewPagerFragment"
+        android:label="fragment_view_pager"
+        tools:layout="@layout/fragment_view_pager" />
 </navigation>

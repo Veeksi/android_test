@@ -29,4 +29,9 @@ val navigationItems = arrayListOf(
         "Describes how to implement fancy show case",
         R.id.action_otherFragment_to_fancyShowCaseFragment
     ),
+    NavigationItem(
+        "ViewPager2",
+        "Describes how to implement viewpager 2",
+        R.id.action_otherFragment_to_viewPagerFragment
+    ),
 )
