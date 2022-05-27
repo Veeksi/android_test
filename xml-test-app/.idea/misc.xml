@@ -49,6 +49,7 @@
         <entry key="app/src/main/res/layout/fragment_view_pager.xml" value="0.16196581196581197" />
         <entry key="app/src/main/res/layout/item_character.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/layout/item_episode.xml" value="0.15885416666666666" />
+        <entry key="app/src/main/res/layout/item_episode_header.xml" value="0.27350427350427353" />
         <entry key="app/src/main/res/layout/item_gender_dropdown.xml" value="0.1640625" />
         <entry key="app/src/main/res/layout/item_navigation.xml" value="0.14328358208955225" />
         <entry key="app/src/main/res/layout/item_network_state.xml" value="0.1" />

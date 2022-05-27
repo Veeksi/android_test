@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCharacterBinding
+import com.example.testapplication.domain.model.EpisodeDataItem
 import com.example.testapplication.util.Resource
 import com.example.testapplication.util.setMotionVisibility
 import com.example.testapplication.view.adapter.EpisodeListAdapter
@@ -66,10 +67,17 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
         with(binding) {
             episodeRecyclerView.apply {
                 adapter = episodeListAdapter
-                layoutManager = GridLayoutManager(context, 4)
+                var gridManager = GridLayoutManager(context, 4)
                 if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    layoutManager = GridLayoutManager(context, 2)
+                    gridManager = GridLayoutManager(context, 2)
                 }
+                gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int) = when (position) {
+                        0 -> gridManager.spanCount
+                        else -> 1
+                    }
+                }
+                layoutManager = gridManager
                 setHasFixedSize(true)
             }
             characterName.text = args.name
@@ -88,13 +96,21 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
 
     private fun setupObservers() {
         characterViewModel.episodes.observe(viewLifecycleOwner) { result ->
-            episodeListAdapter.submitList(result)
+            val items = when (result) {
+                null -> listOf(EpisodeDataItem.EpisodeHeader(episodeCount = 0))
+                else -> listOf(EpisodeDataItem.EpisodeHeader(episodeCount = result.size)) + result.map {
+                    EpisodeDataItem.EpisodeItem(
+                        it
+                    )
+                }
+            }
+            episodeListAdapter.submitList(items)
         }
 
         characterViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             with(binding) {
                 if (loading == true) {
-                    errorBox?.setMotionVisibility(View.GONE)
+                    errorBox.setMotionVisibility(View.GONE)
                     loadingIndicator.setMotionVisibility(View.VISIBLE)
                 } else {
                     loadingIndicator.setMotionVisibility(View.GONE)
@@ -106,11 +122,11 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
             when (result) {
                 is Resource.Success -> {
                     with(binding) {
-                        characterInfoLayout?.setMotionVisibility(View.VISIBLE)
+                        characterInfoLayout.setMotionVisibility(View.VISIBLE)
                         result.data?.let { character ->
-                            characterId?.text = character.id.toString()
-                            characterGender?.text = character.gender
-                            characterStatus?.text = character.status
+                            characterId.text = character.id.toString()
+                            characterGender.text = character.gender
+                            characterStatus.text = character.status
                         }
                     }
                 }
@@ -118,8 +134,8 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
                     showToast(getString(R.string.internet_error))
                     with(binding) {
                         errorMessage.text = result.message
-                        characterInfoLayout?.setMotionVisibility(View.GONE)
-                        errorBox?.setMotionVisibility(View.VISIBLE)
+                        characterInfoLayout.setMotionVisibility(View.GONE)
+                        errorBox.setMotionVisibility(View.VISIBLE)
                     }
                 }
             }

@@ -45,6 +45,7 @@
     <string name="item_deleted">Character deleted</string>
     <string name="undo">Undo</string>
     <string name="id">ID</string>
+    <string name="episode_count">Episodes: %1$d</string>
     <string-array name="filterStatus">
         <item>All</item>
         <item>Alive </item>
