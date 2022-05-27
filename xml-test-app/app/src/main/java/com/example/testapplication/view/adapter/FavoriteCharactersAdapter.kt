@@ -38,7 +38,6 @@ class FavoriteCharactersAdapter(
                 character.also { (id, name, image) ->
                     cardView.layoutParams.width = 360
                     characterItem.maxWidth = 360
-                    cardView.transitionName = "$id-$image"
                     cardView.isClickable = false
                     cardView.isFocusable = false
                     title.text = name

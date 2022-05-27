@@ -9,6 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +26,10 @@ import com.example.testapplication.vm.CharacterViewModel
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -40,8 +47,8 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-            binding.characterMotionLayout.transitionState =
-                savedInstanceState.getBundle("motionLayoutState")
+            binding.characterMotionLayout.transitionState = savedInstanceState
+                .getBundle("motionLayoutState")
         }
         super.onViewStateRestored(savedInstanceState)
     }
@@ -95,47 +102,46 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
     }
 
     private fun setupObservers() {
-        characterViewModel.episodes.observe(viewLifecycleOwner) { result ->
-            val items = when (result) {
-                null -> listOf(EpisodeDataItem.EpisodeHeader(episodeCount = 0))
-                else -> listOf(EpisodeDataItem.EpisodeHeader(episodeCount = result.size)) + result.map {
-                    EpisodeDataItem.EpisodeItem(
-                        it
-                    )
-                }
-            }
-            episodeListAdapter.submitList(items)
-        }
-
-        characterViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
-            with(binding) {
-                if (loading == true) {
-                    errorBox.setMotionVisibility(View.GONE)
-                    loadingIndicator.setMotionVisibility(View.VISIBLE)
-                } else {
-                    loadingIndicator.setMotionVisibility(View.GONE)
-                }
-            }
-        }
-
-        characterViewModel.character.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Resource.Success -> {
-                    with(binding) {
-                        characterInfoLayout.setMotionVisibility(View.VISIBLE)
-                        result.data?.let { character ->
-                            characterId.text = character.id.toString()
-                            characterGender.text = character.gender
-                            characterStatus.text = character.status
-                        }
+        viewLifecycleOwner.lifecycleScope.apply {
+            launchWhenStarted {
+                characterViewModel.uiState.collectLatest { state ->
+                    val items = listOf(
+                        EpisodeDataItem.EpisodeHeader(
+                            episodeCount = state.episodes.size
+                        )
+                    ) + state.episodes.map { episode ->
+                        EpisodeDataItem.EpisodeItem(episode)
                     }
-                }
-                is Resource.Error -> {
-                    showToast(getString(R.string.internet_error))
+
+                    // We want to submit the list when all items are loaded
+                    if (items.size > 1) {
+                        episodeListAdapter.submitList(items)
+                    }
+
                     with(binding) {
-                        errorMessage.text = result.message
-                        characterInfoLayout.setMotionVisibility(View.GONE)
-                        errorBox.setMotionVisibility(View.VISIBLE)
+                        errorMessage.text = state.errorMessage
+                        characterId.text = state.character?.data?.id.toString()
+                        characterGender.text = state.character?.data?.gender
+                        characterStatus.text = state.character?.data?.status
+
+                        if (state.isLoading) {
+                            loadingIndicator.setMotionVisibility(View.VISIBLE)
+                            characterInfoLayout.setMotionVisibility(View.GONE)
+                            errorBox.setMotionVisibility(View.GONE)
+                        } else {
+                            loadingIndicator.setMotionVisibility(View.GONE)
+                            if (state.hasError && state.episodes.isEmpty()) {
+                                characterInfoLayout.setMotionVisibility(View.GONE)
+                                errorBox.setMotionVisibility(View.VISIBLE)
+                            } else {
+                                characterInfoLayout.setMotionVisibility(View.VISIBLE)
+                                errorBox.setMotionVisibility(View.GONE)
+                            }
+                        }
+
+                        if (state.hasError) {
+                            showToast(state.errorMessage ?: getString(R.string.internet_error))
+                        }
                     }
                 }
             }

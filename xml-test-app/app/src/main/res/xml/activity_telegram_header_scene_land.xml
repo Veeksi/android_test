@@ -17,7 +17,7 @@
             android:id="@+id/headerBackground"
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
-            android:layout_height="72dp"
+            android:layout_height="64dp"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent" />
         <Constraint
@@ -26,31 +26,8 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             motion:layout_constraintBottom_toBottomOf="@id/backButton"
+            android:layout_marginStart="16dp"
             motion:layout_constraintTop_toTopOf="@id/backButton" />
-        <Constraint
-            android:id="@+id/loadingIndicator"
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/headerBackground"
-            motion:layout_constraintStart_toStartOf="parent" />
-        <Constraint
-            android:id="@+id/backButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            motion:layout_constraintTop_toTopOf="@+id/headerBackground"
-            motion:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="12dp" />
-        <Constraint
-            android:id="@+id/episodeRecyclerView"
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/characterInfoLayout"
-            motion:layout_constraintStart_toStartOf="parent" />
         <Constraint
             android:id="@+id/characterName"
             android:layout_width="0dp"
@@ -61,12 +38,36 @@
             motion:layout_constraintStart_toEndOf="@id/characterCard"
             motion:layout_constraintBottom_toBottomOf="@id/characterCard" />
         <Constraint
+            android:id="@+id/loadingIndicator"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/headerBackground"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
             android:id="@+id/characterInfoLayout"
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             motion:layout_constraintBottom_toBottomOf="@id/characterName"
             motion:layout_constraintTop_toTopOf="@id/characterName" />
+        <Constraint
+            android:id="@+id/backButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintTop_toTopOf="@+id/headerBackground"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="20dp" />
+        <Constraint
+            android:id="@+id/episodeRecyclerView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/characterInfoLayout"
+            motion:layout_constraintStart_toStartOf="parent" />
         <Constraint
             android:id="@+id/errorBox"
             motion:layout_constraintEnd_toEndOf="parent"

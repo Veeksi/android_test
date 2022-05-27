@@ -28,8 +28,9 @@
         <entry key="app/src/main/res/drawable/ic_other.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_refresh.xml" value="0.323" />
         <entry key="app/src/main/res/drawable/ic_star.xml" value="0.168" />
+        <entry key="app/src/main/res/drawable/rectangle_button.xml" value="0.2425" />
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.2015" />
-        <entry key="app/src/main/res/layout-land/fragment_character.xml" value="0.125" />
+        <entry key="app/src/main/res/layout-land/fragment_character.xml" value="0.25" />
         <entry key="app/src/main/res/layout-v23/item_navigation.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/layout/fragment_carousel_recycler_view.xml" value="0.25" />

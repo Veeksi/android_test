@@ -12,7 +12,7 @@
     <View
         android:id="@+id/headerBackground"
         android:layout_width="0dp"
-        android:layout_height="72dp"
+        android:layout_height="64dp"
         android:background="?attr/colorSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +24,7 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         app:strokeWidth="0dp"
+        android:layout_marginStart="16dp"
         app:cardCornerRadius="28dp"
         app:layout_constraintBottom_toBottomOf="@id/backButton"
         app:layout_constraintStart_toEndOf="@id/backButton"
@@ -155,12 +156,14 @@
 
     <ImageView
         android:id="@+id/backButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:contentDescription="@string/back_button"
-        android:padding="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/actionBarItemBackground"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/headerBackground" />
