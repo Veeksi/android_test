@@ -33,7 +33,7 @@
         <entry key="app/src/main/res/layout-v23/item_navigation.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/layout/fragment_carousel_recycler_view.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_character.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/fragment_character.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_characters_list.xml" value="0.17753623188405798" />
         <entry key="app/src/main/res/layout/fragment_collapsible_toolbar.xml" value="0.13675213675213677" />
         <entry key="app/src/main/res/layout/fragment_dropbox_store.xml" value="0.12008547008547009" />

@@ -18,11 +18,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--To make circle cardCornerRadius must be 1/2 of layout width-->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/characterCard"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:radius="56dp"
+        app:strokeWidth="0dp"
+        app:cardCornerRadius="28dp"
         app:layout_constraintBottom_toBottomOf="@id/backButton"
         app:layout_constraintStart_toEndOf="@id/backButton"
         app:layout_constraintTop_toTopOf="@id/backButton">

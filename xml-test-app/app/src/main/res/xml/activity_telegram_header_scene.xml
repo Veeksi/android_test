@@ -40,6 +40,20 @@
                     motion:attributeName="textSize"
                     motion:customFloatValue="28" />
             </KeyAttribute>
+            <KeyAttribute
+                motion:motionTarget="@+id/characterCard"
+                motion:framePosition="100">
+                <CustomAttribute
+                    motion:attributeName="radius"
+                    motion:customPixelDimension="28dp" />
+            </KeyAttribute>
+            <KeyAttribute
+                motion:motionTarget="@+id/characterCard"
+                motion:framePosition="0" >
+                <CustomAttribute
+                    motion:attributeName="radius"
+                    motion:customPixelDimension="0dp" />
+            </KeyAttribute>
         </KeyFrameSet>
     </Transition>
 
@@ -102,11 +116,7 @@
             android:layout_height="0dp"
             motion:layout_constraintBottom_toTopOf="@id/guideHeader2"
             motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintStart_toStartOf="parent" >
-            <CustomAttribute
-                motion:attributeName="radius"
-                motion:customDimension="0dp" />
-        </Constraint>
+            motion:layout_constraintStart_toStartOf="parent" ></Constraint>
         <Constraint
             android:id="@+id/characterName"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -133,11 +143,7 @@
             android:layout_height="56dp"
             motion:layout_constraintBottom_toBottomOf="@id/backButton"
             motion:layout_constraintStart_toEndOf="@+id/backButton"
-            motion:layout_constraintTop_toTopOf="@id/backButton">
-            <CustomAttribute
-                motion:attributeName="radius"
-                motion:customDimension="90dp" />
-        </Constraint>
+            motion:layout_constraintTop_toTopOf="@id/backButton"></Constraint>
 
         <Constraint
             android:id="@+id/episodeRecyclerView"
