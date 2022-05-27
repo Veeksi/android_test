@@ -2,13 +2,13 @@
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/characterMotionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/activity_telegram_header_scene"
-    tools:context=".view.fragment.CharacterFragment"
     android:saveEnabled="true"
-    android:id="@+id/characterMotionLayout"
-    >
+    app:layoutDescription="@xml/activity_telegram_header_scene"
+    app:layout_optimizationLevel="none"
+    tools:context=".view.fragment.CharacterFragment">
 
     <View
         android:id="@+id/headerBackground"
@@ -24,7 +24,6 @@
         android:id="@+id/characterCard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:radius="50dp"
         app:layout_constraintBottom_toTopOf="@id/guideHeader2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,11 +33,23 @@
             android:id="@+id/characterImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/launcher_foreground"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_launcher_background"
-            android:contentDescription="@string/launcher_foreground"/>
+            tools:src="@drawable/ic_launcher_background" />
 
     </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@string/back_button"
+        android:padding="12dp"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/headerBackground" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideHeader2"
@@ -49,88 +60,161 @@
 
     <TextView
         android:id="@+id/characterName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:gravity="center_vertical"
+        android:gravity="center|start"
         android:maxLines="1"
+        android:padding="8dp"
+        android:paddingHorizontal="8dp"
         android:text="@string/character_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="28sp"
+        app:layout_constraintBottom_toTopOf="@id/characterInfoLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideHeader2"
-        tools:text="Galactic Federation Presidentas asdasdasd" />
+        tools:text="assadads" />
+
+    <LinearLayout
+        android:id="@+id/characterInfoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/episodeRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/characterName">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="?dividerVertical"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/id" />
+
+                <TextView
+                    android:id="@+id/characterId"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender" />
+
+                <TextView
+                    android:id="@+id/characterGender"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Female" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status" />
+
+                <TextView
+                    android:id="@+id/characterStatus"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Alive" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/episodeRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/characterInfoLayout"
+        app:spanCount="2"
+        tools:listitem="@layout/item_episode" />
+
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/loadingIndicator"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/characterEpisodes" />
+        app:layout_constraintTop_toBottomOf="@id/headerBackground" />
 
-    <TextView
-        android:id="@+id/characterEpisodes"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/episodes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/characterName" />
-
-    <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:padding="12dp"
-        android:src="@drawable/ic_arrow_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/headerBackground"
-        android:contentDescription="@string/back_button"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/episodeRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/characterEpisodes"
-        tools:listitem="@layout/item_episode"
-        android:clipToPadding="false"
-        android:paddingBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/errorMessage"
+    <LinearLayout
+        android:id="@+id/errorBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/characterEpisodes"
-        tools:text="Please check your network connection." />
+        app:layout_constraintTop_toBottomOf="@id/headerBackground">
 
-    <ImageButton
-        android:id="@+id/retryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_refresh"
-        android:text="@string/retry"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/errorMessage" />
+        <TextView
+            android:id="@+id/errorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            tools:text="Please check your network connection." />
+
+        <ImageButton
+            android:id="@+id/retryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_refresh"
+            android:text="@string/retry" />
+    </LinearLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

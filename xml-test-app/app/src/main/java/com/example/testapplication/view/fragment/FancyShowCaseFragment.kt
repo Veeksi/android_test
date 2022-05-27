@@ -19,13 +19,14 @@ class FancyShowCaseFragment : BaseFragment<FragmentFancyShowCaseBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setToolbarBackButton(binding.toolbar)
+
         val fancyShowCaseView1: FancyShowCaseView = FancyShowCaseView.Builder(requireActivity())
             .title("Here is a button that triggers this show case")
             .enableAutoTextPosition()
             .titleGravity(Gravity.CENTER)
             .focusOn(binding.button)
             .build()
-
 
         val fancyShowCaseView2: FancyShowCaseView = FancyShowCaseView.Builder(requireActivity())
             .title("Here is a toolbar that you can use to make actions (not really)")

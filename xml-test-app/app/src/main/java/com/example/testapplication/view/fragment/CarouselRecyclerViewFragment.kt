@@ -34,7 +34,7 @@ class CarouselRecyclerViewFragment : BaseFragment<FragmentCarouselRecyclerViewBi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setToolbarBackButton(binding.toolbar)
         setupUi()
         setupObservers()
     }

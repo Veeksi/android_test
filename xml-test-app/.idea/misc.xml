@@ -15,6 +15,7 @@
         <entry key="..\:/Users/Veikko/AndroidStudioProjects/TestApplication/xml-test-app/app/src/main/res/layout/modal_bottom_sheet_content.xml" value="0.33" />
         <entry key="..\:/Users/Veikko/AndroidStudioProjects/TestApplication/xml-test-app/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/Veikko/AndroidStudioProjects/TestApplication/xml-test-app/app/src/main/res/xml/activity_telegram_header_scene.xml" value="0.19114583333333332" />
+        <entry key="app/src/main/res/drawable/gradient_background.xml" value="0.1745" />
         <entry key="app/src/main/res/drawable/ic_arrow_back.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/ic_arrow_up.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.168" />
@@ -28,21 +29,24 @@
         <entry key="app/src/main/res/drawable/ic_refresh.xml" value="0.323" />
         <entry key="app/src/main/res/drawable/ic_star.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.2015" />
-        <entry key="app/src/main/res/layout-land/fragment_character.xml" value="0.1" />
+        <entry key="app/src/main/res/layout-land/fragment_character.xml" value="0.125" />
         <entry key="app/src/main/res/layout-v23/item_navigation.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15648148148148147" />
-        <entry key="app/src/main/res/layout/fragment_carousel_recycler_view.xml" value="0.11" />
-        <entry key="app/src/main/res/layout/fragment_character.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/fragment_carousel_recycler_view.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_character.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_characters_list.xml" value="0.17753623188405798" />
+        <entry key="app/src/main/res/layout/fragment_collapsible_toolbar.xml" value="0.13675213675213677" />
         <entry key="app/src/main/res/layout/fragment_dropbox_store.xml" value="0.12008547008547009" />
         <entry key="app/src/main/res/layout/fragment_episodes.xml" value="0.16134751773049646" />
         <entry key="app/src/main/res/layout/fragment_fancy_show_case.xml" value="0.13675213675213677" />
         <entry key="app/src/main/res/layout/fragment_favorite_characters.xml" value="0.30854700854700856" />
         <entry key="app/src/main/res/layout/fragment_filter_dialog.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_image_carousel.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_number.xml" value="0.15042735042735042" />
         <entry key="app/src/main/res/layout/fragment_other.xml" value="0.1340782122905028" />
         <entry key="app/src/main/res/layout/fragment_test.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/fragment_testi.xml" value="0.15885416666666666" />
+        <entry key="app/src/main/res/layout/fragment_view_pager.xml" value="0.16196581196581197" />
         <entry key="app/src/main/res/layout/item_character.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/layout/item_episode.xml" value="0.15885416666666666" />
         <entry key="app/src/main/res/layout/item_gender_dropdown.xml" value="0.1640625" />

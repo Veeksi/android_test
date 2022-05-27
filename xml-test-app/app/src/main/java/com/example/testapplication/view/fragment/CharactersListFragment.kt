@@ -54,24 +54,42 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         super.onViewStateRestored(savedInstanceState)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        postponeEnterTransition()
         setupCustomUpHandler()
+        setupAppbar()
+        setupUi()
+        setupObservers()
+        // Postpones return transition when the view is ready
+        view.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.apply {
+            if (charactersRecyclerview.canScrollVertically(-1)) {
+                floatingActionButton.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun setupCustomUpHandler() {
-        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (charactersListViewModel.editState.value.isEditing) {
-                    stopEditing()
-                } else if (binding.charactersRecyclerview.canScrollVertically(-1)) {
-                    scrollToTop()
-                } else {
-                    isEnabled = false
-                    activity?.onBackPressed()
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (charactersListViewModel.editState.value.isEditing) {
+                        stopEditing()
+                    } else if (binding.charactersRecyclerview.canScrollVertically(-1)) {
+                        scrollToTop()
+                    } else {
+                        isEnabled = false
+                        activity?.onBackPressed()
+                    }
                 }
-            }
-        })
+            })
     }
 
     private fun setupAppbar() {
@@ -107,48 +125,16 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        postponeEnterTransition()
-        setupAppbar()
-        setupUi()
-        setupObservers()
-        // Postpones return transition when the view is ready
-        view.doOnPreDraw {
-            startPostponedEnterTransition()
-        }
-    }
-
-    private fun characterItemClicked(
-        character: Character,
-        card: MaterialCardView,
-    ) {
-        val extras = FragmentNavigatorExtras(
-            card to "${character.id}-${character.image}"
-        )
-        val action = CharactersListFragmentDirections
-            .actionCharacterListFragmentToCharacterFragment(
-                id = character.id,
-                uri = character.image,
-                name = character.name,
-            )
-
-        navigate(action, extras)
-    }
-
     private fun setupUi() {
         characterListAdapter = CharacterListAdapter(::characterItemClicked)
         with(binding) {
             charactersRecyclerview.apply {
                 setHasFixedSize(true)
-                isNestedScrollingEnabled = false
                 val layoutManager = GridLayoutManager(context, 4)
                 if (activity?.resources?.configuration?.orientation == ORIENTATION_PORTRAIT) {
                     layoutManager.spanCount = 2
                 }
                 charactersRecyclerview.layoutManager = layoutManager
-
-                val concatAdapter = ConcatAdapter()
 
                 val footerAdapter = PagingLoadStateAdapter(characterListAdapter)
                 adapter = characterListAdapter.withLoadStateFooter(
@@ -230,15 +216,6 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.apply {
-            if (charactersRecyclerview.canScrollVertically(-1)) {
-                floatingActionButton.visibility = View.VISIBLE
-            }
-        }
-    }
-
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.apply {
 
@@ -288,6 +265,23 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
         }
     }
 
+    private fun characterItemClicked(
+        character: Character,
+        card: MaterialCardView,
+    ) {
+        val extras = FragmentNavigatorExtras(
+            card to "${character.id}-${character.image}"
+        )
+        val action = CharactersListFragmentDirections
+            .actionCharacterListFragmentToCharacterFragment(
+                id = character.id,
+                uri = character.image,
+                name = character.name,
+            )
+
+        navigate(action, extras)
+    }
+
     private fun showErrorToast(loadState: CombinedLoadStates) {
         val errorState = when {
             loadState.append is LoadState.Error -> loadState.append as LoadState.Error
@@ -303,11 +297,7 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                 errorMessage = getString(R.string.not_found_error)
             }
             binding.errorMessage.text = errorMessage
-            Toast.makeText(
-                requireContext(),
-                errorMessage,
-                Toast.LENGTH_SHORT
-            ).show()
+            showToast(errorMessage)
         }
     }
 

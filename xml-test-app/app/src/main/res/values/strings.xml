@@ -44,6 +44,7 @@
     <string name="new_item_added">%d new item(s) added to favorites</string>
     <string name="item_deleted">Character deleted</string>
     <string name="undo">Undo</string>
+    <string name="id">ID</string>
     <string-array name="filterStatus">
         <item>All</item>
         <item>Alive </item>

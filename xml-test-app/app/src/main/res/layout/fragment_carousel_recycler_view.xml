@@ -4,29 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragment.CarouselRecyclerViewFragment"
-    android:padding="8dp">
+    tools:context=".view.fragment.CarouselRecyclerViewFragment">
 
-    <TextView
-        android:id="@+id/charactersText"
-        style="@style/TextAppearance.MaterialComponents.Headline5"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/snapping_horizontal_recyclerview"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:gravity="center_horizontal"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/snapping_horizontal_recyclerview" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/charactersText"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/item_character"
         android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+        android:padding="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:listitem="@layout/item_character">
 
     </androidx.recyclerview.widget.RecyclerView>
 

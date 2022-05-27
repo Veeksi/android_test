@@ -39,7 +39,7 @@
 
     <TextView
         android:id="@+id/characterName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:ellipsize="end"
@@ -49,9 +49,10 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="@id/characterCard"
+        app:layout_constraintEnd_toStartOf="@id/characterInfoLayout"
         app:layout_constraintStart_toEndOf="@id/characterCard"
         app:layout_constraintTop_toTopOf="@id/characterCard"
-        tools:text="Galactic Federation Presidentas asdasdasd" />
+        tools:text="Galactic Federation Presidentas" />
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/loadingIndicator"
@@ -64,16 +65,91 @@
         app:layout_constraintTop_toBottomOf="@id/headerBackground" />
 
 
-    <TextView
-        android:id="@+id/characterEpisodes"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/characterInfoLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/episodes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerBackground" />
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="@id/characterName"
+        app:layout_constraintBottom_toBottomOf="@id/characterName"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="?dividerVertical"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:showDividers="middle">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/id" />
+
+                <TextView
+                    android:id="@+id/characterId"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender" />
+
+                <TextView
+                    android:id="@+id/characterGender"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Female" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status" />
+
+                <TextView
+                    android:id="@+id/characterStatus"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Alive" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/backButton"
@@ -89,38 +165,42 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/episodeRecyclerView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/characterEpisodes"
+        app:layout_constraintTop_toBottomOf="@id/characterInfoLayout"
         tools:listitem="@layout/item_episode" />
 
-    <TextView
-        android:id="@+id/errorMessage"
+    <LinearLayout
+        android:id="@+id/errorBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerBackground"
-        tools:text="Please check your network connection." />
+        app:layout_constraintTop_toBottomOf="@id/headerBackground">
 
-    <ImageButton
-        android:id="@+id/retryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_refresh"
-        android:text="@string/retry"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/errorMessage" />
+        <TextView
+            android:id="@+id/errorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            tools:text="Please check your network connection." />
+
+        <ImageButton
+            android:id="@+id/retryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_refresh"
+            android:text="@string/retry" />
+    </LinearLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

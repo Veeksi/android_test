@@ -72,18 +72,15 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
                 }
                 setHasFixedSize(true)
             }
+            characterName.text = args.name
             characterImage.apply {
                 transitionName = "${args.id}-${args.uri}"
                 load(args.uri)
             }
-            characterName.apply {
-                transitionName = "${args.id}-${args.name}"
-                text = args.name
-            }
             backButton.setOnClickListener {
                 activity?.onBackPressed()
             }
-            retryButton?.setOnClickListener {
+            retryButton.setOnClickListener {
                 characterViewModel.loadCharacter()
             }
         }
@@ -95,12 +92,13 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
         }
 
         characterViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
-            if (loading == true) {
-                binding.errorMessage.setMotionVisibility(View.GONE)
-                binding.retryButton?.setMotionVisibility(View.GONE)
-                binding.loadingIndicator.setMotionVisibility(View.VISIBLE)
-            } else {
-                binding.loadingIndicator.setMotionVisibility(View.GONE)
+            with(binding) {
+                if (loading == true) {
+                    errorBox?.setMotionVisibility(View.GONE)
+                    loadingIndicator.setMotionVisibility(View.VISIBLE)
+                } else {
+                    loadingIndicator.setMotionVisibility(View.GONE)
+                }
             }
         }
 
@@ -108,20 +106,20 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
             when (result) {
                 is Resource.Success -> {
                     with(binding) {
+                        characterInfoLayout?.setMotionVisibility(View.VISIBLE)
                         result.data?.let { character ->
-                            characterName.text = getString(
-                                R.string.character_name,
-                                character.name,
-                                character.id
-                            )
+                            characterId?.text = character.id.toString()
+                            characterGender?.text = character.gender
+                            characterStatus?.text = character.status
                         }
                     }
                 }
                 is Resource.Error -> {
+                    showToast(getString(R.string.internet_error))
                     with(binding) {
                         errorMessage.text = result.message
-                        errorMessage.setMotionVisibility(View.VISIBLE)
-                        retryButton?.setMotionVisibility(View.VISIBLE)
+                        characterInfoLayout?.setMotionVisibility(View.GONE)
+                        errorBox?.setMotionVisibility(View.VISIBLE)
                     }
                 }
             }
