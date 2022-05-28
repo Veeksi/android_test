@@ -8,9 +8,7 @@ import com.example.testapplication.domain.repository.CharacterRepository
 import com.example.testapplication.domain.repository.EpisodeRepository
 import com.example.testapplication.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.net.URI
 import javax.inject.Inject
@@ -24,13 +22,20 @@ class CharacterViewModel @Inject constructor(
     data class UiState(
         val isLoading: Boolean = false,
         val hasError: Boolean = false,
-        val errorMessage: String? = null,
+        val errorMessage: String = "",
         val episodes: List<Episode> = emptyList(),
         val character: Resource<Character>? = null
     )
 
+    sealed class UiEvent {
+        data class ShowSnackbar(val message: String) : UiEvent()
+    }
+
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     private val _tempEpisodeList = arrayListOf<Episode>()
 
@@ -41,50 +46,66 @@ class CharacterViewModel @Inject constructor(
     fun loadCharacter() {
         viewModelScope.launch {
             savedStateHandle.get<Int>("id")?.let { id ->
-                _uiState.update {
-                    it.copy(
-                        isLoading = true,
-                        hasError = false,
-                        errorMessage = null
-                    )
-                }
-
                 // Fetch specific character
                 characterRepository.getCharacter(id).collect { character ->
-                    if (character is Resource.Error) {
-                        _uiState.update {
-                            it.copy(hasError = true, errorMessage = character.errorMessage)
-                        }
-                    }
-
                     _uiState.update {
-                        it.copy(character = character)
+                        it.copy(hasError = false, errorMessage = "")
                     }
+                    when (character) {
+                        is Resource.Loading -> {
+                            _uiState.update {
+                                it.copy(isLoading = true)
+                            }
+                        }
+                        is Resource.Error -> {
+                            val errorMessage = character.errorMessage ?: "Unknown error"
+                            _uiState.update {
+                                it.copy(
+                                    hasError = true,
+                                    isLoading = false,
+                                    errorMessage = errorMessage
+                                )
+                            }
+                            _eventFlow.emit(
+                                UiEvent.ShowSnackbar(errorMessage)
+                            )
+                        }
+                        is Resource.Success -> {
+                            _uiState.update {
+                                it.copy(character = character)
+                            }
 
-                    // Fetch character episodes
-                    character.data?.let {
-                        it.episodes.map { episode ->
-                            val episodeId = parseId(episode)
-                            episodeRepository.getEpisode(episodeId).collect { result ->
-                                if (result is Resource.Success) {
-                                    result.data?.let { it -> _tempEpisodeList.add(it) }
-                                } else if (result is Resource.Error) {
-                                    _uiState.update { state ->
-                                        state.copy(
-                                            isLoading = false,
-                                            hasError = true,
-                                            episodes = _tempEpisodeList,
-                                            errorMessage = "Not all data is up-to-date, please consider refreshing!"
-                                        )
+                            // Fetch character episodes
+                            character.data?.let {
+                                it.episodes.map { episode ->
+                                    val episodeId = parseId(episode)
+                                    episodeRepository.getEpisode(episodeId).collect { result ->
+                                        if (result is Resource.Success) {
+                                            result.data?.let { it -> _tempEpisodeList.add(it) }
+                                        } else if (result is Resource.Error) {
+                                            val errorMessage =
+                                                "Not all data is up-to-date, please consider refreshing!"
+                                            _uiState.update { state ->
+                                                state.copy(
+                                                    isLoading = false,
+                                                    hasError = true,
+                                                    errorMessage = errorMessage,
+                                                    episodes = _tempEpisodeList,
+                                                )
+                                            }
+                                            _eventFlow.emit(
+                                                UiEvent.ShowSnackbar(errorMessage)
+                                            )
+                                        }
                                     }
                                 }
                             }
-                        }
-                    }
 
-                    // Emit episodes after all of them are loaded
-                    _uiState.update {
-                        it.copy(isLoading = false, episodes = _tempEpisodeList)
+                            // Emit episodes after all of them are loaded
+                            _uiState.update {
+                                it.copy(isLoading = false, episodes = _tempEpisodeList)
+                            }
+                        }
                     }
                 }
             }

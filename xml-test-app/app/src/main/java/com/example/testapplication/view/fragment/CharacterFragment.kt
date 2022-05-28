@@ -104,44 +104,38 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.apply {
             launchWhenStarted {
-                characterViewModel.uiState.collectLatest { state ->
-                    val items = listOf(
-                        EpisodeDataItem.EpisodeHeader(
-                            episodeCount = state.episodes.size
-                        )
-                    ) + state.episodes.map { episode ->
-                        EpisodeDataItem.EpisodeItem(episode)
+                characterViewModel.eventFlow.collectLatest { event ->
+                    when (event) {
+                        is CharacterViewModel.UiEvent.ShowSnackbar -> {
+                            showToast(event.message)
+                        }
                     }
+                }
+            }
 
-                    // We want to submit the list when all items are loaded
-                    if (items.size > 1) {
+            launchWhenStarted {
+                characterViewModel.uiState.collectLatest { state ->
+                    if (!state.isLoading && state.episodes.isNotEmpty()) {
+                        val items = listOf(
+                            EpisodeDataItem.EpisodeHeader(
+                                episodeCount = state.episodes.size
+                            )
+                        ) + state.episodes.map { episode ->
+                            EpisodeDataItem.EpisodeItem(episode)
+                        }
+
                         episodeListAdapter.submitList(items)
                     }
 
                     with(binding) {
-                        errorMessage.text = state.errorMessage
                         characterId.text = state.character?.data?.id.toString()
                         characterGender.text = state.character?.data?.gender
                         characterStatus.text = state.character?.data?.status
+                        errorMessage.text = state.errorMessage
 
-                        if (state.isLoading) {
-                            loadingIndicator.setMotionVisibility(View.VISIBLE)
-                            characterInfoLayout.setMotionVisibility(View.GONE)
-                            errorBox.setMotionVisibility(View.GONE)
-                        } else {
-                            loadingIndicator.setMotionVisibility(View.GONE)
-                            if (state.hasError && state.episodes.isEmpty()) {
-                                characterInfoLayout.setMotionVisibility(View.GONE)
-                                errorBox.setMotionVisibility(View.VISIBLE)
-                            } else {
-                                characterInfoLayout.setMotionVisibility(View.VISIBLE)
-                                errorBox.setMotionVisibility(View.GONE)
-                            }
-                        }
-
-                        if (state.hasError) {
-                            showToast(state.errorMessage ?: getString(R.string.internet_error))
-                        }
+                        characterInfoLayout.setMotionVisibility(if (!state.isLoading && state.character != null) View.VISIBLE else View.GONE)
+                        errorBox.setMotionVisibility(if (state.hasError && state.episodes.isEmpty()) View.VISIBLE else View.GONE)
+                        loadingIndicator.setMotionVisibility(if (state.isLoading) View.VISIBLE else View.GONE)
                     }
                 }
             }

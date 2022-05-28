@@ -42,6 +42,7 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override suspend fun getCharacter(id: Int): Flow<Resource<Character>> {
         return flow {
+            emit(Resource.Loading())
             emit(
                 safeApiCall(
                     apiCall = { service.getCharacter(id) },
