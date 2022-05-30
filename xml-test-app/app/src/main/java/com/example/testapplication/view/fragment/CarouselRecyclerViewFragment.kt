@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import com.example.testapplication.R
 import com.example.testapplication.databinding.FragmentCarouselRecyclerViewBinding
@@ -40,8 +41,8 @@ class CarouselRecyclerViewFragment : BaseFragment<FragmentCarouselRecyclerViewBi
     }
 
     private fun setupUi() {
-        val multiSnapHelper = MultiSnapHelper(SnapGravity.START, 1, 100f)
-        multiSnapHelper.attachToRecyclerView(binding.recyclerView)
+        val snapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(binding.recyclerView)
         characterListAdapter = CharacterListAdapter(::characterItemClicked)
         binding.recyclerView.apply {
             setHasFixedSize(true)

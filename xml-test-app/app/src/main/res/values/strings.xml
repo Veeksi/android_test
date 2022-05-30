@@ -42,8 +42,8 @@
     <string name="snapping_horizontal_recyclerview">Snapping horizontal recyclerView</string>
     <string name="example_button">Example button</string>
     <string name="favorites">Favorites</string>
-    <string name="new_item_added">%d new item(s) added to favorites</string>
-    <string name="item_deleted">Character deleted</string>
+    <string name="new_item_added">New character(s) added to favorites</string>
+    <string name="item_deleted">Character deleted from favorites</string>
     <string name="undo">Undo</string>
     <string name="id">ID</string>
     <string name="episode_count">Episodes: %1$d</string>

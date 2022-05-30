@@ -68,7 +68,6 @@ class CharactersListViewModel @Inject constructor(
 
     fun addCharactersToFavorites(characters: List<Character>) {
         viewModelScope.launch {
-            // val uniqueCharacters = repository.getAllFavoriteCharacters().asLiveData().value?.minus(characters.toSet())?.toList()
             repository.addCharactersToFavorite(characters)
         }
     }

@@ -18,6 +18,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.paging.map
 import androidx.recyclerview.selection.*
 import androidx.recyclerview.widget.*
 import com.example.testapplication.R
@@ -34,6 +35,8 @@ import com.example.testapplication.vm.CharactersListViewModel
 import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.net.UnknownHostException
@@ -43,7 +46,6 @@ import java.net.UnknownHostException
 class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
     private val charactersListViewModel: CharactersListViewModel by activityViewModels()
     private lateinit var characterListAdapter: CharacterListAdapter
-    private lateinit var favoriteCharactersAdapter: FavoriteCharactersAdapter
 
     private var tracker: SelectionTracker<Character>? = null
 
@@ -103,11 +105,11 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
                         true
                     }
                     R.id.like -> {
-                        val charactersToAdd =
+                        charactersListViewModel.addCharactersToFavorites(
                             charactersListViewModel.editState.value.editableCharacters
-                        charactersListViewModel.addCharactersToFavorites(charactersToAdd)
+                        )
                         stopEditing()
-                        notify(getString(R.string.new_item_added, charactersToAdd.size))
+                        notify(getString(R.string.new_item_added))
                         true
                     }
                     R.id.remove -> {
@@ -242,17 +244,17 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
 
             launch {
                 characterListAdapter.loadStateFlow.collectLatest { loadState ->
+                    showErrorToast(loadState)
                     with(binding) {
-                        showErrorToast(loadState)
-                        swipeRefreshLayout.isRefreshing = false
+                        swipeRefreshLayout.isRefreshing =
+                            loadState.source.refresh is LoadState.Loading && characterListAdapter.itemCount > 0
                         circularProgressIndicator.isVisible =
                             loadState.refresh is LoadState.Loading && characterListAdapter.itemCount == 0
                         errorMessage.isVisible =
                             loadState.refresh is LoadState.Error
                                     && characterListAdapter.itemCount == 0
-                        charactersRecyclerview.isVisible =
-                            loadState.source.refresh is LoadState.NotLoading
-                                    || loadState.mediator?.refresh is LoadState.NotLoading
+                        charactersRecyclerview.isVisible = true
+                            // loadState.source.refresh is LoadState.NotLoading || characterListAdapter.itemCount > 0
                     }
                 }
             }
