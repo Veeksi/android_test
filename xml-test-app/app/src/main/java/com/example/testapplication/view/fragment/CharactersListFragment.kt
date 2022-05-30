@@ -57,11 +57,11 @@ class CharactersListFragment : BaseFragment<FragmentCharactersListBinding>() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        postponeEnterTransition()
         setupCustomUpHandler()
         setupAppbar()
         setupUi()
         setupObservers()
+        postponeEnterTransition()
         // Postpones return transition when the view is ready
         view.doOnPreDraw {
             startPostponedEnterTransition()

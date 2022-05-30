@@ -12,16 +12,32 @@
         tools:layout="@layout/fragment_other">
         <action
             android:id="@+id/action_otherFragment_to_testFragment"
-            app:destination="@id/collapsibleToolbarFragment" />
+            app:destination="@id/collapsibleToolbarFragment"
+            app:enterAnim="@anim/slide_from_left_to_center"
+            app:exitAnim="@anim/slide_from_center_to_right"
+            app:popEnterAnim="@anim/slide_from_right_to_center"
+            app:popExitAnim="@anim/slide_from_center_to_left" />
         <action
             android:id="@+id/action_otherFragment_to_carouselRecyclerViewFragment"
-            app:destination="@id/carouselRecyclerViewFragment" />
+            app:destination="@id/carouselRecyclerViewFragment"
+            app:enterAnim="@anim/slide_from_right_to_center"
+            app:exitAnim="@anim/slide_from_center_to_left"
+            app:popEnterAnim="@anim/slide_from_left_to_center"
+            app:popExitAnim="@anim/slide_from_center_to_right" />
         <action
             android:id="@+id/action_otherFragment_to_fancyShowCaseFragment"
-            app:destination="@id/fancyShowCaseFragment" />
+            app:destination="@id/fancyShowCaseFragment"
+            app:enterAnim="@anim/slide_from_up_to_center"
+            app:exitAnim="@anim/slide_from_center_to_down"
+            app:popEnterAnim="@anim/slide_from_down_to_center"
+            app:popExitAnim="@anim/slide_from_center_to_up" />
         <action
             android:id="@+id/action_otherFragment_to_viewPagerFragment"
-            app:destination="@id/viewPagerFragment" />
+            app:destination="@id/viewPagerFragment"
+            app:enterAnim="@anim/slide_from_down_to_center"
+            app:exitAnim="@anim/slide_from_center_to_up"
+            app:popEnterAnim="@anim/slide_from_up_to_center"
+            app:popExitAnim="@anim/slide_from_center_to_down" />
     </fragment>
     <fragment
         android:id="@+id/collapsibleToolbarFragment"

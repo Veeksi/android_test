@@ -58,6 +58,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding>() {
 
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             duration = resources.getInteger(R.integer.anim_duration_long).toLong()
+            setAllContainerColors(Color.TRANSPARENT)
             scrimColor = Color.TRANSPARENT
             setPathMotion(MaterialArcMotion())
         }
